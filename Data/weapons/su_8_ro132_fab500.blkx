@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "ro132_slot1"
+    },
+    {
+      "slot": 3,
+      "preset": "fab_500_x3_central"
+    },
+    {
+      "slot": 5,
+      "preset": "ro132_slot5"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "fr_250kg_type_25c"
+    },
+    {
+      "slot": 2,
+      "preset": "fr_250kg_type_25c"
+    },
+    {
+      "slot": 3,
+      "preset": "fr_250kg_type_25c_internal"
+    },
+    {
+      "slot": 4,
+      "preset": "fr_250kg_type_25c"
+    },
+    {
+      "slot": 5,
+      "preset": "fr_250kg_type_25c"
+    }
+  ]
+}

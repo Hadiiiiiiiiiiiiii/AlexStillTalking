@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "psrak_m49a"
+    },
+    {
+      "slot": 4,
+      "preset": "psrak_m49a_central"
+    },
+    {
+      "slot": 6,
+      "preset": "psrak_m49a"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 2,
+      "preset": "agm_65a"
+    },
+    {
+      "slot": 7,
+      "preset": "agm_65a"
+    }
+  ]
+}

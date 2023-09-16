@@ -1,0 +1,168 @@
+{
+  "rocketGun": true,
+  "preset_cost": 25,
+  "mesh": "df_missile",
+  "mesh_deployed": "df_missile_deployed",
+  "helicopterGroup": 2,
+  "shotFreq": 20.0,
+  "sound": "weapon.rocketgun_132",
+  "rocket": {
+    "statType": "hydra",
+    "caliber": 0.1,
+    "length": 1.6,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 0.9,
+    "distFromCmToStab": 0.01,
+    "mass": 10.0,
+    "massEnd": 8.0,
+    "massEnd1": 7.5,
+    "timeFire": 1.1,
+    "timeFire1": 3.5,
+    "force": 3000.0,
+    "force1": 50.0,
+    "thrustDeviation": 0.5,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "maxSpeed": 410.0,
+    "endSpeed": 0.0,
+    "maxDistance": 6200.0,
+    "minDistance": 30.0,
+    "autoaimEnabled": false,
+    "explosiveType": "sks",
+    "explosiveMass": 5.0,
+    "explodeTreshold": 1E-05,
+    "rendinstDamageRadius": 6.0,
+    "spawnExplosionFx": false,
+    "spawnExplosionWreckage": false,
+    "dragCx": 0.0001,
+    "amountPerTier": 1.0,
+    "iconType": "rockets_he_large",
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "fireEffect": "fires_exhaust_jet_early_big",
+    "smokeEffect": "smoke_rocket_tail_light_huge",
+    "smokeEffect2": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "maxDeltaAngle": 1.0,
+    "splash": {
+      "innerRadius": 2.0,
+      "outerRadius": 5.0,
+      "penetration": 7.0,
+      "damage": 3200.0,
+      "damageType": "napalm"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 50.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "damageType": "generic",
+            "expl": 0.05,
+            "fire": 0.45,
+            "break": 0.5,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "expl": 0.5,
+            "fire": 0.3,
+            "break": 0.2,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "expl": 0.45,
+            "fire": 0.45,
+            "break": 0.1,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "cumulative",
+            "expl": 0.4,
+            "fire": 0.4,
+            "break": 0.1,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
+        "onKill": {
+          "expl": 0.05,
+          "fire": 0.05,
+          "break": 0.9,
+          "fHitCritical": true
+        }
+      }
+    },
+    "fireDamage": {
+      "velocityMult": 3.5,
+      "maxFlightTime": 4.0,
+      "maxFlightDistance": 17.0,
+      "maxRise": 4.0,
+      "lifeTime": 30.0,
+      "penetration": 10.0,
+      "damage": 2.0,
+      "damageType": "napalm",
+      "radius": 15.0,
+      "fxType": "explosion_thermite_wrackages",
+      "burnFxType": "explosion_thermite_firespot",
+      "burnFxSize": 17.0,
+      "scorchMarginSize": 1.0,
+      "scorchStrength": 1.0,
+      "scorchDuration": 10.0,
+      "emitterCount": 3,
+      "emitterDispersion": 0.7
+    }
+  }
+}

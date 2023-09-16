@@ -1,0 +1,44 @@
+{
+  "Weapon": [
+    {
+      "slot": 2,
+      "preset": "fab250"
+    },
+    {
+      "slot": 3,
+      "preset": "fab250"
+    },
+    {
+      "slot": 4,
+      "preset": "fab250"
+    },
+    {
+      "slot": 5,
+      "preset": "fab250"
+    },
+    {
+      "slot": 6,
+      "preset": "fab250"
+    },
+    {
+      "slot": 8,
+      "preset": "fab250"
+    },
+    {
+      "slot": 9,
+      "preset": "fab250"
+    },
+    {
+      "slot": 10,
+      "preset": "fab250"
+    },
+    {
+      "slot": 11,
+      "preset": "fab250"
+    },
+    {
+      "slot": 12,
+      "preset": "fab250"
+    }
+  ]
+}

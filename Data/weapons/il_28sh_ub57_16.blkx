@@ -1,0 +1,52 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "ub16"
+    },
+    {
+      "slot": 2,
+      "preset": "ub16"
+    },
+    {
+      "slot": 3,
+      "preset": "ub16"
+    },
+    {
+      "slot": 4,
+      "preset": "ub16"
+    },
+    {
+      "slot": 5,
+      "preset": "ub16"
+    },
+    {
+      "slot": 6,
+      "preset": "ub16"
+    },
+    {
+      "slot": 8,
+      "preset": "ub16"
+    },
+    {
+      "slot": 9,
+      "preset": "ub16"
+    },
+    {
+      "slot": 10,
+      "preset": "ub16"
+    },
+    {
+      "slot": 11,
+      "preset": "ub16"
+    },
+    {
+      "slot": 12,
+      "preset": "ub16"
+    },
+    {
+      "slot": 13,
+      "preset": "ub16"
+    }
+  ]
+}

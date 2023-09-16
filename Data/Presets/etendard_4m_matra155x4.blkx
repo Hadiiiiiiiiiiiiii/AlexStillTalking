@@ -1,0 +1,28 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "matra155"
+    },
+    {
+      "slot": 2,
+      "preset": "matra155"
+    },
+    {
+      "slot": 3,
+      "preset": "defa_slot3"
+    },
+    {
+      "slot": 4,
+      "preset": "defa_slot4"
+    },
+    {
+      "slot": 5,
+      "preset": "matra155"
+    },
+    {
+      "slot": 6,
+      "preset": "matra155"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 2,
+      "preset": "helfire_x4"
+    },
+    {
+      "slot": 3,
+      "preset": "helfire_x4"
+    }
+  ]
+}

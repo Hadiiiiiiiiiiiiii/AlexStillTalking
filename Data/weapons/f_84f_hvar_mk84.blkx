@@ -1,0 +1,36 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "hvar_x2"
+    },
+    {
+      "slot": 2,
+      "preset": "hvar_x2"
+    },
+    {
+      "slot": 3,
+      "preset": "us_2000lb"
+    },
+    {
+      "slot": 4,
+      "preset": "hvar_x6"
+    },
+    {
+      "slot": 5,
+      "preset": "hvar_x6"
+    },
+    {
+      "slot": 6,
+      "ppreset": "us_2000lb"
+    },
+    {
+      "slot": 7,
+      "preset": "hvar_x2"
+    },
+    {
+      "slot": 8,
+      "preset": "hvar_x2"
+    }
+  ]
+}

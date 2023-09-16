@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "zuni_x4"
+    },
+    {
+      "slot": 3,
+      "preset": "zuni_x4"
+    }
+  ]
+}

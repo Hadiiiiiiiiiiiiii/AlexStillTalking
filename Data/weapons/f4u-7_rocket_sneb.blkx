@@ -1,0 +1,28 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "matra116_slot1"
+    },
+    {
+      "slot": 3,
+      "preset": "matra116_slot3"
+    },
+    {
+      "slot": 5,
+      "preset": "matra116_slot5"
+    },
+    {
+      "slot": 9,
+      "preset": "matra116_slot9"
+    },
+    {
+      "slot": 11,
+      "preset": "matra116_slot11"
+    },
+    {
+      "slot": 13,
+      "preset": "matra116_slot13"
+    }
+  ]
+}

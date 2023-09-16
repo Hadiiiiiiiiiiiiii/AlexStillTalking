@@ -1,0 +1,28 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "agm12b_slot1"
+    },
+    {
+      "slot": 2,
+      "preset": "agm12b_slot2"
+    },
+    {
+      "slot": 3,
+      "preset": "agm12b_slot3"
+    },
+    {
+      "slot": 4,
+      "preset": "agm_12b_station"
+    },
+    {
+      "slot": 5,
+      "preset": "agm12b_slot5"
+    },
+    {
+      "slot": 6,
+      "preset": "agm12b_slot6"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 6,
+      "preset": "upk"
+    },
+    {
+      "slot": 8,
+      "preset": "upk"
+    }
+  ]
+}

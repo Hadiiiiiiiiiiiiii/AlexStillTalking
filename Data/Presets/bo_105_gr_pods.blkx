@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 3,
+      "preset": "fn_m3p_hvar_slot3"
+    },
+    {
+      "slot": 4,
+      "preset": "fn_m3p_hvar_slot4"
+    }
+  ]
+}

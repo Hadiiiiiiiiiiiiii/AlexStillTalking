@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 2,
+      "preset": "mk117_x1"
+    },
+    {
+      "slot": 3,
+      "preset": "mk117_x1_central"
+    },
+    {
+      "slot": 4,
+      "preset": "mk117_x1"
+    }
+  ]
+}

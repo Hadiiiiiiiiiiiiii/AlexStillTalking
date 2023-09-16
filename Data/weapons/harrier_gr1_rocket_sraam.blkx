@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "sraam_left"
+    },
+    {
+      "slot": 5,
+      "preset": "sraam_right"
+    }
+  ]
+}

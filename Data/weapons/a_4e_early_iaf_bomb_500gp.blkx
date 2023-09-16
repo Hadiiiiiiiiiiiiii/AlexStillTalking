@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 2,
+      "preset": "is_500_50_gp_x1"
+    },
+    {
+      "slot": 3,
+      "preset": "is_500_50_gp_x3"
+    },
+    {
+      "slot": 4,
+      "preset": "is_500_50_gp_x1"
+    }
+  ]
+}

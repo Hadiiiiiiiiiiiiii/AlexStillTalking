@@ -1,0 +1,28 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "anm64"
+    },
+    {
+      "slot": 2,
+      "preset": "anm64"
+    },
+    {
+      "slot": 3,
+      "preset": "anm64"
+    },
+    {
+      "slot": 6,
+      "preset": "anm64"
+    },
+    {
+      "slot": 7,
+      "preset": "anm64"
+    },
+    {
+      "slot": 8,
+      "preset": "anm64"
+    }
+  ]
+}

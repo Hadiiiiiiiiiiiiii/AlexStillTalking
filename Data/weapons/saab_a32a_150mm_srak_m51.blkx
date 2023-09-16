@@ -1,0 +1,52 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 2,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 3,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 4,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 5,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 6,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 8,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 9,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 10,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 11,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 12,
+      "preset": "psrak_m51"
+    },
+    {
+      "slot": 13,
+      "preset": "psrak_m51"
+    }
+  ]
+}

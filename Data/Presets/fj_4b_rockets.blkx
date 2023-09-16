@@ -1,0 +1,28 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "ffar"
+    },
+    {
+      "slot": 2,
+      "preset": "ffar"
+    },
+    {
+      "slot": 3,
+      "preset": "ffar"
+    },
+    {
+      "slot": 4,
+      "preset": "ffar"
+    },
+    {
+      "slot": 5,
+      "preset": "ffar"
+    },
+    {
+      "slot": 6,
+      "preset": "ffar"
+    }
+  ]
+}

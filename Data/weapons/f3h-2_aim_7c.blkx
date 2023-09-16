@@ -1,0 +1,20 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "aim7"
+    },
+    {
+      "slot": 3,
+      "preset": "aim7"
+    },
+    {
+      "slot": 6,
+      "preset": "aim7"
+    },
+    {
+      "slot": 8,
+      "preset": "aim7"
+    }
+  ]
+}

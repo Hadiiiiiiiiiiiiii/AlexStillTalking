@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 6,
+      "preset": "sram_default_left"
+    },
+    {
+      "slot": 7,
+      "preset": "sram_default_right"
+    }
+  ]
+}

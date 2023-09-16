@@ -1,0 +1,36 @@
+{
+  "Weapon": [
+    {
+      "slot": 3,
+      "preset": "aero_6"
+    },
+    {
+      "slot": 4,
+      "preset": "aero_6"
+    },
+    {
+      "slot": 5,
+      "preset": "aero_6"
+    },
+    {
+      "slot": 6,
+      "preset": "aero_6"
+    },
+    {
+      "slot": 10,
+      "preset": "aero_6"
+    },
+    {
+      "slot": 11,
+      "preset": "aero_6"
+    },
+    {
+      "slot": 12,
+      "preset": "aero_6"
+    },
+    {
+      "slot": 13,
+      "preset": "aero_6"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "lau32_slot1"
+    },
+    {
+      "slot": 2,
+      "preset": "lau32_slot2"
+    },
+    {
+      "slot": 3,
+      "preset": "lau32_slot3"
+    },
+    {
+      "slot": 4,
+      "preset": "lau32_slot4"
+    },
+    {
+      "slot": 5,
+      "preset": "lau32_slot5"
+    },
+    {
+      "slot": 6,
+      "preset": "lau32_slot6"
+    }
+  ]
+}

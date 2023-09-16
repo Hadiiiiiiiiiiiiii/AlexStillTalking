@@ -1,0 +1,10 @@
+{
+  "Weapon": {
+    "trigger": "bombs",
+    "blk": "gameData/Weapons/BombGuns/su_ofab250.blk",
+    "emitter": "su_ofab250_l1",
+    "bullets": 1,
+    "external": true,
+    "machLimit": 1.01
+  }
+}

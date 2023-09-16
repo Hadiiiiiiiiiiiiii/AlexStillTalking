@@ -1,0 +1,44 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "100gp_slot1"
+    },
+    {
+      "slot": 2,
+      "preset": "100gp_slot2"
+    },
+    {
+      "slot": 3,
+      "preset": "100gp_slot3"
+    },
+    {
+      "slot": 4,
+      "preset": "100gp_slot4"
+    },
+    {
+      "slot": 5,
+      "preset": "100gp_slot5"
+    },
+    {
+      "slot": 9,
+      "preset": "100gp_slot9"
+    },
+    {
+      "slot": 10,
+      "preset": "100gp_slot10"
+    },
+    {
+      "slot": 11,
+      "preset": "100gp_slot11"
+    },
+    {
+      "slot": 12,
+      "preset": "100gp_slot12"
+    },
+    {
+      "slot": 13,
+      "preset": "100gp_slot13"
+    }
+  ]
+}

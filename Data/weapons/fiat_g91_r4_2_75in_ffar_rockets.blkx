@@ -1,0 +1,20 @@
+{
+  "Weapon": [
+    {
+      "slot": 2,
+      "preset": "aero7"
+    },
+    {
+      "slot": 3,
+      "preset": "mgun_left"
+    },
+    {
+      "slot": 4,
+      "preset": "mgun_right"
+    },
+    {
+      "slot": 5,
+      "preset": "aero7"
+    }
+  ]
+}

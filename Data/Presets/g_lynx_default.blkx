@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "hydra"
+    },
+    {
+      "slot": 2,
+      "preset": "oerlicon"
+    },
+    {
+      "slot": 4,
+      "preset": "hydra"
+    }
+  ]
+}

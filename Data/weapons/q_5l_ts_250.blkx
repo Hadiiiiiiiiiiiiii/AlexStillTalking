@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 2,
+      "preset": "ts250"
+    },
+    {
+      "slot": 4,
+      "preset": "k_pzs_01"
+    },
+    {
+      "slot": 6,
+      "preset": "ts250"
+    }
+  ]
+}

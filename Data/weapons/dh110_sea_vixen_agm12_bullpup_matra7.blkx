@@ -1,0 +1,28 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "agm_12b"
+    },
+    {
+      "slot": 2,
+      "preset": "matra_7"
+    },
+    {
+      "slot": 3,
+      "preset": "matra_7"
+    },
+    {
+      "slot": 4,
+      "preset": "matra_7"
+    },
+    {
+      "slot": 5,
+      "preset": "matra_7"
+    },
+    {
+      "slot": 6,
+      "preset": "agm_12b"
+    }
+  ]
+}

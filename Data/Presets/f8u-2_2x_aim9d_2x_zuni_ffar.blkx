@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "zuni_x2_aim9d"
+    },
+    {
+      "slot": 2,
+      "preset": "us_f8u_ffar"
+    },
+    {
+      "slot": 3,
+      "preset": "zuni_x2_aim9d"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "Weapon": [
+    {
+      "slot": 2,
+      "preset": "crv_7"
+    },
+    {
+      "slot": 3,
+      "preset": "crv_7"
+    },
+    {
+      "slot": 4,
+      "preset": "crv_7"
+    },
+    {
+      "slot": 5,
+      "preset": "crv_7"
+    }
+  ]
+}

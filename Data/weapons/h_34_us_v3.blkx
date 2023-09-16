@@ -1,0 +1,10 @@
+{
+  "Weapon": {
+    "trigger": "atgm",
+    "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup_heli.blk",
+    "emitter": "rocket_agm12b_1",
+    "bullets": 1,
+    "external": true,
+    "separate": true
+  }
+}

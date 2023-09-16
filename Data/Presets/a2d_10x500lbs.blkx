@@ -1,0 +1,52 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "500lbs"
+    },
+    {
+      "slot": 2,
+      "preset": "500lbs"
+    },
+    {
+      "slot": 3,
+      "preset": "500lbs"
+    },
+    {
+      "slot": 4,
+      "preset": "500lbs"
+    },
+    {
+      "slot": 5,
+      "preset": "500lbs"
+    },
+    {
+      "slot": 7,
+      "preset": "500lbs_slot7"
+    },
+    {
+      "slot": 9,
+      "preset": "500lbs_slot9"
+    },
+    {
+      "slot": 11,
+      "preset": "500lbs"
+    },
+    {
+      "slot": 12,
+      "preset": "500lbs"
+    },
+    {
+      "slot": 13,
+      "preset": "500lbs"
+    },
+    {
+      "slot": 14,
+      "preset": "500lbs"
+    },
+    {
+      "slot": 15,
+      "preset": "500lbs"
+    }
+  ]
+}

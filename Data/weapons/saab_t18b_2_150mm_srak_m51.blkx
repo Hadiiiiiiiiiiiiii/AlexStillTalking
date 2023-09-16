@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "srak_m51"
+    },
+    {
+      "slot": 4,
+      "preset": "srak_m51"
+    }
+  ]
+}

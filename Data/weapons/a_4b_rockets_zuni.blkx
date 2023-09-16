@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "zuni_left_x2"
+    },
+    {
+      "slot": 2,
+      "preset": "zuni"
+    },
+    {
+      "slot": 3,
+      "preset": "zuni_right_x2"
+    }
+  ]
+}

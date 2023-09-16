@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "akankapsel_30"
+    },
+    {
+      "slot": 3,
+      "preset": "ptb"
+    },
+    {
+      "slot": 5,
+      "preset": "akankapsel_30"
+    }
+  ]
+}

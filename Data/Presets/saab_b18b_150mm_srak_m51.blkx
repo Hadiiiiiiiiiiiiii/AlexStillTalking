@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "srak_m51"
+    },
+    {
+      "slot": 4,
+      "preset": "srak_m51_central"
+    },
+    {
+      "slot": 6,
+      "preset": "srak_m51"
+    }
+  ]
+}

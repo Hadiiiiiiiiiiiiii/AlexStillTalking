@@ -1,0 +1,28 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "agm_12b"
+    },
+    {
+      "slot": 2,
+      "preset": "firestreak"
+    },
+    {
+      "slot": 3,
+      "preset": "firestreak"
+    },
+    {
+      "slot": 4,
+      "preset": "firestreak"
+    },
+    {
+      "slot": 5,
+      "preset": "firestreak"
+    },
+    {
+      "slot": 6,
+      "preset": "agm_12b"
+    }
+  ]
+}

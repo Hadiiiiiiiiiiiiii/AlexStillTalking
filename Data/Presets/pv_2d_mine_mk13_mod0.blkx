@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 2,
+      "preset": "mine_slot2"
+    },
+    {
+      "slot": 3,
+      "preset": "mine"
+    },
+    {
+      "slot": 4,
+      "preset": "mine_slot4"
+    }
+  ]
+}

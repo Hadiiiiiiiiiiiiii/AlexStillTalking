@@ -1,0 +1,24 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "blu27"
+    },
+    {
+      "slot": 2,
+      "preset": "blu27_left"
+    },
+    {
+      "slot": 3,
+      "preset": "blu27_centr"
+    },
+    {
+      "slot": 4,
+      "preset": "blu27_right"
+    },
+    {
+      "slot": 5,
+      "preset": "blu27"
+    }
+  ]
+}

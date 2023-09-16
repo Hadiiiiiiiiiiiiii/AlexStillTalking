@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "as20_left"
+    },
+    {
+      "slot": 3,
+      "preset": "mgun_right"
+    },
+    {
+      "slot": 4,
+      "preset": "as20_right"
+    }
+  ]
+}
