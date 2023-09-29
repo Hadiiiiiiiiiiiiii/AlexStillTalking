@@ -5,11 +5,6 @@
   "helicopterGroup": 2,
   "shotFreq": 20.0,
   "sound": "weapon.rocketgun_132",
-  "fireEffect": "fires_exhaust_jet_early_tiny",
-  "smokeEffect": "smoke_rocket_tail_short",
-  "smokeEffect2": "",
-  "hazeEffect": "haze_missile",
-  "endSmokeViscosity": 0.05,
   "rocket": {
     "statType": "hydra",
     "caliber": 0.24,
@@ -111,12 +106,12 @@
     "groundRicochetEffect": "hit_81_105mm_dirt_ap",
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_exhaust_jet_early_med",
-    "smokeEffect": "smoke_rocket_tail_light_big",
+    "maxDeltaAngle": 1.0,
+    "fireEffect": "fires_exhaust_jet_early_tiny",
+    "smokeEffect": "smoke_rocket_tail_short",
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "maxDeltaAngle": 1.0,
     "damage": {
       "explosive": {
         "offset": 0.3
@@ -148,6 +143,11 @@
         "name": "body",
         "onHit": [
           {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
             "damageType": "generic",
             "expl": 0.05,
             "fire": 0.45,
@@ -156,6 +156,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "generic",
             "expl": 0.5,
             "fire": 0.3,
@@ -164,6 +165,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "explosion",
             "expl": 0.45,
             "fire": 0.45,
@@ -172,6 +174,7 @@
             "fHitCritical": true
           },
           {
+            "shellState": "onUnit",
             "damageType": "cumulative",
             "expl": 0.4,
             "fire": 0.4,
@@ -180,12 +183,19 @@
             "fHitCritical": true
           }
         ],
-        "onKill": {
-          "expl": 0.05,
-          "fire": 0.05,
-          "break": 0.9,
-          "fHitCritical": true
-        }
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
       }
     },
     "collisions": {

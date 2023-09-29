@@ -78,16 +78,16 @@ public class MakeAll {
             String version2 = new String(Files.readAllBytes(Paths.get("Data/Git/aces.vromfs.bin_u/version")));
         System.out.println("Local Game version: "+version1);
         System.out.println("Git Game version: "+version2);
-            int[] v1 = Arrays.stream(version1.split("\\.")).mapToInt(Integer::parseInt).toArray();
-            int[] v2 = Arrays.stream(version2.split("\\.")).mapToInt(Integer::parseInt).toArray();
+    //        int[] v1 = Arrays.stream(version1.split("\\.")).mapToInt(Integer::parseInt).toArray();
+    //        int[] v2 = Arrays.stream(version2.split("\\.")).mapToInt(Integer::parseInt).toArray();
 
-            if (v1[0] < v2[0] || (v1[0] == v2[0] && v1[1] < v2[1])) {
+    //        if (v1[0] < v2[0] || (v1[0] == v2[0] && v1[1] < v2[1])) {
                 System.out.println("Files Moved");
                 FileMover.main(null);
-            }
-            else {
-                System.out.println("No Files were moved");
-            }
+          //  }
+          //  else {
+          //      System.out.println("No Files were moved");
+          //  }
     }
 
 }

@@ -2024,6 +2024,7 @@
   },
   "Sound": {
     "Engine": "engine05_rd33_WEP",
+    "voiceWarningSystem": "rita",
     "gun": "gun_default",
     "nozzleMoveSfx": "nozzle_moving_2",
     "nozzleAngleThreshold": 0.3
@@ -2313,7 +2314,7 @@
             },
             {
               "type": "radar",
-              "radarScale": 0.8,
+              "scale": 0.8,
               "hideRadarBackground": true
             }
           ]

@@ -2229,24 +2229,6 @@
             0.5,
             0.5
           ],
-          "monoDisplayColor": [
-            0.37,
-            0.45,
-            0.4
-          ],
-          "page": {
-            "type": "radar",
-            "radarScale": 0.81,
-            "hideRadarBackground": true
-          }
-        },
-        {
-          "textureArea": [
-            0.5,
-            0.0,
-            1.0,
-            0.5
-          ],
           "cameraFromTargetingPod": true,
           "page": [
             {
@@ -2258,7 +2240,39 @@
               "turretIdx": 0
             },
             {
+              "type": "radar",
+              "scale": 0.81,
+              "hideRadarBackground": true
+            },
+            {
               "type": "map"
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "cameraFromShell": true,
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "map"
+            },
+            {
+              "type": "radar",
+              "scale": 0.81,
+              "hideRadarBackground": true
             }
           ]
         },
@@ -2271,7 +2285,7 @@
           ],
           "page": {
             "type": "rwr",
-            "radarScale": 1.3
+            "scale": 1.15
           }
         },
         {
@@ -2338,8 +2352,8 @@
   "gunnerOpticFps": {
     "TV": {
       "pos": [
-        2.3,
-        -0.5,
+        2.6,
+        -0.15,
         0.0
       ],
       "head": "optic1_turret",
@@ -2351,21 +2365,22 @@
         30.0
       ],
       "opticType": "tv",
-      "turretNo": 0
+      "turretNo": 0,
+      "nvIndex": 2
     },
     "Target": {
       "pos": [
-        -0.62,
-        -0.65,
-        0.5
+        1.0,
+        -0.2,
+        0.0
       ],
-      "head": "optic1_turret",
+      "head": "optic2_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
         -90.0,
         90.0,
-        -160.0,
-        15.0
+        -155.0,
+        35.0
       ],
       "opticType": "targeting",
       "turretNo": 0,
@@ -2817,7 +2832,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group",
+            "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -2962,7 +2977,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group",
+            "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -2978,7 +2993,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group_x6",
+            "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_snakeye_x6",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -3162,7 +3177,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group",
+            "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -3178,7 +3193,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group_x6",
+            "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_snakeye_x6",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
@@ -3418,7 +3433,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag_group",
+            "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {

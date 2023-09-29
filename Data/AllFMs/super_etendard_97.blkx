@@ -2532,7 +2532,7 @@
           "fontScale": 0.7,
           "page": {
             "type": "radar",
-            "radarScale": 0.65
+            "scale": 0.65
           }
         },
         {
@@ -2549,7 +2549,7 @@
             },
             {
               "type": "rwr",
-              "radarScale": 1.35
+              "scale": 1.35
             }
           ]
         },
@@ -2645,8 +2645,8 @@
   "gunnerOpticFps": {
     "Target": {
       "pos": [
-        -7.2,
-        -1.0,
+        -3.9,
+        -1.05,
         0.0
       ],
       "head": "optic1_turret",
@@ -3990,7 +3990,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/fr_draa_3d.blk",
+        "blk": "gameData/sensors/fr_anemone.blk",
         "dmPart": "radar_dm"
       },
       {
