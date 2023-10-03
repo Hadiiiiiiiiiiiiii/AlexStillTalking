@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class PlanesManager {
-    public ArrayList<Plane> planes = new ArrayList<>(1020);
+    public static ArrayList<Plane> planes = new ArrayList<>(1020);
     static List<Integer> altList = new ArrayList<>();
     public static List<Integer> speedList = new ArrayList<>();
     public static String INFO2;
@@ -81,12 +81,12 @@ public class PlanesManager {
                                 try {
                                     planejsn = tntJson.getJSONObject(realName.replace("_", "-"));
                                 } catch (Exception e) {
-                                    System.out.println(e.getMessage() +" "+name);
+                                    System.out.println(e.getMessage() + " " + name);
                                 }
                             }
                         }
                         JSONObject allFMJson = new JSONObject(jsonString);
-                        String actualName = allFMJson.getString("fmFile").replace(".blk","").replace("fm/","");
+                        String actualName = allFMJson.getString("fmFile").replace(".blk", "").replace("fm/", "");
                         //tntJson.getJSONObject()
                         Plane plane = null;
                         makeThrustGraphs(actualName);
@@ -98,7 +98,7 @@ public class PlanesManager {
                         if (realName.contains("f_16")) {
                             System.out.println("f_16_1: ");
                         }
-                    //    System.out.println(realName+":   \n"+getBlkString(new JSONObject(jsonString)));
+                        //    System.out.println(realName+":   \n"+getBlkString(new JSONObject(jsonString)));
                         if (planejsn.has("reqExp"))
                             plane = new Plane(name, uid, actualName, listFiles[i].getName().replace(".blkx", ""),
                                     Integer.toString(planejsn.getInt("value")), Integer.toString(planejsn.getInt("reqExp")), getBR(planejsn.getInt("economicRankHistorical")),
@@ -114,7 +114,7 @@ public class PlanesManager {
                                     Integer.toString(planejsn.getInt("repairCostHistorical")), Integer.toString(planejsn.getInt("repairCostSimulation")), Integer.toString(planejsn.getInt("repairCostArcade")),
                                     String.valueOf(planejsn.getInt("trainCost")), Integer.toString(planejsn.getInt("train2Cost")), Integer.toString(planejsn.getInt("train3Cost_gold")),
                                     Integer.toString(planejsn.getInt("train3Cost_exp")), planejsn.getBigDecimal("rewardMulArcade").toString(), planejsn.getBigDecimal("rewardMulHistorical").toString(),
-                                    planejsn.getBigDecimal("rewardMulSimulation").toString(), planejsn.getBigDecimal("expMul").toString(), altList, speedList, thrust, type, hasTwoEngineTypes, thrust2, hasTwoEngines, getBlkString(new JSONObject(jsonString),name));
+                                    planejsn.getBigDecimal("rewardMulSimulation").toString(), planejsn.getBigDecimal("expMul").toString(), altList, speedList, thrust, type, hasTwoEngineTypes, thrust2, hasTwoEngines, getBlkString(new JSONObject(jsonString), name));
 
                         hasTwoEngineTypes = false;
                         hasTwoEngines = false;
@@ -146,7 +146,6 @@ public class PlanesManager {
     }
 
 
-
     public static String getNamePlane(String name) {
 
         String[] d = INFO2.split("\n");
@@ -168,6 +167,7 @@ public class PlanesManager {
         }
         return name;
     }
+
     public String getBlkString(JSONObject json, String name2) {
         StringBuilder blkString = new StringBuilder();
         HashMap<String, Integer> gunCount = new HashMap<>();
@@ -214,16 +214,16 @@ public class PlanesManager {
                                         }
                                     }
 
-                                } else  {
+                                } else {
                                     if (weaponPreset.get("Weapon") instanceof JSONObject) {
                                         var weaponArray = weaponPreset.getJSONObject("Weapon");
-                                            if (weaponArray.getString("trigger").equals("cannon")) {
-                                                String blk = weaponArray.getString("blk");
-                                                blk = blk.substring(blk.lastIndexOf("/") + 1).replace(".blk", "");
-                                                String gunName = !MakeGuns.getName(blk).contains("bomb") ? MakeGuns.getName(blk) : blk;
-                                                gunCount.put(gunName, gunCount.getOrDefault(gunName, 0) + 1);
-                                            }
+                                        if (weaponArray.getString("trigger").equals("cannon")) {
+                                            String blk = weaponArray.getString("blk");
+                                            blk = blk.substring(blk.lastIndexOf("/") + 1).replace(".blk", "");
+                                            String gunName = !MakeGuns.getName(blk).contains("bomb") ? MakeGuns.getName(blk) : blk;
+                                            gunCount.put(gunName, gunCount.getOrDefault(gunName, 0) + 1);
                                         }
+                                    }
                                 }
                             }
                         }
@@ -242,10 +242,10 @@ public class PlanesManager {
                                     }
                                 }
 
-                            } else  {
+                            } else {
                                 if (weaponPreset.get("Weapon") instanceof JSONObject) {
                                     var weaponArray = weaponPreset.getJSONObject("Weapon");
-                                            if (weaponArray.getString("trigger").equals("cannon")) {
+                                    if (weaponArray.getString("trigger").equals("cannon")) {
                                         String blk = weaponArray.getString("blk");
                                         blk = blk.substring(blk.lastIndexOf("/") + 1).replace(".blk", "");
                                         String gunName = !MakeGuns.getName(blk).contains("bomb") ? MakeGuns.getName(blk) : blk;
@@ -268,6 +268,7 @@ public class PlanesManager {
         }
         return blkString.toString();
     }
+
     public String getData(long id) {
 
         Plane p = null;
@@ -295,9 +296,9 @@ public class PlanesManager {
         //     if (p.info != null) {
         if (p.ripSpeedMachSwept == null)
             rips = "Rip Speeds (km/h)" +
-                    "\n     Wings:      " + p.ripSpeedKph+
-                    "\n     Wings Mach: " + p.ripSpeedMach+
-                    "\n     Gear:       " + p.gearRipSpeed+
+                    "\n     Wings:      " + p.ripSpeedKph +
+                    "\n     Wings Mach: " + p.ripSpeedMach +
+                    "\n     Gear:       " + p.gearRipSpeed +
                     "\nFlaps" +
                     "\n     Combat:   " + p.combatRip +
                     "\n     Take-off: " + p.takeOffRip +
@@ -312,14 +313,14 @@ public class PlanesManager {
                     "\n     Wings Mach: " +
                     "\n       At 0% Wing sweep:   " + p.ripSpeedMach +
                     "\n       At 100% Wing sweep: " + p.ripSpeedMachSwept +
-                    "\n     Gear:       " + p.gearRipSpeed+
+                    "\n     Gear:       " + p.gearRipSpeed +
                     "\nFlaps" +
                     "\n     Combat:     " + p.combatRip +
                     "\n     Take-off:   " + p.takeOffRip +
                     "\n     Landing:    " + p.landingRip
             ;
         }
-        System.out.println(p.ripSpeedKphSwept+" "+p.ripSpeedKphSwept);
+        System.out.println(p.ripSpeedKphSwept + " " + p.ripSpeedKphSwept);
         // System.out.println(rips);
 
         String repCost = new TableBuilder()
@@ -357,17 +358,17 @@ public class PlanesManager {
                 .setBorders(TableBuilder.Borders.newFrameBorders('-', '|', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '))
                 .build();
         String moreInfo =
-                    "\nMore Info: " +
-                            "\n     Empty mass:     " + p.emptyWeight + " kg" +
-                            "\n     Fuel mass:      " + p.fullWeight + " kg" +
-                            "\n     WingSpan:       " + p.wingSpan + "m" +
-                            "\n     FM name:        " + p.actualName;
+                "\nMore Info: " +
+                        "\n     Empty mass:     " + p.emptyWeight + " kg" +
+                        "\n     Fuel mass:      " + p.fullWeight + " kg" +
+                        "\n     WingSpan:       " + p.wingSpan + "m" +
+                        "\n     FM name:        " + p.actualName;
 
 
-        if(p.guns == null)
-        p.data = "\n\n" + rips + "\n" + brs + "\n\n Repair Cost: \n" + repCost + "\nCrew Cost \n" + crew + "\n\nMultipliers: \n" + multipliers + moreInfo ;
+        if (p.guns == null)
+            p.data = "\n\n" + rips + "\n" + brs + "\n\n Repair Cost: \n" + repCost + "\nCrew Cost \n" + crew + "\n\nMultipliers: \n" + multipliers + moreInfo;
         else
-            p.data = "\nGuns:\n"+p.guns+"\n" + rips + "\n" + brs + "\n\n Repair Cost: \n" + repCost + "\nCrew Cost \n" + crew + "\n\nMultipliers: \n" + multipliers + moreInfo ;
+            p.data = "\nGuns:\n" + p.guns + "\n" + rips + "\n" + brs + "\n\n Repair Cost: \n" + repCost + "\nCrew Cost \n" + crew + "\n\nMultipliers: \n" + multipliers + moreInfo;
 
 
         p.data = p.data.replace("null", "N/A");
@@ -433,7 +434,7 @@ public class PlanesManager {
                 } catch (Exception ee) {
                     maxLen = presetJson.length();
                     if (presetJson.isEmpty()) {
-                       // System.out.println(pagamn);
+                        // System.out.println(pagamn);
                         return null;
 
                     }
@@ -466,9 +467,7 @@ public class PlanesManager {
                         tmpstr[presetArr.getInt("slot") - 1] = "x";
                         name = presetArr.getString("preset");
                     }
-                }
-                catch (Exception ee)
-                {
+                } catch (Exception ee) {
 
                 }
             }
@@ -476,7 +475,7 @@ public class PlanesManager {
             //System.out.println(name.length());
             var s = getNamePreset(actualFM, name);
             if (s != null)
-            names.add(s.replace("3x 500 kg FAB-500M-62 bomb",name));
+                names.add(s.replace("3x 500 kg FAB-500M-62 bomb", name));
         }
         var namees = new String[names.size()];
         for (int i = 0; i < names.size(); i++) {
@@ -570,9 +569,7 @@ public class PlanesManager {
                 }
             }
             return val;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -641,6 +638,7 @@ public class PlanesManager {
         }
         return null;
     }
+
     public static void makeThrustGraphs(String planeName) {
         var usesOld = false;
         var added = false;
@@ -654,7 +652,7 @@ public class PlanesManager {
         try {
             data = Files.readString(info.toPath());
         } catch (IOException e) {
-            System.out.println("no FM ong: " + planeName + " " + e + "   " );
+            System.out.println("no FM ong: " + planeName + " " + e + "   ");
             // e.printStackTrace();
             return;
         }
@@ -952,6 +950,16 @@ public class PlanesManager {
         }
 
         return finalList;
+    }
+
+    public static Plane getPlaneById (long id) {
+        for (int i = 0; i < planes.size(); i++) {
+            if (planes.get(i).uid == id)
+            {
+                return planes.get(i);
+            }
+        }
+        return null;
     }
 
 

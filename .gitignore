@@ -6,9 +6,6 @@ src/test/java/*
 src/main/resources
 /out/
 /target/
-/Data/Scripts/pdfs/
-/Data/Scripts/txts/
-/Data/Scripts/tmp/
 /.idea
 /Data/AllFMsTest/
 /Data/testFms
@@ -17,6 +14,6 @@ src/main/resources
 *.env
 *.pack
 Git.7z
-/Data/Git
+/Data/Git/*
 script.sh
 /META-INF/MANIFEST.MF

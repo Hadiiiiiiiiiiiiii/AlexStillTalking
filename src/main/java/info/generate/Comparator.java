@@ -37,7 +37,8 @@ public class Comparator implements Serializable {
         }
     }
 
-    public static void main(String[] args) throws IOException {makeCommits();
+    public static void main(String[] args) throws IOException {
+        makeCommits();
         for (int i = 0; i < commits.size(); i++) {
 
             System.out.println(commits.get(i).commit.message);
@@ -67,8 +68,7 @@ public class Comparator implements Serializable {
                 String saveLoc = "Data/Scripts/txts/" + s.toLowerCase();
                 FileComparator.compareFiles("tmp/" + fmname1.replace(".blkx", "") + gameversion1 + ".txt", "tmp/" + fmname2.replace(".blkx", "") + gameversion2 + ".txt", s.toLowerCase());
                 return new File(saveLoc);
-            }
-            else
+            } else
                 return null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,13 +76,8 @@ public class Comparator implements Serializable {
         }
     }
 
-
-    static boolean saveFile(String pathToFile, String gameversion, String filename)  {
+    static boolean saveFile(String pathToFile, String gameversion, String filename) {
         String owner = "gszabi99";
-        String repo = "War-Thunder-Datamine";
-        //System.out.println(pathToFile);
-        //   String branch = "master";
-
         String outputFile = "Data/Scripts/tmp/" + filename + gameversion + ".txt";
         Commit c = null;
         for (int i = 0; i < commits.size(); i++) {
@@ -106,14 +101,10 @@ public class Comparator implements Serializable {
             outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-        return false;
+            return false;
         }
         return true;
     }
-
-
-
-
 
     public static void saveCommits() {
 
@@ -135,6 +126,7 @@ public class Comparator implements Serializable {
         System.out.println("done");
 
     }
+
     private static void makecommits() {
         String owner = "gszabi99";
         String repo = "War-Thunder-Datamine";

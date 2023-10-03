@@ -118,7 +118,7 @@
         "prolongationTimeMax": 1.0,
         "filterAlpha": 0.85,
         "filterBetta": 0.2,
-        "designationSourceTypeMask": 5
+        "designationSourceTypeMask": 9
       },
       "guidanceAutopilot": {
         "timeOut": 0.5,
@@ -135,6 +135,9 @@
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0022
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
     },
     "stabilityRicochetModifier": {
       "mod1": [

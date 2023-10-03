@@ -158,8 +158,6 @@ public class ThrustGraph {
             yAxis1.setRange(minThrust - 150, maxThrust + 150);
 
 
-
-
         }
         chart.getLegend().setFrame(BlockBorder.NONE);
 
@@ -231,6 +229,11 @@ public class ThrustGraph {
         return dataset;
     }
 
+    public static Plane getPlaneByGameversion(int id, int gameId) {
+        Plane p = PlanesManager.getPlaneById(id);
+
+        return null;
+    }
 
     public static double getDensityAtAlt(int alt) {
         final double seaLevelTemp = 288.15;
