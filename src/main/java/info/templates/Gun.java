@@ -1,4 +1,4 @@
-package Info.templates;
+package info.templates;
 
 import java.io.IOException;
 import java.io.Serializable;

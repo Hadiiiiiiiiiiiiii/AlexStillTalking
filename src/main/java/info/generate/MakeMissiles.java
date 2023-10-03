@@ -1,6 +1,6 @@
-package Info.generate;
+package info.generate;
 
-import Info.templates.Missile;
+import info.templates.Missile;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.*;

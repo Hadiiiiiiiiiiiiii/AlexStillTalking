@@ -1,6 +1,6 @@
-package Info;
+package info;
 
-import Info.templates.Plane;
+import info.templates.Plane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;

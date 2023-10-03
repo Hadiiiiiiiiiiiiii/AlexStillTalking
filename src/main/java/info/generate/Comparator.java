@@ -1,4 +1,4 @@
-package Info.generate;
+package info.generate;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-import Info.FileComparator;
-import Info.templates.Commit;
+import info.FileComparator;
+import info.templates.Commit;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.SerializationUtils;

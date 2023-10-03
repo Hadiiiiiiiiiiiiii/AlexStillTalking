@@ -1,10 +1,10 @@
-package Info;
+package info;
 
-import Info.templates.Commit;
-import Info.generate.Comparator;
-import Info.generate.MakeGuns;
-import Info.generate.MakeMissiles;
-import Info.templates.*;
+import info.templates.Commit;
+import info.generate.Comparator;
+import info.generate.MakeGuns;
+import info.generate.MakeMissiles;
+import info.templates.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -40,7 +40,6 @@ public class AlexStillTalking extends ListenerAdapter {
     public AlexStillTalking(ArrayList<Gun> guns) {
         this.guns = guns;
         MakeMissiles.readMsls();
-        // this.userIDs = users;
     }
 
     @Override
@@ -67,16 +66,7 @@ public class AlexStillTalking extends ListenerAdapter {
             } catch (Exception e) {
                 System.out.println(e);
             }
-        } /*else if (event.getGuild().getIdLong() == 692014646542073875L && event.getMessage().getContentRaw().toLowerCase().contains("xd")) {
-            event.getMember().timeoutFor(3, TimeUnit.MINUTES).queue(null, new ErrorHandler()
-                    .ignore(ErrorResponse.MISSING_PERMISSIONS)
-                    .ignore(ErrorResponse.UNKNOWN_MEMBER)
-            );
-            event.getMessage().delete().queue(null, new ErrorHandler()
-                    .ignore(ErrorResponse.MISSING_PERMISSIONS)
-                    .ignore(ErrorResponse.UNKNOWN_MESSAGE)
-            );
-        }*/ else if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().toLowerCase().startsWith("!readplanes")) {
+        } else if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().toLowerCase().startsWith("!readplanes")) {
             try {
                 new Thread(planesManager::makePlanes).start();
             } catch (Exception e) {
@@ -373,7 +363,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 {
                     var f = Comparator.compareAndSave(p1.actualName + ".blkx", p2.actualName + ".blkx", gamever1, gamever2, "FM");
                     if (f != null) {
-                        Interaction i = new Interaction(event.getChannel().getIdLong(), event.getMember().getIdLong(), f.toPath().toString()
+                        Interaction i = new Interaction(event.getMember().getIdLong(), f.toPath().toString()
                                 , p1.actualName, p2.actualName, gamever1, gamever2);
                         makeInteraction(event, i);
                     } else
@@ -405,7 +395,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 {
                     var f = Comparator.compareAndSave(p1.actualname + ".blkx", p2.actualname + ".blkx", gamever1, gamever2, "GUNS");
                     if (f != null) {
-                        Interaction i = new Interaction(event.getChannel().getIdLong(), event.getMember().getIdLong(),f.toPath().toString()
+                        Interaction i = new Interaction( event.getMember().getIdLong(),f.toPath().toString()
                                 , p1.actualname, p2.actualname, gamever1, gamever2);
                         makeInteraction(event, i);
                     }
@@ -438,7 +428,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 {
                     var f =  Comparator.compareAndSave(p1.getActualname() + ".blkx", p2.getActualname() + ".blkx", gamever1, gamever2, "MISSILES");
                     if (f != null) {
-                        Interaction i = new Interaction(event.getChannel().getIdLong(), event.getMember().getIdLong(),f.toPath().toString()
+                        Interaction i = new Interaction( event.getMember().getIdLong(),f.toPath().toString()
                                 , p1.getActualname(), p2.getActualname(), gamever1, gamever2);
                         makeInteraction(event, i);
                     }

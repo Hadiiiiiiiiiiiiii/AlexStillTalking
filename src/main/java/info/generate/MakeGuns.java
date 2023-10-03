@@ -1,8 +1,8 @@
-package Info.generate;
+package info.generate;
 
-import Info.templates.Belt;
-import Info.templates.Gun;
-import Info.templates.Shell;
+import info.templates.Belt;
+import info.templates.Gun;
+import info.templates.Shell;
 import org.apache.commons.lang3.SerializationUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;

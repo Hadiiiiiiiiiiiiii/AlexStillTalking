@@ -1,4 +1,4 @@
-package Info.templates;
+package info.templates;
 
 import java.util.Arrays;
 import java.util.Objects;

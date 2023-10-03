@@ -1,8 +1,8 @@
-package Info;
+package info;
 
-import Info.generate.MakeGuns;
-import Info.templates.Plane;
-import Info.templates.TableBuilder;
+import info.generate.MakeGuns;
+import info.templates.Plane;
+import info.templates.TableBuilder;
 import org.apache.commons.lang3.SerializationUtils;
 import org.json.JSONArray;
 import org.json.JSONException;

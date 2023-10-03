@@ -1,7 +1,7 @@
-package Info.generate;
+package info.generate;
 
-import Info.FileMover;
-import Info.PlanesManager;
+import info.FileMover;
+import info.PlanesManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 public class MakeAll {
     public static void main(String[] args) throws IOException {

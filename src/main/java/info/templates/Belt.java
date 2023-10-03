@@ -1,6 +1,6 @@
-package Info.templates;
+package info.templates;
 
-import Info.generate.MakeGuns;
+import info.generate.MakeGuns;
 
 import java.io.Serializable;
 import java.util.ArrayList;

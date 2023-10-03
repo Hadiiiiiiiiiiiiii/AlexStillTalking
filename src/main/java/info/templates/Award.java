@@ -1,4 +1,4 @@
-package Info.templates;
+package info.templates;
 
 public class Award {
     public String name;

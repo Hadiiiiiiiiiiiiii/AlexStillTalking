@@ -1,4 +1,4 @@
-package Info;
+package info;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -13,25 +13,19 @@ import java.util.Arrays;
 
 public class Interaction implements Serializable {
     public long msgId;
-    private long txtcnl;
-
     private long authorid;
-
-    private int currentpage = 0;
     public ArrayList<String> splitFile = new ArrayList<>();
     private String plane1;
     private String plane2;
     private String gamever1;
     private String gamever2;
-    public Message msg = null;
+    public Message msg;
     ArrayList<Page> pages = new ArrayList<>();
 
     private int currentPage = 0;
 
-    public Interaction(long txtcnl, long authorid, String filecontent, String plane1, String plane2, String gamever1, String gamever2)
-    {//
-        //this.embed = embed;
-        this.txtcnl = txtcnl;
+    public Interaction( long authorid, String filecontent, String plane1, String plane2, String gamever1, String gamever2)
+    {
         this.authorid = authorid;
         this.plane1 = plane1;
         this.plane2 = plane2;

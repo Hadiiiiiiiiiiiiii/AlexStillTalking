@@ -1,6 +1,6 @@
-import Info.AlexStillTalking;
-import Info.generate.Comparator;
-import Info.templates.Gun;
+import info.AlexStillTalking;
+import info.generate.Comparator;
+import info.templates.Gun;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -21,7 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
     static String gunSaveLoc = "Data/Ser/guns.ser";
@@ -132,8 +131,6 @@ public class Main {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        //api.getTextChannelById(900137528995237928l).sendMessage("```amount: "+j+"\n"+s+"```").queue();
-        // System.out.println(api.getInviteUrl(Permission.USE_APPLICATION_COMMANDS));
         System.out.println();
         try {
             //  api.awaitReady();
@@ -141,16 +138,12 @@ public class Main {
         } catch (InterruptedException e) {
             System.out.println("ERR\n" + e);
         }
-
-
-        //  System.out.println("inv: "+api2.getInviteUrl());
     }
 
     private static ArrayList<Gun> readGuns() {
-        ArrayList<Gun> l = new ArrayList<>();
+        ArrayList<Gun> l;
 
         try {
-            //   System.out.println(url.openStream());
             var f = new File(gunSaveLoc);
             BufferedInputStream bis = new BufferedInputStream(f.toURL().openStream());
             ByteArrayOutputStream buf = new ByteArrayOutputStream();

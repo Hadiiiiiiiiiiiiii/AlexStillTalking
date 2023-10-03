@@ -1,4 +1,4 @@
-package Info.templates;
+package info.templates;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

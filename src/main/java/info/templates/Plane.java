@@ -1,6 +1,6 @@
-package Info.templates;
+package info.templates;
 
-import Info.ThrustGraph;
+import info.ThrustGraph;
 import org.json.JSONException;
 import org.json.JSONObject;
 

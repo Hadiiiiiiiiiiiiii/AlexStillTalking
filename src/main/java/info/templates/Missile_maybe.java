@@ -1,4 +1,4 @@
-package Info.templates;
+package info.templates;
 
 public class Missile_maybe {
     private double mass;

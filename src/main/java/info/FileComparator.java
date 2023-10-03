@@ -1,4 +1,4 @@
-package Info;
+package info;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
