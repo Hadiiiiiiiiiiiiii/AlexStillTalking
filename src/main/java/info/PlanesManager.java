@@ -52,7 +52,7 @@ public class PlanesManager {
             planes.clear();
             long uid = 0;
             File dir = new File("Data/AllFMs/");
-            String INFO = Files.readString(Path.of("Data/Other/wpcost.blkx")); //assign your JSON String here
+            String INFO = Files.readString(Path.of("Data/Other/wpcost.blkx"));
             JSONObject tntJson = new JSONObject(INFO);
             planes.clear();
             System.out.println(dir.isDirectory());
@@ -60,16 +60,15 @@ public class PlanesManager {
                 File[] listFiles = dir.listFiles();
 
                 for (int i = 0; i < listFiles.length; i++) {
-                    String jsonString = Files.readString(Path.of(listFiles[i].getPath())); //assign your JSON String here
+                    String jsonString = Files.readString(Path.of(listFiles[i].getPath()));
                     var realName = listFiles[i].getName().replace(".blkx", "");
-                    String name = null;
+                    String name;
                     try {
                         name = getNamePlane(realName);
                     } catch (Exception e) {
                         name = realName;
                         System.out.println(realName);
                     }
-                    String imgLink = null;
                     try {
                         JSONObject planejsn = null;
                         try {
@@ -87,18 +86,10 @@ public class PlanesManager {
                         }
                         JSONObject allFMJson = new JSONObject(jsonString);
                         String actualName = allFMJson.getString("fmFile").replace(".blk", "").replace("fm/", "");
-                        //tntJson.getJSONObject()
-                        Plane plane = null;
-                        makeThrustGraphs(actualName);
-                        //  if (realName.contains("ariet") && thrust2 != null)
-                        //  {
-                        //      System.out.println("Ariete3: "+thrust2);
-                        //  }
-                        //  System.out.println(realName);
-                        if (realName.contains("f_16")) {
-                            System.out.println("f_16_1: ");
-                        }
-                        //    System.out.println(realName+":   \n"+getBlkString(new JSONObject(jsonString)));
+                        Plane plane;
+                        var path = new File("Data/FM/" + actualName + ".blkx");
+
+                        makeThrustTables(new JSONObject(Files.readString(path.toPath())));
                         if (planejsn.has("reqExp"))
                             plane = new Plane(name, uid, actualName, listFiles[i].getName().replace(".blkx", ""),
                                     Integer.toString(planejsn.getInt("value")), Integer.toString(planejsn.getInt("reqExp")), getBR(planejsn.getInt("economicRankHistorical")),
@@ -149,8 +140,7 @@ public class PlanesManager {
     public static String getNamePlane(String name) {
 
         String[] d = INFO2.split("\n");
-        //   name = name.replace(".blkx","");
-        // System.out.println("name: "+name);
+
         for (int i = 0; i < d.length; i++) {
             var c = d[i].split(";");
             if (name.equalsIgnoreCase(c[0].replace("\"", "").replace("_shop", ""))) {
@@ -639,25 +629,25 @@ public class PlanesManager {
         return null;
     }
 
-    public static void makeThrustGraphs(String planeName) {
+    public static void makeThrustTables(JSONObject json) {
         var usesOld = false;
         var added = false;
-        var actualactual = planeName;
+   //     var actualactual = planeName;
         hasTwoEngines = false;
         hasTwoEngineTypes = false;
 
 
-        var info = new File("Data/FM/" + planeName + ".blkx");
-        String data = null;
-        try {
-            data = Files.readString(info.toPath());
-        } catch (IOException e) {
-            System.out.println("no FM ong: " + planeName + " " + e + "   ");
-            // e.printStackTrace();
-            return;
-        }
+    //  var info = new File("Data/FM/" + planeName + ".blkx");
+    //  String data = null;
+    //  try {
+    //      data = Files.readString(info.toPath());
+    //  } catch (IOException e) {
+    //      System.out.println("no FM ong: " + planeName + " " + e + "   ");
+    //      // e.printStackTrace();
+    //      return;
+    //  }
 
-        var json = new JSONObject(data);
+    //  var json = new JSONObject(Files.readString(info.toPath()));
         JSONObject json1 = null;
 
         try {
@@ -672,7 +662,6 @@ public class PlanesManager {
                 usesOld = true;
 
             } catch (Exception ee) {
-                System.out.println("ret: " + planeName + "     " + e + "         " + ee);
                 //return;
             }
         }
@@ -725,7 +714,6 @@ public class PlanesManager {
                                 //     System.out.println("Thrust "+ThrustList);
                                 ThrustList.add(Thrust);
                             } catch (Exception e) {
-                                System.out.println("LOOP EXEPTOON; " + e + "   " + planeName);
                                 break;
                             }
                         }
@@ -746,9 +734,6 @@ public class PlanesManager {
                     }
                 else
                     json1 = json.getJSONObject("Engine0").getJSONObject("Main");
-                if (actualactual.contains("la_200")) {
-                    System.out.println(actualactual + " " + " Pagman: " + hasTwoEngines + " " + hasTwoEngineTypes + " " + usesOld);
-                }
                 if (hasTwoEngineTypes && hasTwoEngines || hasTwoEngines && usesOld) {
                     hasTwoEngineTypes = true;
 
@@ -797,8 +782,6 @@ public class PlanesManager {
                                             Thrust = ThrustMaxCoeff * ThrAftMaxCoeff * thustMax0 * thrustMult * AfterburnerBoost;
                                             ThrustList.add(Thrust);
                                         } catch (Exception eee) {
-                                            System.out.println("LOOP EXEPTOON; " + eee + "   " + planeName);
-                                            break;
                                         }
                                     }
                                     //break;
