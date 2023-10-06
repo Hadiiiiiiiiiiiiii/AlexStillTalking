@@ -267,5 +267,22 @@ public class ThrustGraph {
         return pressure;
     }
 
+    public static double getMachSpeed(double tasSpeed, int alt) {
+        final double gamma = 1.4;
+        final double R = 287.0;
+        double temperature = getTemperatureAtAlt(alt);
+        double speedOfSound = Math.sqrt(gamma * R * temperature);
+
+        return tasSpeed / speedOfSound;
+    }
+//these two are dogshit and wrong
+
+    public static double getTemperatureAtAlt(int alt) {
+        final double seaLevelTemp = 288.15;
+        final double tempLapseRate = -0.0065;
+
+        return seaLevelTemp + tempLapseRate * alt;
+    }
+
 
 }
