@@ -283,6 +283,27 @@ public class ThrustGraph {
 
         return seaLevelTemp + tempLapseRate * alt;
     }
+    public static double calculateMachFromTas(double tas_kph, double altitude_m) {
+        // Constants for standard atmosphere
+        double sea_level_temperature_K = 288.15;
+        double lapse_rate_K_per_m = -0.0065;
+        double gas_constant_J_per_kg_K = 287.058;
+        double specific_heat_ratio = 1.4;
+
+        // Calculate temperature at altitude
+        double temperature_at_altitude_K = sea_level_temperature_K + lapse_rate_K_per_m * altitude_m;
+
+        // Calculate speed of sound at altitude
+        double speed_of_sound_m_per_s = Math.sqrt(specific_heat_ratio * gas_constant_J_per_kg_K * temperature_at_altitude_K);
+
+        // Convert TAS from kph to m/s
+        double tas_m_per_s = tas_kph * 1000 / 3600;
+
+        // Calculate Mach number
+        double mach_number = tas_m_per_s / speed_of_sound_m_per_s;
+
+        return mach_number;
+    }
 
 
 }
