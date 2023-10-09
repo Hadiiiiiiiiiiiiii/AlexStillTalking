@@ -27,31 +27,38 @@ public class Dragcomponent implements Serializable {
                 double relevantMachMax = machMax.get(i);
                 double relevantMultMachMax = multMachMax.get(i);
                 double relevantMultLineCoeff = multLineCoeff.get(i);
+                double relevantMultLimit = multLimit.get(i);
 
                 double range = relevantMachMax - relevantMachCrit;
                 double percentageInRange = (machSpeed - relevantMachCrit) / range;
-                if (type == 4) {
-                   /* System.out.println(machCrit.get(i));
-                    System.out.println(machMax.get(i));
-                    System.out.println( multMachMax.get(i));
-                    System.out.println(relevantMultMachMax * percentageInRange);*/
+                if (type == 3) {
+                    System.out.println("machCrit "+machCrit.get(i));
+                    System.out.println("machMax "+machMax.get(i));
+                    System.out.println("multMachMax "+multMachMax.get(i));
+                    System.out.println("multLimit "+multLimit.get(i));
+                    System.out.println("totalCdMult: "+totalCdMult);
+                    System.out.println("percentageInRange: "+percentageInRange);
+                    System.out.println("MultMachMax * percentageInRange: "+relevantMultMachMax * percentageInRange);
+                    System.out.println("MultLineCoeff * percentageInRange: "+relevantMultLineCoeff * percentageInRange);
+                    System.out.println("\n");
+                    /*  System.out.println(relevantMultMachMax * percentageInRange);*/
                 }
-           //     totalCdMult2 += relevantMultMachMax * percentageInRange;
-           //     totalCdMult2 += relevantMultLineCoeff * percentageInRange;
-           //     System.out.println("totalcurrent "+totalCdMult2+"  multlimit  "+multLimit.get(i)+" "+test[type-1]+" index: "+machCrit.indexOf(relevantMachCrit));
-           //     if (totalCdMult2 > multLimit.get(i) &&  multLimit.get(i) > 0) {
-           //         totalCdMult2 += multLimit.get(i);
-           //         System.out.println("would have been "+totalCdMult2+" but multlimit is "+multLimit.get(i)+" "+test[type-1]+" index: "+i);
-           //        // System.out.println("added: "+multLimit.get(i));
-           //     }
-           //     else {
-                    totalCdMult += relevantMultMachMax * percentageInRange;
-                   // totalCdMult += relevantMultLineCoeff * percentageInRange;//preset 1
-                    totalCdMult += relevantMultLineCoeff ;//preset 2
-           //     }
+                //     totalCdMult2 += relevantMultMachMax * percentageInRange;
+                //     totalCdMult2 += relevantMultLineCoeff * percentageInRange;
+                //     System.out.println("totalcurrent "+totalCdMult2+"  multlimit  "+multLimit.get(i)+" "+test[type-1]+" index: "+machCrit.indexOf(relevantMachCrit));
+                //     if (totalCdMult2 > multLimit.get(i) &&  multLimit.get(i) > 0) {
+                //         totalCdMult2 += multLimit.get(i);
+                //         System.out.println("would have been "+totalCdMult2+" but multlimit is "+multLimit.get(i)+" "+test[type-1]+" index: "+i);
+                //        // System.out.println("added: "+multLimit.get(i));
+                //     }
+                //     else {
+                totalCdMult += relevantMultMachMax * percentageInRange ;
+                //totalCdMult += relevantMultLineCoeff * percentageInRange;//preset 1
+                 totalCdMult += relevantMultLineCoeff ;//preset 2
+                //     }
             }
         }
-        System.out.println(totalCdMult+"  "+test[type-1]);
+        System.out.println(totalCdMult+"  "+test[type-1]+"  "+type);
         return totalCdMult;
     }
 }

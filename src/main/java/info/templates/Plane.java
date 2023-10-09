@@ -568,11 +568,11 @@ public class Plane implements Serializable {
          * Object component?
          * do all calc for the speed in each component
          * *******/
-        var machSpeed = ThrustGraph.getMachSpeed(speed, (int) alt);//this is dogshit, im just using the aoa variable from a test class rn
-        cd_NoFlaps += cd_NoFlaps * dragcomponents.get(0).calcCdMult(aoa);
-        cd_Fuselage += cd_Fuselage * dragcomponents.get(1).calcCdMult(aoa);
-        cd_HorzStab += cd_HorzStab * dragcomponents.get(2).calcCdMult(aoa);
-        cd_VertStab += cd_VertStab * dragcomponents.get(3).calcCdMult(aoa);
+        var machSpeed = ThrustGraph.calculateMachFromTas(speed, (int) alt);
+        cd_NoFlaps += cd_NoFlaps * dragcomponents.get(0).calcCdMult(machSpeed);
+        cd_Fuselage += cd_Fuselage * dragcomponents.get(1).calcCdMult(machSpeed);
+        cd_HorzStab += cd_HorzStab * dragcomponents.get(2).calcCdMult(machSpeed);
+        cd_VertStab += cd_VertStab * dragcomponents.get(3).calcCdMult(machSpeed);
 
         var ar = Math.pow(Double.parseDouble(wingSpan), 2) / area0;
         var cd_0LiftDrag = (Math.pow(totalcl, 2)) / (Math.PI * getNoFlapsOwalds(json) * ar);
@@ -588,21 +588,6 @@ public class Plane implements Serializable {
         drag += cd3_i_VertStab * dens * ((speed2 * speed2) / 2) * area3;
         drag += zeroLiftDrag;
 
-        //drag = drag * 0.101972;
-
-        /*--acell--*/
-        // thrust = thrust * 9.80665;
-        // var force = thrust - drag;
-        //  var accel = force / weight;
-        //System.out.println(drag * 0.1019716);
-        //System.out.println(cd_NoFlaps);
-        //System.out.println(getNoFlapsOwalds(json));
-        //System.out.println(area0);
-        //System.out.println(zeroLiftDrag);
-        //System.out.println(accel);
-        //System.out.println("zero: "+zeroLiftDrag);
-        //System.out.println("Thrust: "+thrust/9.80665);
-        // System.out.println(totalcd*dens*((speed2*speed2)/2)*totalcd);
         return (int) (drag * 0.1019716);
     }
     public void makeDragComponents(JSONObject plane) {
