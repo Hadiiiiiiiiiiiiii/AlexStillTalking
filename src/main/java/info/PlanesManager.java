@@ -89,7 +89,7 @@ public class PlanesManager {
                         Plane plane;
                         var path = new File("Data/FM/" + actualName + ".blkx");
 
-                        makeThrustTables(new JSONObject(Files.readString(path.toPath())));
+                        makeThrustTables(new JSONObject(Files.readString(path.toPath())),actualName);
                         if (planejsn.has("reqExp"))
                             plane = new Plane(name, uid, actualName, listFiles[i].getName().replace(".blkx", ""),
                                     Integer.toString(planejsn.getInt("value")), Integer.toString(planejsn.getInt("reqExp")), getBR(planejsn.getInt("economicRankHistorical")),
@@ -629,7 +629,7 @@ public class PlanesManager {
         return null;
     }
 
-    public static void makeThrustTables(JSONObject json) {
+    public static void makeThrustTables(JSONObject json, String name) {
         var usesOld = false;
         var added = false;
    //     var actualactual = planeName;
@@ -651,8 +651,10 @@ public class PlanesManager {
         JSONObject json1 = null;
 
         try {
-            hasTwoEngineTypes = json.has("EngineType1");
-            hasTwoEngines = json.has("Engine1");
+            if (!name.equals("yak_141")) {
+                hasTwoEngineTypes = json.has("EngineType1");
+                hasTwoEngines = json.has("Engine1");
+            }
             json1 = json.getJSONObject("EngineType0").getJSONObject("Main");
 
 
