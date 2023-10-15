@@ -10,6 +10,7 @@ import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -95,7 +96,8 @@ public class ThrustGraph {
         );
 
         XYPlot plot = chart.getXYPlot();
-        var renderer = new XYLineAndShapeRenderer();
+        var renderer = new XYSplineRenderer();
+        plot.setRenderer(renderer);
 
         List<Color> colors = Arrays.asList(Color.BLUE, Color.RED, new Color(0, 100, 0), Color.MAGENTA, Color.ORANGE, Color.CYAN, Color.decode("#4b0082"));
 
@@ -118,16 +120,16 @@ public class ThrustGraph {
         plot.setDataset(2, datasetTemperature);
         plot.mapDatasetToDomainAxis(2, 0);
         plot.mapDatasetToRangeAxis(2, 1);
+        XYSplineRenderer ttwSplineRenderer = new XYSplineRenderer();
 
-        plot.setRenderer(renderer);
-
-        XYLineAndShapeRenderer ttwRenderer = new XYLineAndShapeRenderer(true, false);
         for (int i = 0; i < planes.size(); i++) {
-            ttwRenderer.setSeriesStroke(i, new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[]{6.0f, 6.0f}, 0.0f)); // Set dashed stroke for ttw lines
             Color color = colors.get(i % colors.size());
-            ttwRenderer.setSeriesPaint(i, color);
+            ttwSplineRenderer.setSeriesPaint(i, color);
+            ttwSplineRenderer.setSeriesStroke(i, new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[]{6.0f, 6.0f}, 0.0f));
         }
-        plot.setRenderer(2, ttwRenderer);
+
+        plot.setRenderer(2, ttwSplineRenderer);
+
 
 
         plot.setBackgroundPaint(Color.white);
