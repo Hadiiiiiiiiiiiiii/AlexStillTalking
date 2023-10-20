@@ -1,4 +1,5 @@
 import info.AlexStillTalking;
+import info.VersionChecker;
 import info.generate.Comparator;
 import info.templates.Gun;
 import net.dv8tion.jda.api.JDA;
@@ -138,6 +139,9 @@ public class Main {
         } catch (InterruptedException e) {
             System.out.println("ERR\n" + e);
         }
+        var versionChecker = new VersionChecker(api);
+        versionChecker.start();
+
     }
 
     private static ArrayList<Gun> readGuns() {
