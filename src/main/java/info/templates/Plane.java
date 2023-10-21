@@ -100,7 +100,7 @@ public class Plane implements Serializable {
         this.velType = type;
         this.speedList.addAll(speedList);
         this.aceRPCost = aceRPCost;
-        this.actualName = actualName;
+        this.actualName = actualName.replace("/", "");
         this.name = name.replace("\"", "");
         if (name.contains("t帜")) {
             this.name = actualName;
@@ -127,12 +127,12 @@ public class Plane implements Serializable {
         this.alts.addAll(alts);//&& name.toLowerCase().contains("mig")
         var jsonObject = getPlaneJson();
         getInfo(jsonObject);
-        try{
+        try {
             makeDragComponents(jsonObject);
         } catch (Exception e) {
-            System.out.println("some error idk tbh"+ e.getMessage());
+            System.out.println("some error idk tbh" + e.getMessage());
         }
-        System.out.println("COMPONENTLENGTH: "+dragcomponents);
+        // System.out.println("COMPONENTLENGTH: "+dragcomponents);
         try {
             SetupFlaps();
         } catch (Exception e) {
@@ -183,7 +183,6 @@ public class Plane implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -590,6 +589,7 @@ public class Plane implements Serializable {
 
         return (int) (drag * 0.1019716);
     }
+
     public void makeDragComponents(JSONObject plane) {
         var wing = new Dragcomponent(1);
         var fuselage = new Dragcomponent(2);
