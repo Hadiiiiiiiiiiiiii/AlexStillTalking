@@ -34,9 +34,6 @@ The bot is currently available on these Discord servers:
 ### [Doofania](https://discord.gg/QxBVWEE)
 [Doofania](https://discord.gg/QxBVWEE) is the Discord server of the War Thunder YouTuber [DEFYN](https://www.youtube.com/@DEFYN).
 
-### [War Thunder Dueling Community](https://discord.gg/gGkdVvfv)
-A bunch of nerds that like to 1v1 in planes.
-
 After you join any of these servers, get any of the default roles and use the bot in the dedicated bots channel.
 
 ##
