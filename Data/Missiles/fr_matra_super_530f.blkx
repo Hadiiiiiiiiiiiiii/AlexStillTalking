@@ -114,7 +114,7 @@
         "lockAngleMax": 55.0,
         "angleMax": 55.0,
         "rateMax": 12.0,
-        "angleGateRate": 20.0,
+        "angleGateRate": 90.0,
         "prolongationTimeMax": 1.0,
         "designationSourceTypeMask": 4,
         "transmitter": {
@@ -144,7 +144,10 @@
         "distGate": {
           "filterAlpha": 0.8,
           "filterBetta": 0.2,
-          "accelLimit": 100.0,
+          "accelLimit": [
+            100.0,
+            50.0
+          ],
           "limitTimeOut": 1.0
         }
       },
