@@ -96,8 +96,8 @@ public class ThrustGraph {
         );
 
         XYPlot plot = chart.getXYPlot();
-      //  var renderer = new XYSplineRenderer();
-        var renderer = new XYLineAndShapeRenderer();
+        var renderer = new XYSplineRenderer();
+      //  var renderer = new XYLineAndShapeRenderer();
 
         plot.setRenderer(renderer);
 
@@ -122,8 +122,8 @@ public class ThrustGraph {
         plot.setDataset(2, datasetTemperature);
         plot.mapDatasetToDomainAxis(2, 0);
         plot.mapDatasetToRangeAxis(2, 1);
-       // var ttwSplineRenderer = new XYSplineRenderer();
-        var ttwSplineRenderer = new XYLineAndShapeRenderer();
+        var ttwSplineRenderer = new XYSplineRenderer();
+       // var ttwSplineRenderer = new XYLineAndShapeRenderer();
 
         for (int i = 0; i < planes.size(); i++) {
             Color color = colors.get(i % colors.size());
