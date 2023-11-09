@@ -296,6 +296,4 @@ public class ThrustGraph {
 
         return mach_number;
     }
-
-
 }

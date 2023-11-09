@@ -2,7 +2,7 @@
 
 A Discord bot that supports various War Thunder data mining features, such as creating jet thrust graphs, weapon presets, flap rip speeds, and comparing game files from different game versions.
 
-This project started as a way to improve my programming skills back in early 2022. The aim of it was to make a Discord bot that would get War Thunder wiki pages and parse them to get the most useful information (like flap rip speeds, repair/purchase costs, etc.) and display them as an embed. I had not realized yet how unreliable and just wrong the wiki was, so with the help of some people who were knowledgeable about the game's (datamines)[https://github.com/gszabi99/War-Thunder-Datamine], this project began.
+This project started as a way to improve my programming skills back in early 2022. The aim of it was to make a Discord bot that would get War Thunder wiki pages and parse them to get the most useful information (like flap rip speeds, repair/purchase costs, etc.) and display them as an embed. I had not realized yet how unreliable and just wrong the wiki was, so with the help of some people who were knowledgeable about the game's [datamines](https://github.com/gszabi99/War-Thunder-Datamine), this project began.
 
 ## Functionality
 

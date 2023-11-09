@@ -567,12 +567,12 @@ public class Plane implements Serializable {
          * Object component?
          * do all calc for the speed in each component
          * *******/
-        var machSpeed = ThrustGraph.calculateMachFromTas(speed, (int) alt);
+      /*  var machSpeed = ThrustGraph.calculateMachFromTas(speed, (int) alt);
         cd_NoFlaps += cd_NoFlaps * dragcomponents.get(0).calcCdMult(machSpeed);
         cd_Fuselage += cd_Fuselage * dragcomponents.get(1).calcCdMult(machSpeed);
         cd_HorzStab += cd_HorzStab * dragcomponents.get(2).calcCdMult(machSpeed);
         cd_VertStab += cd_VertStab * dragcomponents.get(3).calcCdMult(machSpeed);
-
+*/
         var ar = Math.pow(Double.parseDouble(wingSpan), 2) / area0;
         var cd_0LiftDrag = (Math.pow(totalcl, 2)) / (Math.PI * getNoFlapsOwalds(json) * ar);
         var cd0_i_noFlaps = cd_NoFlaps + (Math.pow(cl0, 2) / (Math.PI * ar * owaldsNoFlaps));

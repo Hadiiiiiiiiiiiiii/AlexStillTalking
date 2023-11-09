@@ -36,7 +36,7 @@ public class AlexStillTalking extends ListenerAdapter {
     boolean steve = true;
     String forzenLink = "https://media.discordapp.net/attachments/888435513516773456/1007324189658718258/caption.gif";
     List<Interaction> interactions = new ArrayList<>();
-
+    Emoji shitter;
     public AlexStillTalking(ArrayList<Gun> guns) {
         this.guns = guns;
         MakeMissiles.readMsls();
@@ -46,7 +46,13 @@ public class AlexStillTalking extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getAuthor().isBot())
             return;
+        if (shitter == null){
+            shitter = event.getJDA().getEmojiById(1172262540785483817L);
+        }
 
+        if(!event.getMember().getRoles().stream().filter(o -> o.getId().equals(1113561367107088404L)).findFirst().isEmpty()) {
+            event.getMessage().addReaction(shitter).queue();
+        }
         if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().toLowerCase().equals("!updatebot")) {
             try {
                 event.getMessage().reply("okay").queue();
