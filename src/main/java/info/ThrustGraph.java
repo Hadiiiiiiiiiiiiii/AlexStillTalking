@@ -364,31 +364,44 @@ public class ThrustGraph {
         jsonObject.put("aoa", aoa);
         try {
             String os = System.getProperty("os.name").toLowerCase();
-            String path;
+            String path = "Data/Drag/";
 
-            if (os.contains("linux")) {
-                path = System.getProperty("user.home") + "/.wine/drive_c/";
-            } else {
-                path = System.getProperty("user.dir") + "/Data/Drag/";
-            }
-
-            try (FileWriter file = new FileWriter(path + "tempIn.json")) {
-                file.write(jsonObject.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // Assume the JSON input is passed as an argument to the main method
+            String jsonInput = jsonObject.toString().replace("\"","\\\"");
 
             ProcessBuilder pb;
-            if (os.contains("linux")) {
-                pb = new ProcessBuilder("wine", path + "drag.exe");
-            } else {
-                pb = new ProcessBuilder(path + "drag.exe");
-            }
-            Process p = pb.start();
-            p.waitFor();
+            System.out.println("input: "+jsonInput);
 
-            String content = new String(Files.readAllBytes(Paths.get(path + "tempOut.json")));
-            JSONObject jsonObjectOut = new JSONObject(content);
+            if (os.contains("linux")) {
+                pb = new ProcessBuilder("wine", path + "drag.exe", jsonInput);
+            } else {
+                pb = new ProcessBuilder(path + "drag.exe", jsonInput);
+            }
+
+            Process p = pb.start();
+
+            // Read the output from the application
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            StringBuilder output = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                output.append(line);
+            }
+            p.waitFor();
+            System.out.println(output);
+
+            // Read the error stream from the application
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+            StringBuilder errorOutput = new StringBuilder();
+            while ((line = errorReader.readLine()) != null) {
+                errorOutput.append(line);
+            }
+            if (errorOutput.length() > 0) {
+                System.out.println("Errors: " + errorOutput);
+            }
+
+            // Parse the output JSON
+            JSONObject jsonObjectOut = new JSONObject(output.toString());
             JSONArray dragJson = jsonObjectOut.getJSONArray("drag");
             for (Object o : dragJson) {
                 drag.add(((Number) o).floatValue());
@@ -396,6 +409,7 @@ public class ThrustGraph {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         return drag;
     }
