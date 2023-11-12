@@ -370,7 +370,7 @@ public class ThrustGraph {
             String jsonInput = jsonObject.toString().replace("\"","\\\"");
 
             ProcessBuilder pb;
-           // System.out.println("input: "+jsonInput);
+            System.out.println("input: "+jsonInput);
 
             if (os.contains("linux")) {
                 pb = new ProcessBuilder("wine", path + "drag.exe", jsonInput);
