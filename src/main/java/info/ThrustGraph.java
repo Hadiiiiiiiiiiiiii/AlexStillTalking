@@ -367,7 +367,7 @@ public class ThrustGraph {
             String path = "Data/Drag/";
 
             // Assume the JSON input is passed as an argument to the main method
-            String jsonInput = jsonObject.toString().replace("\"","\\\"");
+            String jsonInput = jsonObject.toString();
 
             ProcessBuilder pb;
             System.out.println("input: "+jsonInput);
@@ -375,6 +375,7 @@ public class ThrustGraph {
             if (os.contains("linux")) {
                 pb = new ProcessBuilder("wine", path + "drag.exe", jsonInput);
             } else {
+                 jsonInput = jsonObject.toString().replace("\"","\\\"");
                 pb = new ProcessBuilder(path + "drag.exe", jsonInput);
             }
 
