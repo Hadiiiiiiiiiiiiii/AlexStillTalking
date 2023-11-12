@@ -370,7 +370,7 @@ public class ThrustGraph {
             String jsonInput = jsonObject.toString().replace("\"","\\\"");
 
             ProcessBuilder pb;
-            System.out.println("input: "+jsonInput);
+           // System.out.println("input: "+jsonInput);
 
             if (os.contains("linux")) {
                 pb = new ProcessBuilder("wine", path + "drag.exe", jsonInput);
@@ -388,7 +388,7 @@ public class ThrustGraph {
                 output.append(line);
             }
             p.waitFor();
-            System.out.println(output);
+            //System.out.println(output);
 
             // Read the error stream from the application
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
