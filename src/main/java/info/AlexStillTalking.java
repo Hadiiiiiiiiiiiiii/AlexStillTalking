@@ -295,7 +295,6 @@ public class AlexStillTalking extends ListenerAdapter {
                 }
             }
 
-            // Check for duplicate planes based on actualName property
             boolean hasDuplicatePlanes = false;
             Set<String> duplicatePlanes = new HashSet<>();
             for (Plane p : planes) {
@@ -336,7 +335,197 @@ public class AlexStillTalking extends ListenerAdapter {
             ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Thrust(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed);
             File file = graph.init();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
-        } else if (event.getName().equals("getdrag") && event.getOption("plane") != null && event.getOption("alt") != null && event.getOption("speed") != null) {
+        }
+        else if (event.getName().equals("makedraggraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
+            event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
+
+            List<Plane> planes = new ArrayList<>();
+            List<Integer> fuels = new ArrayList<>();
+
+            for (int i = 1; i <= 7; i++) {
+                if (event.getOption("plane" + i) != null) {
+                    if (!isLong(Objects.requireNonNull(event.getOption("plane" + i)).getAsString()))
+                        return;
+                    Plane p = planesManager.getPlane(event.getOption("plane" + i).getAsLong());
+                    if (!p.newFm) {
+                        event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
+                        return;
+                    }
+                    planes.add(p);
+                    int fuel = 30;
+                    if (event.getOption("fuel_" + i) != null)
+                        fuel = event.getOption("fuel_" + i).getAsInt();
+                    fuels.add(fuel);
+                }
+            }
+
+            boolean hasDuplicatePlanes = false;
+            Set<String> duplicatePlanes = new HashSet<>();
+            for (Plane p : planes) {
+                if (!duplicatePlanes.add(p.actualName)) {
+                    hasDuplicatePlanes = true;
+                }
+            }
+
+            if (hasDuplicatePlanes) {
+                StringBuilder messageBuilder = new StringBuilder("Duplicate planes detected: ");
+                for (String planeName : duplicatePlanes) {
+                    messageBuilder.append(planeName).append(", ");
+                }
+                String message = messageBuilder.substring(0, messageBuilder.length() - 2);
+                event.getHook().sendMessage(message + " - A plane with the same flight model cannot be included twice!")
+                        .queue();
+                return;
+            }
+
+            int alt = event.getOption("alt").getAsInt();
+            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000);
+            if (invalidAlt )
+                event.reply("invalid options ong").setEphemeral(true).queue();
+
+            Plane p1 = planes.get(0);
+            String title = p1.actualName + "(" + fuels.get(0) + "% fuel)";
+            for (int i = 1; i < planes.size(); i++) {
+                Plane p = planes.get(i);
+                title += " " + p.actualName + "(" + fuels.get(i) + "% fuel)";
+            }
+            int minspeed = event.getOption("minspeed").getAsInt();
+            int maxspeed = event.getOption("maxspeed").getAsInt();
+            double aoa = 0;
+            if (event.getOption("aoa") != null) {
+                aoa = event.getOption("aoa").getAsDouble();
+            }
+            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa);
+            File file = graph.init2();
+            event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
+        }
+        else if (event.getName().equals("makethrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
+            event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
+
+            List<Plane> planes = new ArrayList<>();
+            List<Integer> fuels = new ArrayList<>();
+
+            for (int i = 1; i <= 7; i++) {
+                if (event.getOption("plane" + i) != null) {
+                    if (!isLong(Objects.requireNonNull(event.getOption("plane" + i)).getAsString()))
+                        return;
+                    Plane p = planesManager.getPlane(event.getOption("plane" + i).getAsLong());
+                    if (!p.isactualJet) {
+                        event.getHook().sendMessage("this plane does not have the standard jet thrust table. " + p.name).setEphemeral(true).queue();
+                        return;
+                    }
+                    planes.add(p);
+                    int fuel = 30;
+                    if (event.getOption("fuel_" + i) != null)
+                        fuel = event.getOption("fuel_" + i).getAsInt();
+                    fuels.add(fuel);
+                }
+            }
+
+            boolean hasDuplicatePlanes = false;
+            Set<String> duplicatePlanes = new HashSet<>();
+            for (Plane p : planes) {
+                if (!duplicatePlanes.add(p.actualName)) {
+                    hasDuplicatePlanes = true;
+                }
+            }
+
+            if (hasDuplicatePlanes) {
+                StringBuilder messageBuilder = new StringBuilder("Duplicate planes detected: ");
+                for (String planeName : duplicatePlanes) {
+                    messageBuilder.append(planeName).append(", ");
+                }
+                String message = messageBuilder.substring(0, messageBuilder.length() - 2);
+                event.getHook().sendMessage(message + " - A plane with the same flight model cannot be included twice!")
+                        .queue();
+                return;
+            }
+
+            int alt = event.getOption("alt").getAsInt();
+            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt >= p.alts.get(p.alts.size() - 1));
+            boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100);
+            if (invalidAlt || invalidFuel)
+                event.reply("invalid options ong").setEphemeral(true).queue();
+
+            Plane p1 = planes.get(0);
+            String title = p1.actualName + "(" + fuels.get(0) + "% fuel)";
+            for (int i = 1; i < planes.size(); i++) {
+                Plane p = planes.get(i);
+                title += " " + p.actualName + "(" + fuels.get(i) + "% fuel)";
+            }
+            int minspeed = 0;
+            int maxspeed = 0;
+            if (event.getOption("minspeed") != null && event.getOption("maxspeed") != null) {
+                minspeed = event.getOption("minspeed").getAsInt();
+                maxspeed = event.getOption("maxspeed").getAsInt();
+            }
+            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Thrust(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed);
+            File file = graph.init();
+            event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
+        }
+        else if (event.getName().equals("makedragthrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
+            event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
+
+            List<Plane> planes = new ArrayList<>();
+            List<Integer> fuels = new ArrayList<>();
+
+            for (int i = 1; i <= 7; i++) {
+                if (event.getOption("plane" + i) != null) {
+                    if (!isLong(Objects.requireNonNull(event.getOption("plane" + i)).getAsString()))
+                        return;
+                    Plane p = planesManager.getPlane(event.getOption("plane" + i).getAsLong());
+                    if (!p.newFm) {
+                        event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
+                        return;
+                    }
+                    planes.add(p);
+                    int fuel = 30;
+                    if (event.getOption("fuel_" + i) != null)
+                        fuel = event.getOption("fuel_" + i).getAsInt();
+                    fuels.add(fuel);
+                }
+            }
+
+            boolean hasDuplicatePlanes = false;
+            Set<String> duplicatePlanes = new HashSet<>();
+            for (Plane p : planes) {
+                if (!duplicatePlanes.add(p.actualName)) {
+                    hasDuplicatePlanes = true;
+                }
+            }
+
+            if (hasDuplicatePlanes) {
+                StringBuilder messageBuilder = new StringBuilder("Duplicate planes detected: ");
+                for (String planeName : duplicatePlanes) {
+                    messageBuilder.append(planeName).append(", ");
+                }
+                String message = messageBuilder.substring(0, messageBuilder.length() - 2);
+                event.getHook().sendMessage(message + " - A plane with the same flight model cannot be included twice!")
+                        .queue();
+                return;
+            }
+
+            int alt = event.getOption("alt").getAsInt();
+            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000);
+            if (invalidAlt )
+                event.reply("invalid options ong").setEphemeral(true).queue();
+
+            Plane p1 = planes.get(0);
+            String title = p1.actualName + "(" + fuels.get(0) + "% fuel)";
+            for (int i = 1; i < planes.size(); i++) {
+                Plane p = planes.get(i);
+                title += " " + p.actualName + "(" + fuels.get(i) + "% fuel)";
+            }
+            int minspeed = event.getOption("minspeed").getAsInt();
+            int maxspeed = event.getOption("maxspeed").getAsInt();
+            double aoa = 0;
+            if (event.getOption("aoa") != null) {
+                aoa = event.getOption("aoa").getAsDouble();
+            }
+            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa);
+            File file = graph.init3();
+            event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
+        }/*else if (event.getName().equals("getdrag") && event.getOption("plane") != null && event.getOption("alt") != null && event.getOption("speed") != null) {
             if (event.getOption("alt").getAsInt() < 0 || event.getOption("speed").getAsInt() < 0) {
                 event.reply("invalid options ong").setEphemeral(true).queue();
                 return;
@@ -354,7 +543,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 event.reply("something got fucked tell hadi fr").setEphemeral(true).queue();
 
             }
-        } else if (event.getName().equals("comparefms") && event.getOption("plane") != null && event.getOption("plane2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
+        } */else if (event.getName().equals("comparefms") && event.getOption("plane") != null && event.getOption("plane2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
             try {
                 Integer.parseInt(event.getOption("plane").getAsString());
                 Integer.parseInt(event.getOption("plane2").getAsString());
@@ -576,6 +765,14 @@ public class AlexStillTalking extends ListenerAdapter {
 
             event.replyChoices(planeChoicesGraph(event.getFocusedOption().getValue().toLowerCase())).queue();
         }
+        if (event.getName().equals("makedraggraph") && event.getFocusedOption().getName().contains("plane")) {
+
+            event.replyChoices(planeChoicesDrag(event.getFocusedOption().getValue().toLowerCase())).queue();
+        }
+        if (event.getName().equals("makedragthrustgraph") && event.getFocusedOption().getName().contains("plane")) {
+
+            event.replyChoices(planeChoicesDragThrust(event.getFocusedOption().getValue().toLowerCase())).queue();
+        }
         if (event.getName().equals("getdrag") && event.getFocusedOption().getName().equals("plane")) {
 
             if (event.getOption("plane") != null)
@@ -631,6 +828,23 @@ public class AlexStillTalking extends ListenerAdapter {
                 .collect(Collectors.toList());
     }
 
+
+    private List<Command.Choice> planeChoicesDragThrust(String s) {
+        s = s.toLowerCase();
+        var finalS = s;
+        LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
+
+        java.util.Comparator<Plane> comparator = java.util.Comparator
+                .comparing((Plane plane) -> !plane.name.toLowerCase().contains(finalS))
+                .thenComparingInt(plane -> levenshteinDistance.apply(plane.name.toLowerCase(), finalS));
+
+        return planesManager.planes.stream()
+                .filter(plane -> plane.newFm).filter(plane -> plane.isactualJet)
+                .sorted(comparator)
+                .map(u -> new Command.Choice(u.name, u.uid))
+                .limit(25)
+                .collect(Collectors.toList());
+    }
     private List<Command.Choice> planeChoicesDrag(String s) {
         s = s.toLowerCase();
         var finalS = s;

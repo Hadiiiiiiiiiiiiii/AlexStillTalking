@@ -142,10 +142,9 @@ public class Plane implements Serializable {
             double cdmin = 0;
             //var jsonObject = getPlaneJson();
             try {
-                cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").getBigDecimal("CdMin").doubleValue();
-                if (cdmin <= 0.0) {
+                cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("CdMin").doubleValue();
                     newFm = true;
-                }
+
             } catch (Exception e) {
                 newFm = false;
             }

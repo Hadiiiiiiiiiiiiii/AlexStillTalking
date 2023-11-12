@@ -1,0 +1,44 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "ter_m117"
+    },
+    {
+      "slot": 2,
+      "preset": "ter_m117"
+    },
+    {
+      "slot": 4,
+      "preset": "bru_3a_m117_x6_supersonic"
+    },
+    {
+      "slot": 5,
+      "preset": "bru_3a_m117_x6_supersonic_fuse"
+    },
+    {
+      "slot": 6,
+      "preset": "us_m117_x1"
+    },
+    {
+      "slot": 7,
+      "preset": "us_m117_x1"
+    },
+    {
+      "slot": 8,
+      "preset": "bru_3a_m117_x6_supersonic_fuse"
+    },
+    {
+      "slot": 9,
+      "preset": "bru_3a_m117_x6_supersonic"
+    },
+    {
+      "slot": 11,
+      "preset": "ter_m117"
+    },
+    {
+      "slot": 12,
+      "preset": "ter_m117"
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+@@ -8,1 +8,1 @@
+-  "mesh": "us_aim_9l_sidewinder",
++  "mesh": "us_aim_9e_sidewinder",
+@@ -11,1 +11,1 @@
+-    "bulletName": "us_aim9l_sidewinder",
++    "bulletName": "us_aim9e_sidewinder",
+@@ -14,1 +14,1 @@
+-    "length": 2.85,
++    "length": 3.0,
+@@ -20,1 +20,1 @@
+-    "CxK": 3.4,
++    "CxK": 3.3,
+@@ -22,3 +22,3 @@
+-    "finsAoaHor": 0.25,
+-    "finsAoaVer": 0.25,
+-    "finsLatAccel": 37.5,
++    "finsAoaHor": 0.11,
++    "finsAoaVer": 0.11,
++    "finsLatAccel": 10.6,
+@@ -26,4 +26,4 @@
+-    "mass": 84.46,
+-    "massEnd": 57.06,
+-    "timeFire": 5.3,
+-    "force": 10800.0,
++    "mass": 76.43,
++    "massEnd": 57.5,
++    "timeFire": 2.2,
++    "force": 18100.0,
+@@ -31,1 +31,1 @@
+-    "timeLife": 60.0,
++    "timeLife": 20.0,
+@@ -39,1 +39,1 @@
+-    "loadFactorMax": 30.0,
++    "loadFactorMax": 10.0,
+@@ -41,1 +41,1 @@
+-    "guidanceSfx": "alarm_con_scan",
++    "guidanceSfx": "alarm_spin_scan",
+@@ -56,2 +56,2 @@
+-    "explosiveType": "pbxn_102",
+-    "explosiveMass": 3.58,
++    "explosiveType": "hbx",
++    "explosiveMass": 4.76,
+@@ -101,2 +101,2 @@
+-      "finsAoaHor": 0.27,
+-      "finsAoaVer": 0.27
++      "finsAoaHor": 0.13,
++      "finsAoaVer": 0.13
+@@ -110,5 +110,4 @@
+-        "rangeBand0": 11000.0,
+-        "rangeBand1": 3000.0,
+-        "rangeBand2": 11000.0,
+-        "rangeBand3": 11000.0,
+-        "rangeBand7": 6000.0,
++        "rangeBand0": 5500.0,
++        "rangeBand2": 8000.0,
++        "rangeBand3": 8000.0,
++        "rangeBand7": 1000.0,
+@@ -116,1 +115,1 @@
+-        "fov": 3.6,
++        "fov": 2.5,
+@@ -118,6 +117,4 @@
+-        "lockAngleMax": 40.0,
+-        "angleMax": 45.0,
+-        "rateMax": 22.0,
+-        "prolongationTimeMax": 1.0,
+-        "designationSourceTypeMask": 18,
+-        "constantDesignationSourceTypeMask": 2
++        "lockAngleMax": 10.0,
++        "angleMax": 40.0,
++        "rateMax": 12.0,
++        "prolongationTimeMax": 1.0
+@@ -128,4 +125,4 @@
+-        "reqAccelMax": 30.0,
+-        "accelControlProp": 0.002,
+-        "accelControlIntg": 0.0361,
+-        "accelControlDiff": 0.0006,
++        "reqAccelMax": 11.0,
++        "accelControlProp": 0.0035,
++        "accelControlIntg": 0.0651,
++        "accelControlDiff": 0.001,
+@@ -142,1 +139,1 @@
+-          0.8,
++          0.9,
+@@ -147,1 +144,1 @@
+-          3000.0,
++          3700.0,
+@@ -149,1 +146,1 @@
+-          2100.0
++          2500.0
+@@ -152,4 +149,4 @@
+-          3400.0,
+-          4300.0,
+-          2400.0,
+-          2750.0
++          2700.0,
++          3500.0,
++          2200.0,
++          2500.0
+@@ -169,1 +166,1 @@
+-          0.8,
++          0.9,
+@@ -173,2 +170,0 @@
+-          600.0,
+-          3000.0,
+@@ -176,1 +171,3 @@
+-          2100.0
++          3700.0,
++          400.0,
++          2500.0
+@@ -179,4 +176,4 @@
+-          5400.0,
+-          8500.0,
+-          4800.0,
+-          6400.0
++          4600.0,
++          6000.0,
++          3600.0,
++          4100.0
+@@ -196,1 +193,1 @@
+-          0.8,
++          0.9,
+@@ -201,1 +198,1 @@
+-          3500.0,
++          4300.0,
+@@ -203,1 +200,1 @@
+-          2400.0
++          2800.0
+@@ -206,4 +203,4 @@
+-          13000.0,
+-          18200.0,
+-          10000.0,
+-          14500.0
++          12000.0,
++          17000.0,
++          8500.0,
++          12400.0
+@@ -213,27 +210,0 @@
+-          1000.0
+-        ]
+-      },
+-      "table3": {
+-        "altitude": 18000.0,
+-        "fighterMach": [
+-          1.2,
+-          0.8
+-        ],
+-        "targetMach": [
+-          0.8,
+-          0.8
+-        ],
+-        "rangeMin": [
+-          1000.0,
+-          6000.0,
+-          1000.0,
+-          4800.0
+-        ],
+-        "rangeMax": [
+-          27000.0,
+-          34000.0,
+-          23000.0,
+-          31000.0
+-        ],
+-        "altDiff": [
+-          500.0,

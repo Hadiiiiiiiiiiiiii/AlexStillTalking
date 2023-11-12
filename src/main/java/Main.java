@@ -87,6 +87,38 @@ public class Main {
                     ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
             ).queue();
 
+            gulids.get(i).upsertCommand(Commands.slash("makedraggraph", "Create a thrust graph for a specific altitude.")
+                    .addOptions(
+                            new OptionData(OptionType.INTEGER, "plane1", "Enter the name of the plane to create a thrust graph for.").setAutoComplete(true).setRequired(true),
+                            new OptionData(OptionType.INTEGER, "alt", "Enter the altitude at which you want to create the graph.").setRequired(true),
+                            new OptionData(OptionType.INTEGER, "minspeed", "Enter the minimum speed for the thrust graph.").setRequired(true),
+                            new OptionData(OptionType.INTEGER, "maxspeed", "Enter the maximum speed for the thrust graph.").setRequired(true),
+                            new OptionData(OptionType.INTEGER, "aoa", "Enter the maximum speed for the thrust graph.").setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane2", "Enter the name of a second plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane3", "Enter the name of a third plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane4", "Enter the name of a fourth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane5", "Enter the name of a fifth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane6", "Enter the name of a sixth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane7", "Enter the name of a seventh plane to compare with the first plane.").setAutoComplete(true).setRequired(false)
+                    ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+            ).queue();
+            gulids.get(i).upsertCommand(Commands.slash("makedragthrustgraph", "Create a thrust graph for a specific altitude.")
+                    .addOptions(
+                            new OptionData(OptionType.INTEGER, "plane1", "Enter the name of the plane to create a thrust graph for.").setAutoComplete(true).setRequired(true),
+                            new OptionData(OptionType.INTEGER, "alt", "Enter the altitude at which you want to create the graph.").setRequired(true),
+                            new OptionData(OptionType.INTEGER, "minspeed", "Enter the minimum speed for the thrust graph.").setRequired(true),
+                            new OptionData(OptionType.INTEGER, "maxspeed", "Enter the maximum speed for the thrust graph.").setRequired(true),
+                            new OptionData(OptionType.INTEGER, "aoa", "Enter the maximum speed for the thrust graph.").setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane2", "Enter the name of a second plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane3", "Enter the name of a third plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane4", "Enter the name of a fourth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane5", "Enter the name of a fifth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane6", "Enter the name of a sixth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "plane7", "Enter the name of a seventh plane to compare with the first plane.").setAutoComplete(true).setRequired(false)
+                    ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+            ).queue();
+
+
 
             gulids.get(i).upsertCommand(Commands.slash("getdrag", "Get the drag of a plane at a specific speed (does not include wave drag).")
                     .addOptions(
