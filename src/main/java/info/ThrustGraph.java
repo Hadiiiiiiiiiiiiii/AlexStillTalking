@@ -362,35 +362,32 @@ public class ThrustGraph {
         jsonObject.put("fmpath", System.getProperty("user.dir").replace("\\","/")+"/Data/FM/"+fmName+".blkx");
         jsonObject.put("height", alt);
         jsonObject.put("aoa", aoa);
-
-        try (FileWriter file = new FileWriter("Data/Drag/tempIn.json")) {
-            file.write(jsonObject.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
         try {
             String os = System.getProperty("os.name").toLowerCase();
-            ProcessBuilder pb;
+            String path;
 
             if (os.contains("linux")) {
-                pb = new ProcessBuilder("wine", "Data/Drag/drag.exe");
+                path = System.getProperty("user.home") + "/.wine/drive_c/";
             } else {
-                pb = new ProcessBuilder("Data/Drag/drag.exe");
+                path = System.getProperty("user.dir") + "/Data/Drag/";
             }
 
-            pb.directory(new File(System.getProperty("user.dir")+"/Data/Drag"));  // Set the working directory
+            try (FileWriter file = new FileWriter(path + "tempIn.json")) {
+                file.write(jsonObject.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ProcessBuilder pb;
+            if (os.contains("linux")) {
+                pb = new ProcessBuilder("wine", path + "drag.exe");
+            } else {
+                pb = new ProcessBuilder(path + "drag.exe");
+            }
             Process p = pb.start();
             p.waitFor();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-
-        try {
-            String content = new String(Files.readAllBytes(Paths.get("Data/Drag/tempOut.json")));
+            String content = new String(Files.readAllBytes(Paths.get(path + "tempOut.json")));
             JSONObject jsonObjectOut = new JSONObject(content);
             JSONArray dragJson = jsonObjectOut.getJSONArray("drag");
             for (Object o : dragJson) {
