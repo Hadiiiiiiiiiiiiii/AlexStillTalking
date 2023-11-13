@@ -215,8 +215,16 @@ public class AlexStillTalking extends ListenerAdapter {
                 e.printStackTrace();
             }
         } else if (event.getName().equals("help")) {
-            event.reply(help).queue();
+            if (help.length() > 2000) {
+                int splitIndex = help.lastIndexOf("\n\n", 2000);
+                String helpPart1 = help.substring(0, splitIndex);
+                String helpPart2 = help.substring(splitIndex + 1);
 
+                event.reply(helpPart1).queue();
+                event.getHook().sendMessage(helpPart2).queue();
+            } else {
+                event.reply(help).queue();
+            }
         } else if (event.getName().equals("lookup") && event.getOption("plane") == null && event.getOption("award") == null && event.getOption("gun") == null && event.getOption("weaponpresets") != null) {
             try {
                 if (!isLong(Objects.requireNonNull(event.getOption("weaponpresets")).getAsString()))
@@ -291,7 +299,7 @@ public class AlexStillTalking extends ListenerAdapter {
                     int fuel = 30;
                     if (event.getOption("fuel_" + i) != null)
                         fuel = event.getOption("fuel_" + i).getAsInt();
-                    fuels.add((float) (fuel*0.1));
+                    fuels.add((float) (fuel * 0.1));
                 }
             }
 
@@ -321,10 +329,10 @@ public class AlexStillTalking extends ListenerAdapter {
                 event.reply("invalid options ong").setEphemeral(true).queue();
 
             Plane p1 = planes.get(0);
-            String title = p1.actualName + "(" + fuels.get(0)*10 + "% fuel)";
+            String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
             for (int i = 1; i < planes.size(); i++) {
                 Plane p = planes.get(i);
-                title += " " + p.actualName + "(" + fuels.get(i)*10 + "% fuel)";
+                title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
             }
             int minspeed = 0;
             int maxspeed = 0;
@@ -335,8 +343,7 @@ public class AlexStillTalking extends ListenerAdapter {
             ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Thrust(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed);
             File file = graph.init();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
-        }
-        else if (event.getName().equals("makedraggraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
+        } else if (event.getName().equals("makedraggraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
             event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
 
             List<Plane> planes = new ArrayList<>();
@@ -355,7 +362,7 @@ public class AlexStillTalking extends ListenerAdapter {
                     int fuel = 30;
                     if (event.getOption("fuel_" + i) != null)
                         fuel = event.getOption("fuel_" + i).getAsInt();
-                    fuels.add((float) (fuel*0.1));
+                    fuels.add((float) (fuel * 0.1));
                 }
             }
 
@@ -380,14 +387,14 @@ public class AlexStillTalking extends ListenerAdapter {
 
             int alt = event.getOption("alt").getAsInt();
             boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000);
-            if (invalidAlt )
+            if (invalidAlt)
                 event.reply("invalid options ong").setEphemeral(true).queue();
 
             Plane p1 = planes.get(0);
-            String title = p1.actualName + "(" + fuels.get(0)*10 + "% fuel)";
+            String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
             for (int i = 1; i < planes.size(); i++) {
                 Plane p = planes.get(i);
-                title += " " + p.actualName + "(" + fuels.get(i)*10 + "% fuel)";
+                title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
             }
             int minspeed = event.getOption("minspeed").getAsInt();
             int maxspeed = event.getOption("maxspeed").getAsInt();
@@ -398,8 +405,7 @@ public class AlexStillTalking extends ListenerAdapter {
             ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa);
             File file = graph.init2();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
-        }
-        else if (event.getName().equals("makethrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
+        } else if (event.getName().equals("makethrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
             event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
 
             List<Plane> planes = new ArrayList<>();
@@ -418,7 +424,7 @@ public class AlexStillTalking extends ListenerAdapter {
                     int fuel = 30;
                     if (event.getOption("fuel_" + i) != null)
                         fuel = event.getOption("fuel_" + i).getAsInt();
-                    fuels.add((float) (fuel*0.1));
+                    fuels.add((float) (fuel * 0.1));
                 }
             }
 
@@ -448,10 +454,10 @@ public class AlexStillTalking extends ListenerAdapter {
                 event.reply("invalid options ong").setEphemeral(true).queue();
 
             Plane p1 = planes.get(0);
-            String title = p1.actualName + "(" + fuels.get(0)*10 + "% fuel)";
+            String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
             for (int i = 1; i < planes.size(); i++) {
                 Plane p = planes.get(i);
-                title += " " + p.actualName + "(" + fuels.get(i)*10 + "% fuel)";
+                title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
             }
             int minspeed = 0;
             int maxspeed = 0;
@@ -462,8 +468,7 @@ public class AlexStillTalking extends ListenerAdapter {
             ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Thrust(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed);
             File file = graph.init();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
-        }
-        else if (event.getName().equals("makedragthrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
+        } else if (event.getName().equals("makedragthrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
             event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
 
             List<Plane> planes = new ArrayList<>();
@@ -481,9 +486,9 @@ public class AlexStillTalking extends ListenerAdapter {
                     planes.add(p);
                     int fuel = 30;
                     if (event.getOption("fuel_" + i) != null)
-                        if(event.getOption("fuel_" + i).getAsInt() > 0)
-                        fuel = event.getOption("fuel_" + i).getAsInt();
-                    fuels.add((float) (fuel*0.1));
+                        if (event.getOption("fuel_" + i).getAsInt() > 0)
+                            fuel = event.getOption("fuel_" + i).getAsInt();
+                    fuels.add((float) (fuel * 0.1));
                 }
             }
 
@@ -508,14 +513,14 @@ public class AlexStillTalking extends ListenerAdapter {
 
             int alt = event.getOption("alt").getAsInt();
             boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000);
-            if (invalidAlt )
+            if (invalidAlt)
                 event.reply("invalid options ong").setEphemeral(true).queue();
 
             Plane p1 = planes.get(0);
-            String title = p1.actualName + "(" + fuels.get(0)*10 + "% fuel)";
+            String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
             for (int i = 1; i < planes.size(); i++) {
                 Plane p = planes.get(i);
-                title += " " + p.actualName + "(" + fuels.get(i)*10 + "% fuel)";
+                title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
             }
             int minspeed = event.getOption("minspeed").getAsInt();
             int maxspeed = event.getOption("maxspeed").getAsInt();
@@ -544,7 +549,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 event.reply("something got fucked tell hadi fr").setEphemeral(true).queue();
 
             }
-        } */else if (event.getName().equals("comparefms") && event.getOption("plane") != null && event.getOption("plane2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
+        } */ else if (event.getName().equals("comparefms") && event.getOption("plane") != null && event.getOption("plane2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
             try {
                 Integer.parseInt(event.getOption("plane").getAsString());
                 Integer.parseInt(event.getOption("plane2").getAsString());
@@ -846,6 +851,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 .limit(25)
                 .collect(Collectors.toList());
     }
+
     private List<Command.Choice> planeChoicesDrag(String s) {
         s = s.toLowerCase();
         var finalS = s;
@@ -989,17 +995,13 @@ public class AlexStillTalking extends ListenerAdapter {
                     "    - `aoa` (optional): Specify the aoa for the graph.\n" +
                     "    - `plane2`-`plane7` (optional): Select additional planes to compare.\n" +
                     "    - `fuel_1`-`fuel_7` (optional): Select the fuel percentage for each plane.\n\n" +
-                    "5. `/getdrag`: Get the drag of a plane at a specific speed (does not include wave drag).\n" +
-                    "    - `plane` (**required**): Select the plane to get the drag for.\n" +
-                    "    - `alt` (**required**): Specify the altitude for the drag calculation.\n" +
-                    "    - `speed` (**required**): Specify the speed for the drag calculation.\n\n" +
-                    "6. `/comparefms`: Compare the flight models of two planes.\n" +
+                    "5. `/comparefms`: Compare the flight models of two planes.\n" +
                     "    - `plane` and `plane2` (**required**): Select the two planes to compare.\n" +
                     "    - `gameversion1` and `gameversion2` (optional): Specify the game versions for each plane.\n\n" +
-                    "7. `/compareguns`: Compare two guns.\n" +
+                    "6. `/compareguns`: Compare two guns.\n" +
                     "    - `gun` and `gun2` (**required**): Select the two guns to compare.\n" +
                     "    - `gameversion1` and `gameversion2` (optional): Specify the game versions for each gun.\n\n" +
-                    "8. `/comparemissiles`: Compare two missiles and see the difference in an embed.\n" +
+                    "7. `/comparemissiles`: Compare two missiles and see the difference in an embed.\n" +
                     "   - `missile1` and `missile2`(**required**): Select the two missiles to compare.\n" +
                     "   - `gameversion1` and `gameversion2`(optional): Specify the game versions for each missile.";
 
