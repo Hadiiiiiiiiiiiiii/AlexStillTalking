@@ -1149,7 +1149,7 @@ public class Plane implements Serializable {
                 break;
             }
         }
-        bottomSpeed = speedList.get(speedList.size() - 2);
+     /*   bottomSpeed = speedList.get(speedList.size() - 2);
         topSpeed = speedList.get(speedList.size() - 1);
 
         for (int i = 0; i < speedList.size() - 1; i++) {
@@ -1158,7 +1158,7 @@ public class Plane implements Serializable {
                 topSpeed = speedList.get(i + 1);
                 break;
             }
-        }
+        }*/
         SplineInterpolator interpolator = new SplineInterpolator();
         double[] speedsArray = new double[speedList.size()];
         double[] thrustsArray = thrusts[alts.indexOf(bottomAlt)];
