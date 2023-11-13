@@ -1,6 +1,8 @@
 package info.templates;
 
 import info.ThrustGraph;
+import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
+import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1157,15 +1159,20 @@ public class Plane implements Serializable {
                 break;
             }
         }
-        double bottomBottomThrust = thrusts[alts.indexOf(bottomAlt)][speedList.indexOf(bottomSpeed)];
-        double upperBottomThrust = thrusts[alts.indexOf(bottomAlt)][speedList.indexOf(topSpeed)];
+        SplineInterpolator interpolator = new SplineInterpolator();
+        double[] speedsArray = new double[speedList.size()];
+        double[] thrustsArray = thrusts[alts.indexOf(bottomAlt)];
 
-        double bottomUpperThrust = thrusts[alts.indexOf(upperAlt)][speedList.indexOf(bottomSpeed)];
-        double upperUpperThrust = thrusts[alts.indexOf(upperAlt)][speedList.indexOf(topSpeed)];
-        bottomThrust = getThrustAt(bottomSpeed, bottomBottomThrust, topSpeed, upperBottomThrust, speed);
+        for (int i = 0; i < speedsArray.length; i++) {
+            speedsArray[i] = speedList.get(i);
+        }
+        //System.out.println("1: "+speedsArray.length+" "+thrustsArray.length+" "+speedList.size());
+        PolynomialSplineFunction lowerAltFunc = interpolator.interpolate(speedsArray, thrustsArray);
+        thrustsArray = thrusts[alts.indexOf(upperAlt)];
+        PolynomialSplineFunction upperAltFunc = interpolator.interpolate(speedsArray, thrustsArray);
 
-        topThrust = getThrustAt(bottomSpeed, bottomUpperThrust, topSpeed, upperUpperThrust, speed);
-
+        bottomThrust = lowerAltFunc.value(speed);
+        topThrust = upperAltFunc.value(speed);
         var diff = topThrust - bottomThrust;
         var steps = upperAlt - bottomAlt;
         var step = diff / steps;
@@ -1174,7 +1181,6 @@ public class Plane implements Serializable {
             thrust += step;
             bottomAlt++;
         }
-        // System.out.println(thrusts2);
         if (!hasTwoDiffEngineTypes && thrusts2 == null && !actualName.contains("yak_141"))
             return thrust * engineCount;
         else

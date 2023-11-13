@@ -108,16 +108,23 @@ public class Main {
                             new OptionData(OptionType.INTEGER, "alt", "Enter the altitude at which you want to create the graph.").setRequired(true),
                             new OptionData(OptionType.INTEGER, "minspeed", "Enter the minimum speed for the thrust graph.").setRequired(true),
                             new OptionData(OptionType.INTEGER, "maxspeed", "Enter the maximum speed for the thrust graph.").setRequired(true),
-                            new OptionData(OptionType.INTEGER, "aoa", "Enter the maximum speed for the thrust graph.").setRequired(false),
+                            new OptionData(OptionType.NUMBER, "aoa", "Enter the maximum speed for the thrust graph.").setRequired(false),
                             new OptionData(OptionType.INTEGER, "plane2", "Enter the name of a second plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
                             new OptionData(OptionType.INTEGER, "plane3", "Enter the name of a third plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
                             new OptionData(OptionType.INTEGER, "plane4", "Enter the name of a fourth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
                             new OptionData(OptionType.INTEGER, "plane5", "Enter the name of a fifth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
                             new OptionData(OptionType.INTEGER, "plane6", "Enter the name of a sixth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
-                            new OptionData(OptionType.INTEGER, "plane7", "Enter the name of a seventh plane to compare with the first plane.").setAutoComplete(true).setRequired(false)
+                            new OptionData(OptionType.INTEGER, "plane7", "Enter the name of a seventh plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                            new OptionData(OptionType.INTEGER, "fuel_1", "Select the fuel percentage for plane 1.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                            new OptionData(OptionType.INTEGER, "fuel_2", "Select the fuel percentage for plane 2.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                            new OptionData(OptionType.INTEGER, "fuel_3", "Select the fuel percentage for plane 3.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                            new OptionData(OptionType.INTEGER, "fuel_4", "Select the fuel percentage for plane 4.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                            new OptionData(OptionType.INTEGER, "fuel_5", "Select the fuel percentage for plane 5.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                            new OptionData(OptionType.INTEGER, "fuel_6", "Select the fuel percentage for plane 6.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                            new OptionData(OptionType.INTEGER, "fuel_7", "Select the fuel percentage for plane 7.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100)
+
                     ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
             ).queue();
-
 
 
             gulids.get(i).upsertCommand(Commands.slash("getdrag", "Get the drag of a plane at a specific speed (does not include wave drag).")

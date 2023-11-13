@@ -9,8 +9,11 @@ This project started as a way to improve my programming skills back in early 202
 Currently, this bot can do the following:
 
 * `/makethrustgraph`:
-   * This command will display an [image](https://cdn.discordapp.com/attachments/720129756062023762/1152599344122441738/f_16c_block_5030_fuel_mig_29smt_9_1930_fuel_At_150_2.29.0.6.png)  that shows the thrust and thrust to weight of a given plane(s) at different speeds. This command can compare up to 8 different planes.
-
+  * This command will display an [image](https://cdn.discordapp.com/attachments/720129756062023762/1152599344122441738/f_16c_block_5030_fuel_mig_29smt_9_1930_fuel_At_150_2.29.0.6.png)  that shows the thrust and thrust to weight of a given plane(s) at different speeds. This command can compare up to 8 different planes.
+* `/maketdraggraph`:
+  * This command will display an [image](https://cdn.discordapp.com/attachments/900137528995237928/1173754648356716644/f_16c_block_5030.0_fuel_jh_7a30.0_fuel_At_0_2.31.1.28.png)  that shows drag of a given plane(s) at different speeds. This command can compare up to 8 different planes.
+* `/maketdragthrustgraph`:
+  * This command will display an [image](https://media.discordapp.net/attachments/900137528995237928/1173754989722738800/f_16c_block_5030.0_fuel_mig_29smt_9_1930.0_fuel_At_0_2.31.1.28.png)  that shows the thrust, Drag and Acceleration of a given plane(s) at different speeds. This command can compare up to 8 different planes.
 * `/lookup`:
    * plane: Displays a Discord [embed](https://cdn.discordapp.com/attachments/900137528995237928/1152593425502326835/image.png) of information about a certain plane.
    * Award: Displays a Discord [embed](https://cdn.discordapp.com/attachments/900137528995237928/1152594109522006137/image.png) about a certain award that you could get during a battle.
@@ -38,7 +41,8 @@ After you join any of these servers, get any of the default roles and use the bo
 
 ##
 ## Challenges
-First, there are the features I failed to implement. The first is the wave drag calculation. From the datamined files, there isn’t any clear way to do this.
+
+~~First, there are the features I failed to implement. The first is the wave drag calculation. From the datamined files, there isn’t any clear way to do this.~~
 
 Other than that, there’s the calculation of propeller thrust. This also seems impossible to do just from the game’s files. Calculating the horsepower is really easy, but getting the prop efficiency was impossible just from the game’s files.
 
