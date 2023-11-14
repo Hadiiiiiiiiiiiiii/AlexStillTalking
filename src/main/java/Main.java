@@ -178,6 +178,7 @@ public class Main {
         } catch (InterruptedException e) {
             System.out.println("ERR\n" + e);
         }
+        //if the folder .idea/ is present, this shouldnt be exectuted!
         var versionChecker = new VersionChecker(api);
         versionChecker.start();
 

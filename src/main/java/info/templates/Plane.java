@@ -43,6 +43,7 @@ public class Plane implements Serializable {
     public String data;
     public static String gameVer;
     public String guns;
+    public boolean cxcheck;
 
     public int engineCount = 0;
 
@@ -146,9 +147,19 @@ public class Plane implements Serializable {
             try {
                 cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("CdMin").doubleValue();
                     newFm = true;
+                    cxcheck = true;
 
             } catch (Exception e) {
                 newFm = false;
+            }
+            try {
+                cdmin += jsonObject.getJSONObject("Aerodynamics").getBigDecimal("CxAfterCoeff").doubleValue();
+                cxcheck = true;
+
+            }
+            catch (Exception e)
+            {
+
             }
             try {
                 if (jsonObject.has("Propeller0")) {

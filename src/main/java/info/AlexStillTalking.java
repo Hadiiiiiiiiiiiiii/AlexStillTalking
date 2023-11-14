@@ -354,10 +354,10 @@ public class AlexStillTalking extends ListenerAdapter {
                     if (!isLong(Objects.requireNonNull(event.getOption("plane" + i)).getAsString()))
                         return;
                     Plane p = planesManager.getPlane(event.getOption("plane" + i).getAsLong());
-                    if (!p.newFm) {
-                        event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
-                        return;
-                    }
+                   // if (!p.newFm) {
+                   //     event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
+                   //     return;
+                   // }
                     planes.add(p);
                     int fuel = 30;
                     if (event.getOption("fuel_" + i) != null)
@@ -386,9 +386,9 @@ public class AlexStillTalking extends ListenerAdapter {
             }
 
             int alt = event.getOption("alt").getAsInt();
-            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000);
+            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).orElse(20000) < alt);
             if (invalidAlt)
-                event.reply("invalid options ong").setEphemeral(true).queue();
+                event.reply("Invalid Alt! "+alt).setEphemeral(true).queue();
 
             Plane p1 = planes.get(0);
             String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
@@ -403,6 +403,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 aoa = event.getOption("aoa").getAsDouble();
             }
             ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa);
+            graph.setInteraction(event.getHook());
             File file = graph.init2();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
         } else if (event.getName().equals("makethrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
@@ -479,10 +480,10 @@ public class AlexStillTalking extends ListenerAdapter {
                     if (!isLong(Objects.requireNonNull(event.getOption("plane" + i)).getAsString()))
                         return;
                     Plane p = planesManager.getPlane(event.getOption("plane" + i).getAsLong());
-                    if (!p.newFm) {
-                        event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
-                        return;
-                    }
+                   // if (!p.newFm) {
+                   //     event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
+                   //     return;
+                   // }
                     planes.add(p);
                     int fuel = 30;
                     if (event.getOption("fuel_" + i) != null)
@@ -510,11 +511,23 @@ public class AlexStillTalking extends ListenerAdapter {
                         .queue();
                 return;
             }
+            int minspeed = event.getOption("minspeed").getAsInt();
+            int maxspeed = event.getOption("maxspeed").getAsInt();
 
             int alt = event.getOption("alt").getAsInt();
-            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000);
-            if (invalidAlt)
-                event.reply("invalid options ong").setEphemeral(true).queue();
+            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).orElse(20000) < alt);
+            boolean invalidMaxSpeed = planes.stream().anyMatch(p -> maxspeed < 0 || p.speedList.stream().max(Integer::compare).orElse(20000) < maxspeed || maxspeed < minspeed);
+
+            if (invalidAlt || invalidMaxSpeed) {
+                StringBuilder errorMessage = new StringBuilder("Invalid options: ");
+                if (invalidAlt) {
+                    errorMessage.append("Altitude is either less than 0, greater than 25000, or greater than the maximum altitude in the list. ");
+                }
+                if (invalidMaxSpeed) {
+                    errorMessage.append("Max speed is either less than 0, greater than the maximum speed in the list, or less than the minimum speed.");
+                }
+                event.reply(errorMessage.toString()).setEphemeral(true).queue();
+            }
 
             Plane p1 = planes.get(0);
             String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
@@ -522,8 +535,8 @@ public class AlexStillTalking extends ListenerAdapter {
                 Plane p = planes.get(i);
                 title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
             }
-            int minspeed = event.getOption("minspeed").getAsInt();
-            int maxspeed = event.getOption("maxspeed").getAsInt();
+
+
             double aoa = 0;
             if (event.getOption("aoa") != null) {
                 aoa = event.getOption("aoa").getAsDouble();
@@ -845,7 +858,8 @@ public class AlexStillTalking extends ListenerAdapter {
                 .thenComparingInt(plane -> levenshteinDistance.apply(plane.name.toLowerCase(), finalS));
 
         return planesManager.planes.stream()
-                .filter(plane -> plane.newFm).filter(plane -> plane.isactualJet)
+                .filter(plane -> plane.cxcheck)
+                .filter(plane -> plane.isactualJet)
                 .sorted(comparator)
                 .map(u -> new Command.Choice(u.name, u.uid))
                 .limit(25)
@@ -862,7 +876,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 .thenComparingInt(plane -> levenshteinDistance.apply(plane.name.toLowerCase(), finalS));
 
         return planesManager.planes.stream()
-                .filter(plane -> plane.newFm)
+                .filter(plane -> plane.cxcheck)
                 .sorted(comparator)
                 .map(u -> new Command.Choice(u.name, u.uid))
                 .limit(25)
@@ -986,7 +1000,7 @@ public class AlexStillTalking extends ListenerAdapter {
                     "    - `minspeed` (**required**): Enter the minimum speed for the thrust graph.\n" +
                     "    - `maxspeed` (**required**): Enter the maximum speed for the thrust graph.\n" +
                     "    - `aoa` (optional): Specify the aoa for the graph.\n" +
-                    "    - `plane2`-`plane7` (optional): Select additional planes to compare.\n" +
+                    "    - `plane2`-`plane7` (optional): Select additional planes to compare.\n\n" +
                     "4. `/makedragthrustgraph`: Create a thrust, drag and Acceleration graph for a specific altitude.\n" +
                     "    - `plane1` (**required**): Select the first plane to graph.\n" +
                     "    - `alt` (**required**): Specify the altitude for the graph.\n" +

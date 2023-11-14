@@ -1,6 +1,7 @@
 package info;
 
 import info.templates.Plane;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
@@ -45,6 +46,7 @@ public class ThrustGraph {
     double aoa = 0;
     ArrayList<Float> drag = new ArrayList<>();
     ArrayList<Double> accel = new ArrayList<>();
+    InteractionHook hook;
 
 
     public ThrustGraph(List<Integer> yAxis, String planeName,
@@ -78,10 +80,8 @@ public class ThrustGraph {
     public ThrustGraph(List<Integer> yAxis, String planeName,
                        String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed,double aoa) throws HeadlessException {
 
-        if ((maxSpeed - minSpeed) > 150 && minSpeed >= 0) {
-            this.minSpeed = minSpeed;
-            this.maxSpeed = maxSpeed;
-        }
+        this.minSpeed = minSpeed;
+        this.maxSpeed = maxSpeed;
         this.fuels = fuels;
         this.alt = alt;
         this.planes = planes;
@@ -361,7 +361,7 @@ public class ThrustGraph {
         plot.setDomainGridlinePaint(Color.BLACK);
         if (maxSpeed != 0) {
             NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
-            xAxis.setRange(minSpeed, maxSpeed+10);
+            xAxis.setRange(minSpeed, maxSpeed);
         }
         chart.getLegend().setFrame(BlockBorder.NONE);
 
@@ -419,7 +419,9 @@ public class ThrustGraph {
             }
             if (errorOutput.length() > 0) {
                 System.out.println("Errors: " + errorOutput);
+                hook.sendMessage("An error acoured when claculating the drag! try a different plane than: " + fmName).queue();
             }
+            System.out.println();
             JSONObject jsonObjectOut = new JSONObject(output.toString());
             JSONArray dragJson = jsonObjectOut.getJSONArray("drag");
             for (Object o : dragJson) {
@@ -497,9 +499,8 @@ public class ThrustGraph {
         for (int i = 0; i < planes.size(); i++) {
             Plane p = planes.get(i);
             String seriesKey = "Drag " + p.actualName;
-            System.out.println(seriesKey);
+           // System.out.println(seriesKey);
             if (dataset.getSeriesIndex(seriesKey) == -1) {
-                System.out.println(p.actualName);
                 var series = new XYSeries(seriesKey);
                 List<Float> drags = getDragByPlane(p.actualName);
                 drag.addAll(drags);
@@ -538,7 +539,6 @@ public class ThrustGraph {
         for (int i = 0; i < planes.size(); i++) {
             Plane p = planes.get(i);
             String seriesKey = "Drag " + p.actualName;
-            System.out.println(seriesKey);
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
                 List<Float> drags = getDragByPlane(p.actualName);
@@ -562,7 +562,6 @@ public class ThrustGraph {
             double mass = Float.parseFloat(p.emptyWeight) + (Float.parseFloat(p.fuelWeight) * ((double) fuels.get(i) / 10));
             //System.out.println((p.getThrust(alt,speed,p.thrusts) - drags.get(j))* 9.807);
             String seriesKey = "Acceleration " + p.actualName;
-            System.out.println(seriesKey);
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
                 List<Float> drags = getDragByPlane(p.actualName);
@@ -640,5 +639,8 @@ public class ThrustGraph {
         double mach_number = tas_m_per_s / speed_of_sound_m_per_s;
 
         return mach_number;
+    }
+    public void setInteraction(InteractionHook hook){
+        this.hook = hook;
     }
 }
