@@ -321,12 +321,26 @@ public class AlexStillTalking extends ListenerAdapter {
                         .queue();
                 return;
             }
+            int minspeed;
+            int maxspeed;
+            boolean invalidMaxSpeed = false;
+            if (event.getOption("minspeed") != null && event.getOption("maxspeed") != null) {
 
+                minspeed = event.getOption("minspeed").getAsInt();
+                maxspeed = event.getOption("maxspeed").getAsInt();
+                invalidMaxSpeed = planes.stream().anyMatch(p -> maxspeed < 0 || p.speedList.stream().max(Integer::compare).orElse(2000) < maxspeed || maxspeed < minspeed);
+            } else {
+                minspeed = 0;
+                maxspeed = 0;
+            }
             int alt = event.getOption("alt").getAsInt();
-            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt >= p.alts.get(p.alts.size() - 1));
+            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).orElse(20000) < alt);
+
             boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100);
-            if (invalidAlt || invalidFuel)
-                event.reply("invalid options ong").setEphemeral(true).queue();
+            if (invalidAlt || invalidFuel || invalidMaxSpeed) {
+                event.getHook().sendMessage("invalid options ong").setEphemeral(true).queue();
+                return;
+            }
 
             Plane p1 = planes.get(0);
             String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
@@ -334,12 +348,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 Plane p = planes.get(i);
                 title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
             }
-            int minspeed = 0;
-            int maxspeed = 0;
-            if (event.getOption("minspeed") != null && event.getOption("maxspeed") != null) {
-                minspeed = event.getOption("minspeed").getAsInt();
-                maxspeed = event.getOption("maxspeed").getAsInt();
-            }
+
             ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Thrust(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed);
             File file = graph.init();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
@@ -387,8 +396,10 @@ public class AlexStillTalking extends ListenerAdapter {
 
             int alt = event.getOption("alt").getAsInt();
             boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).orElse(20000) < alt);
-            if (invalidAlt)
-                event.reply("Invalid Alt! "+alt).setEphemeral(true).queue();
+            if (invalidAlt) {
+                event.getHook().sendMessage("Invalid Alt! " + alt).queue();
+            return;
+            }
 
             Plane p1 = planes.get(0);
             String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
@@ -451,8 +462,10 @@ public class AlexStillTalking extends ListenerAdapter {
             int alt = event.getOption("alt").getAsInt();
             boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt >= p.alts.get(p.alts.size() - 1));
             boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100);
-            if (invalidAlt || invalidFuel)
-                event.reply("invalid options ong").setEphemeral(true).queue();
+            if (invalidAlt || invalidFuel) {
+                event.getHook().sendMessage("invalid options ong").setEphemeral(true).queue();
+                return;
+            }
 
             Plane p1 = planes.get(0);
             String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
@@ -515,9 +528,8 @@ public class AlexStillTalking extends ListenerAdapter {
             int maxspeed = event.getOption("maxspeed").getAsInt();
 
             int alt = event.getOption("alt").getAsInt();
-            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).orElse(20000) < alt);
-            boolean invalidMaxSpeed = planes.stream().anyMatch(p -> maxspeed < 0 || p.speedList.stream().max(Integer::compare).orElse(20000) < maxspeed || maxspeed < minspeed);
-
+            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).get() < alt);
+            boolean invalidMaxSpeed = planes.stream().anyMatch(p -> maxspeed < 0 || p.speedList.stream().max(Integer::compare).get() < maxspeed || maxspeed < minspeed);
             if (invalidAlt || invalidMaxSpeed) {
                 StringBuilder errorMessage = new StringBuilder("Invalid options: ");
                 if (invalidAlt) {
@@ -526,7 +538,8 @@ public class AlexStillTalking extends ListenerAdapter {
                 if (invalidMaxSpeed) {
                     errorMessage.append("Max speed is either less than 0, greater than the maximum speed in the list, or less than the minimum speed.");
                 }
-                event.reply(errorMessage.toString()).setEphemeral(true).queue();
+                event.getHook().sendMessage(errorMessage.toString()).setEphemeral(true).queue();
+                return;
             }
 
             Plane p1 = planes.get(0);

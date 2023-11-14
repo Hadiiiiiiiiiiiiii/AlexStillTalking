@@ -466,7 +466,7 @@ public class ThrustGraph {
     List<Double> getTtw(Plane p, List<Double> thrust1, Float fuel) {
         List<Double> ttw = new ArrayList<>();
         for (int i = 0; i < p.speedList.size(); i++) {
-            ttw.add(thrust1.get(i) / (Double.parseDouble(p.emptyWeight) + (Double.parseDouble(p.fuelWeight) * ((fuel)))));
+            ttw.add(thrust1.get(i) / (Double.parseDouble(p.emptyWeight) + (Double.parseDouble(p.fuelWeight) * ((fuel* 0.1)))));
         }
         return ttw;
     }
