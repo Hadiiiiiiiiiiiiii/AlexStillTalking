@@ -78,8 +78,9 @@ public class ThrustGraph {
         this.folder = folder;
     }
     public ThrustGraph(List<Integer> yAxis, String planeName,
-                       String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed,double aoa) throws HeadlessException {
+                       String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed,double aoa, InteractionHook hook) throws HeadlessException {
 
+        this.hook = hook;
         this.minSpeed = minSpeed;
         this.maxSpeed = maxSpeed;
         this.fuels = fuels;

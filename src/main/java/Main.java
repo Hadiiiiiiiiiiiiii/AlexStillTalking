@@ -48,7 +48,7 @@ public class Main {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(api.getInviteUrl(Permission.MESSAGE_HISTORY, Permission.VIEW_CHANNEL, Permission.USE_APPLICATION_COMMANDS));
+        System.out.println(api.getInviteUrl(Permission.MESSAGE_HISTORY, Permission.VIEW_CHANNEL, Permission.USE_APPLICATION_COMMANDS, Permission.MODERATE_MEMBERS));
         List<Guild> gulids = api.getGuilds();
         int j = 0;
         for (int i = 0; i < gulids.size(); i++) {

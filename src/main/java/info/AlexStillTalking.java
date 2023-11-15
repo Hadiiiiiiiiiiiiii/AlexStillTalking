@@ -7,7 +7,9 @@ import info.generate.MakeMissiles;
 import info.templates.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -60,6 +62,19 @@ public class AlexStillTalking extends ListenerAdapter {
                         }
                 );
 
+            }
+        }
+        if (event.getMessage().getContentRaw().equalsIgnoreCase("?shitter")) {
+            if (event.getGuild().getIdLong() == 698291014749782146L) {
+                Role role = event.getGuild().getRoleById(1113561367107088404L);
+                var shitters = event.getGuild().getMembersWithRoles(role);
+                for (int i = 0; i < shitters.size(); i++) {
+                    event.getGuild().timeoutFor(shitters.get(i).getUser(), 10, TimeUnit.SECONDS).queue(
+                            success -> {
+                            },
+                            System.out::println
+                    );
+                }
             }
         }
         if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().toLowerCase().equals("!updatebot")) {
@@ -413,8 +428,7 @@ public class AlexStillTalking extends ListenerAdapter {
             if (event.getOption("aoa") != null) {
                 aoa = event.getOption("aoa").getAsDouble();
             }
-            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa);
-            graph.setInteraction(event.getHook());
+            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook());
             File file = graph.init2();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
         } else if (event.getName().equals("makethrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
@@ -554,7 +568,7 @@ public class AlexStillTalking extends ListenerAdapter {
             if (event.getOption("aoa") != null) {
                 aoa = event.getOption("aoa").getAsDouble();
             }
-            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa);
+            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook());
             File file = graph.init3();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
         }/*else if (event.getName().equals("getdrag") && event.getOption("plane") != null && event.getOption("alt") != null && event.getOption("speed") != null) {
