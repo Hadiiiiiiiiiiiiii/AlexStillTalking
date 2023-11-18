@@ -39,6 +39,8 @@ public class AlexStillTalking extends ListenerAdapter {
     String forzenLink = "https://media.discordapp.net/attachments/888435513516773456/1007324189658718258/caption.gif";
     List<Interaction> interactions = new ArrayList<>();
     Emoji shitter;
+    public Role shitterRole;
+    public List<Member> shitters;
 
     public AlexStillTalking(ArrayList<Gun> guns) {
         this.guns = guns;
@@ -66,17 +68,13 @@ public class AlexStillTalking extends ListenerAdapter {
         }
         if (event.getMessage().getContentRaw().equalsIgnoreCase("?shitter")) {
             if (event.getGuild().getIdLong() == 698291014749782146L) {
-                Role role = event.getGuild().getRoleById(1113561367107088404L);
-                var shitters = event.getGuild().getMembersWithRoles(role);
+                event.getGuild().getMemberById(1093188732624052295L).timeoutFor(100, TimeUnit.SECONDS).queue();
                 for (int i = 0; i < shitters.size(); i++) {
-                    event.getGuild().timeoutFor(shitters.get(i).getUser(), 10, TimeUnit.SECONDS).queue(
-                            success -> {
-                            },
-                            System.out::println
-                    );
+                    shitters.forEach(s -> s.timeoutFor(10, TimeUnit.SECONDS).queue());
                 }
             }
         }
+
         if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().toLowerCase().equals("!updatebot")) {
             try {
                 event.getMessage().reply("okay").queue();
@@ -378,10 +376,10 @@ public class AlexStillTalking extends ListenerAdapter {
                     if (!isLong(Objects.requireNonNull(event.getOption("plane" + i)).getAsString()))
                         return;
                     Plane p = planesManager.getPlane(event.getOption("plane" + i).getAsLong());
-                   // if (!p.newFm) {
-                   //     event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
-                   //     return;
-                   // }
+                    // if (!p.newFm) {
+                    //     event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
+                    //     return;
+                    // }
                     planes.add(p);
                     int fuel = 30;
                     if (event.getOption("fuel_" + i) != null)
@@ -413,7 +411,7 @@ public class AlexStillTalking extends ListenerAdapter {
             boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).orElse(20000) < alt);
             if (invalidAlt) {
                 event.getHook().sendMessage("Invalid Alt! " + alt).queue();
-            return;
+                return;
             }
 
             Plane p1 = planes.get(0);
@@ -425,10 +423,13 @@ public class AlexStillTalking extends ListenerAdapter {
             int minspeed = event.getOption("minspeed").getAsInt();
             int maxspeed = event.getOption("maxspeed").getAsInt();
             double aoa = 0;
+            boolean levelFlight = false;
             if (event.getOption("aoa") != null) {
                 aoa = event.getOption("aoa").getAsDouble();
+            } else {
+                levelFlight = true;
             }
-            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook());
+            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook(), levelFlight);
             File file = graph.init2();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
         } else if (event.getName().equals("makethrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
@@ -507,10 +508,10 @@ public class AlexStillTalking extends ListenerAdapter {
                     if (!isLong(Objects.requireNonNull(event.getOption("plane" + i)).getAsString()))
                         return;
                     Plane p = planesManager.getPlane(event.getOption("plane" + i).getAsLong());
-                   // if (!p.newFm) {
-                   //     event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
-                   //     return;
-                   // }
+                    // if (!p.newFm) {
+                    //     event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
+                    //     return;
+                    // }
                     planes.add(p);
                     int fuel = 30;
                     if (event.getOption("fuel_" + i) != null)
@@ -565,10 +566,13 @@ public class AlexStillTalking extends ListenerAdapter {
 
 
             double aoa = 0;
+            boolean levelFlight = false;
             if (event.getOption("aoa") != null) {
                 aoa = event.getOption("aoa").getAsDouble();
+            } else {
+                levelFlight = true;
             }
-            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook());
+            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook(), levelFlight);
             File file = graph.init3();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
         }/*else if (event.getName().equals("getdrag") && event.getOption("plane") != null && event.getOption("alt") != null && event.getOption("speed") != null) {
@@ -1006,6 +1010,10 @@ public class AlexStillTalking extends ListenerAdapter {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void setShitterRole(Role shitterRole) {
+        this.shitterRole = shitterRole;
     }
 
     public static final String help =

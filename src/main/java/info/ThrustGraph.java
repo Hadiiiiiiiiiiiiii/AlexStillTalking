@@ -47,6 +47,7 @@ public class ThrustGraph {
     ArrayList<Float> drag = new ArrayList<>();
     ArrayList<Double> accel = new ArrayList<>();
     InteractionHook hook;
+    boolean levelFlight;
 
 
     public ThrustGraph(List<Integer> yAxis, String planeName,
@@ -78,7 +79,7 @@ public class ThrustGraph {
         this.folder = folder;
     }
     public ThrustGraph(List<Integer> yAxis, String planeName,
-                       String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed,double aoa, InteractionHook hook) throws HeadlessException {
+                       String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed,double aoa, InteractionHook hook, boolean levelFlight) throws HeadlessException {
 
         this.hook = hook;
         this.minSpeed = minSpeed;
@@ -87,7 +88,7 @@ public class ThrustGraph {
         this.alt = alt;
         this.planes = planes;
         this.yAxis = yAxis;
-
+        this.levelFlight = levelFlight;
         thrusts = new ArrayList<>();
         ttws = new ArrayList<>();
         long d = System.nanoTime();
@@ -374,7 +375,7 @@ public class ThrustGraph {
         return chart;
     }
 
-    public List<Float> getDragByPlane(String fmName) {
+    public List<Float> getDragByPlane(String fmName, Plane plane) {
         ArrayList<Float> drag = new ArrayList<>();
         JSONArray speeds = new JSONArray();
         double step = (maxSpeed - minSpeed) / 100.0;
@@ -387,6 +388,8 @@ public class ThrustGraph {
         jsonObject.put("fmpath", System.getProperty("user.dir").replace("\\","/")+"/Data/FM/"+fmName+".blkx");
         jsonObject.put("height", alt);
         jsonObject.put("aoa", aoa);
+        jsonObject.put("levelFlight", levelFlight);
+        jsonObject.put("weight",  (Double.parseDouble(plane.emptyWeight) + (Double.parseDouble(plane.fuelWeight) * ((fuels.get(planes.indexOf(plane))* 0.1)))));
         try {
             String os = System.getProperty("os.name").toLowerCase();
             String path = "Data/Drag/";
@@ -412,7 +415,7 @@ public class ThrustGraph {
                 output.append(line);
             }
             p.waitFor();
-          //  System.out.println(output);
+           // System.out.println(output);
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             StringBuilder errorOutput = new StringBuilder();
             while ((line = errorReader.readLine()) != null) {
@@ -422,8 +425,12 @@ public class ThrustGraph {
                 System.out.println("Errors: " + errorOutput);
                 hook.sendMessage("An error acoured when claculating the drag! try a different plane than: " + fmName).queue();
             }
-            System.out.println();
-            JSONObject jsonObjectOut = new JSONObject(output.toString());
+            int startIndex = output.toString().indexOf("{");
+            JSONObject jsonObjectOut = null;
+            if (startIndex != -1) {
+                String jsonString = output.toString().substring(startIndex);
+                 jsonObjectOut = new JSONObject(jsonString);
+            }
             JSONArray dragJson = jsonObjectOut.getJSONArray("drag");
             for (Object o : dragJson) {
                 drag.add(((Number) o).floatValue());
@@ -503,7 +510,7 @@ public class ThrustGraph {
            // System.out.println(seriesKey);
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
-                List<Float> drags = getDragByPlane(p.actualName);
+                List<Float> drags = getDragByPlane(p.actualName, p);
                 drag.addAll(drags);
 
                 for (int j = 0; j <= 100; j++) {
@@ -542,7 +549,7 @@ public class ThrustGraph {
             String seriesKey = "Drag " + p.actualName;
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
-                List<Float> drags = getDragByPlane(p.actualName);
+                List<Float> drags = getDragByPlane(p.actualName, p);
                 drag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
                     double speed = minSpeed + (j * step);
@@ -565,7 +572,7 @@ public class ThrustGraph {
             String seriesKey = "Acceleration " + p.actualName;
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
-                List<Float> drags = getDragByPlane(p.actualName);
+                List<Float> drags = getDragByPlane(p.actualName, p);
                 drag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
                     double speed = minSpeed + (j * step);

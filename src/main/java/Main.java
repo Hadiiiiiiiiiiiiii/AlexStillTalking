@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     static String gunSaveLoc = "Data/Ser/guns.ser";
@@ -32,17 +33,17 @@ public class Main {
         System.out.println("MAIN VERSION 0.0.1");
         ArrayList<Gun> l = readGuns();
 
-        AlexStillTalking l2 = new AlexStillTalking(l);
+        AlexStillTalking alexstilltalking = new AlexStillTalking(l);
         var token = Files.readString(Path.of("tokens.env")).split(" ")[0];
 
         JDA api = JDABuilder.createDefault(token)
                 .setActivity(Activity.watching("You"))
-                .addEventListeners(l2)
+                .addEventListeners(alexstilltalking)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MESSAGES)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .setChunkingFilter(ChunkingFilter.ALL)
                 .build();
-        l2.setApi(api);
+        alexstilltalking.setApi(api);
         try {
             api.awaitReady();
         } catch (InterruptedException e) {
@@ -168,6 +169,10 @@ public class Main {
 
         try {
             api.awaitReady();
+            alexstilltalking.setShitterRole(api.getRoleById(1113561367107088404L));
+             api.getGuildById("692014646542073875").getMemberById(147474236653568000L).timeoutFor(100, TimeUnit.SECONDS).queue();
+
+            alexstilltalking.shitters = api.getGuildById("698291014749782146").getMembers().stream().filter(m -> m.getRoles().contains(alexstilltalking.shitterRole)).toList();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
