@@ -240,8 +240,15 @@ public class ThrustGraph {
         return chart;
     }
     private JFreeChart createDragThrustChart(XYDataset dataset) {
+        String chartTitle = planeName + " " + title1 + "m";
+        if (levelFlight) {
+            chartTitle += " level flight";
+        } else {
+            chartTitle += " with " + aoa + "° aoa";
+        }
+
         JFreeChart chart = ChartFactory.createXYLineChart(
-                new String(planeName + " " + title1 + "m with "+ aoa+"° aoa"),
+                chartTitle,
                 xAxisLabel + "",
                 yAxisLabel + "",
                 dataset,
@@ -250,6 +257,7 @@ public class ThrustGraph {
                 true,
                 false
         );
+
 
         XYPlot plot = chart.getXYPlot();
         var renderer = new XYSplineRenderer();
@@ -326,8 +334,15 @@ public class ThrustGraph {
     }
 
     private JFreeChart createDragChart(XYDataset dataset) {
+        String chartTitle = planeName + " " + title1 + "m";
+        if (levelFlight) {
+            chartTitle += " level flight";
+        } else {
+            chartTitle += " with " + aoa + "° aoa";
+        }
+
         JFreeChart chart = ChartFactory.createXYLineChart(
-                planeName + " " + title1 + "m",
+                chartTitle,
                 xAxisLabel + "",
                 yAxisLabel + "",
                 dataset,
