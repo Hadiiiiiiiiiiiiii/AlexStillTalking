@@ -41,10 +41,11 @@ public class ThrustGraph {
     int minSpeed;
     int maxSpeed = 0;
     double aoa = 0;
-    ArrayList<Float> drag = new ArrayList<>();
     ArrayList<Double> accel = new ArrayList<>();
     InteractionHook hook;
     boolean levelFlight;
+    ArrayList<Float> tempDrag = new ArrayList<>();
+    ArrayList<Float> allDrag = new ArrayList<>();
 
 
     public ThrustGraph(List<Integer> yAxis, String planeName,
@@ -229,14 +230,8 @@ public class ThrustGraph {
         }
         chart.getLegend().setFrame(BlockBorder.NONE);
 
-        String flightStatus;
-        if (levelFlight ) {
-            flightStatus = "maintaining level flight";
-        } else {
-            flightStatus = "with " + aoa + "° aoa";
-        }
 
-        chart.setTitle(new TextTitle(new String(planeNames + " " + title1 + "m " + flightStatus),
+        chart.setTitle(new TextTitle(new String(planeNames + " " + title1 + "m " ),
                 new Font("Serif", java.awt.Font.BOLD, 18)
         ));
 
@@ -304,12 +299,14 @@ public class ThrustGraph {
         plot.setBackgroundPaint(Color.white);
 
         var axis = plot.getRangeAxis();
-        double dragMin = drag.stream().min(Double::compare).get();
-        double dragMax = drag.stream().max(Double::compare).get();
+
+        double dragMin = allDrag.stream().min(Double::compare).get();
+        double dragMax = allDrag.stream().max(Double::compare).get();
         double thrustMin = thrusts.stream().mapToDouble(thrust -> thrust.stream().min(Double::compare).get()).min().getAsDouble();
         double thrustMax = thrusts.stream().mapToDouble(thrust -> thrust.stream().max(Double::compare).get()).max().getAsDouble();
         double maxx = Double.max(thrustMax,dragMax);
         double min = Double.min(thrustMin,dragMin);
+
         axis.setRange(min-100, maxx+100);
 
         plot.setRangeGridlinesVisible(true);
@@ -372,8 +369,8 @@ public class ThrustGraph {
         plot.setBackgroundPaint(Color.white);
 
         var axis = plot.getRangeAxis();
-        double dragMin = drag.stream().min(Double::compare).get();
-        double dragMax = drag.stream().max(Double::compare).get();
+        double dragMin = allDrag.stream().min(Double::compare).get();
+        double dragMax = allDrag.stream().max(Double::compare).get();
         axis.setRange(dragMin, dragMax+150);
 
         plot.setRangeGridlinesVisible(true);
@@ -386,8 +383,13 @@ public class ThrustGraph {
             xAxis.setRange(minSpeed, maxSpeed);
         }
         chart.getLegend().setFrame(BlockBorder.NONE);
-
-        chart.setTitle(new TextTitle(planeNames + " " + title1 + "m",
+        String flightStatus;
+        if (levelFlight ) {
+            flightStatus = "maintaining level flight";
+        } else {
+            flightStatus = "with " + aoa + "° aoa";
+        }
+        chart.setTitle(new TextTitle(planeNames + " " + title1 + "m "+ flightStatus,
                         new Font("Serif", java.awt.Font.BOLD, 18)
                 )
         );
@@ -454,11 +456,11 @@ public class ThrustGraph {
             JSONArray dragJson = jsonObjectOut.getJSONArray("drag");
             for (Object o : dragJson) {
                 drag.add(((Number) o).floatValue());
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         return drag;
     }
@@ -531,8 +533,7 @@ public class ThrustGraph {
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
                 List<Float> drags = getDragByPlane(p.actualName, p);
-                drag.addAll(drags);
-
+                allDrag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
                     double speed = minSpeed + (j * step);
                         series.add(speed, drags.get(j));
@@ -570,7 +571,8 @@ public class ThrustGraph {
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
                 List<Float> drags = getDragByPlane(p.actualName, p);
-                drag.addAll(drags);
+                tempDrag.addAll(drags);
+                allDrag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
                     double speed = minSpeed + (j * step);
                     series.add(speed, drags.get(j));
@@ -592,8 +594,8 @@ public class ThrustGraph {
             String seriesKey = "Acceleration " + p.actualName;
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
-                List<Float> drags = getDragByPlane(p.actualName, p);
-                drag.addAll(drags);
+                List<Float> drags = tempDrag;
+               // drag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
                     double speed = minSpeed + (j * step);
                     double accel1 = ((p.getThrust(alt,speed,p.thrusts) - drags.get(j))* 9.807) / mass;

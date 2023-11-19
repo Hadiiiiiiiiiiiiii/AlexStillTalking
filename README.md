@@ -15,7 +15,7 @@ Currently, this bot can do the following:
 
 * `/makethrustgraph`:
     * This command will display
-      an [image](https://cdn.discordapp.com/attachments/720129756062023762/1152599344122441738/f_16c_block_5030_fuel_mig_29smt_9_1930_fuel_At_150_2.29.0.6.png)
+      an [image](https://media.discordapp.net/attachments/900137528995237928/1175824040808689664/f_16c_block_5030.png)
       that shows the thrust and thrust to weight of a given plane(s) at different speeds. This command can compare up to
       8 different planes.
 * `/maketdraggraph`:
@@ -46,7 +46,7 @@ Currently, this bot can do the following:
       game versions, the result is sent as
       an [embed](https://cdn.discordapp.com/attachments/900137528995237928/1152606220860002344/image.png).
 
-##
+####
 
 ## Availability
 
@@ -63,7 +63,7 @@ YouTuber [DEFYN](https://www.youtube.com/@DEFYN).
 
 After you join any of these servers, get any of the default roles and use the bot in the dedicated bots channel.
 
-##
+####
 
 ## Challenges
 
@@ -86,3 +86,14 @@ through manual testing.
 Please note that this project was NOT intended to be of this scope, and thus the design is... to say the least,
 disappointing. If I had the time, I would completely rewrite most of it.
 
+## Using drag.exe
+This executable requires the .dll that is in the same folder. It expects a JSON as an argument, with variables like desired Angle of Attack (AOA), the plane's desired weight, whether the plane should try to adjust the AOA to maintain level flight, the height, and also the path to the blkx file containing the Flight Model file. Finally, the JSON should contain a JSON array with the name 'speed' that has the speeds for the drag calculation.
+
+So far, most flight models are supported, but some that have inconclusive data aren't yet supported.
+
+An example of what an acceptable JSON might look like:
+````
+{"aoa":0,"weight":8807.8,"levelFlight":true,"speeds":[0,18,36,54,72,90,108,126,144,162,180,198,216,234,252,270,288,306,324,342,360,378,396,414,432,450,468,486,504,522,540,558,576,594,612,630,648,666,684,702,720,738,756,774,792,810,828,846,864,882,900,918,936,954,972,990,1008,1026,1044,1062,1080,1098,1116,1134,1152,1170,1188,1206,1224,1242,1260,1278,1296,1314,1332,1350,1368,1386,1404,1422,1440,1458,1476,1494,1512,1530,1548,1566,1584,1602,1620,1638,1656,1674,1692,1710,1728,1746,1764,1782,1800],"fmpath":"path/to/your/f_16aj.blkx","height":0}
+````
+
+You are free to use this executable as you would like. The source code for it is for now still not open source.

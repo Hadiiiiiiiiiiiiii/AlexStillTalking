@@ -66,14 +66,14 @@ public class AlexStillTalking extends ListenerAdapter {
 
             }
         }
-        if (event.getMessage().getContentRaw().equalsIgnoreCase("?shitter")) {
+       /* if (event.getMessage().getContentRaw().equalsIgnoreCase("?shitter")) {
             if (event.getGuild().getIdLong() == 698291014749782146L) {
                 event.getGuild().getMemberById(1093188732624052295L).timeoutFor(100, TimeUnit.SECONDS).queue();
                 for (int i = 0; i < shitters.size(); i++) {
                     shitters.forEach(s -> s.timeoutFor(10, TimeUnit.SECONDS).queue());
                 }
             }
-        }
+        }*/
 
         if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().toLowerCase().equals("!updatebot")) {
             try {

@@ -169,10 +169,10 @@ public class Main {
 
         try {
             api.awaitReady();
-            alexstilltalking.setShitterRole(api.getRoleById(1113561367107088404L));
+          /*  alexstilltalking.setShitterRole(api.getRoleById(1113561367107088404L));
              api.getGuildById("692014646542073875").getMemberById(147474236653568000L).timeoutFor(100, TimeUnit.SECONDS).queue();
 
-            alexstilltalking.shitters = api.getGuildById("698291014749782146").getMembers().stream().filter(m -> m.getRoles().contains(alexstilltalking.shitterRole)).toList();
+            alexstilltalking.shitters = api.getGuildById("698291014749782146").getMembers().stream().filter(m -> m.getRoles().contains(alexstilltalking.shitterRole)).toList();*/
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
