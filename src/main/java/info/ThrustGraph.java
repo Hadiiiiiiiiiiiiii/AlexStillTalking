@@ -10,7 +10,6 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.xy.XYDataset;
@@ -21,8 +20,6 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 import java.util.ArrayList;
@@ -33,7 +30,7 @@ public class ThrustGraph {
     List<List<Double>> thrusts;
     List<List<Double>> ttws;
     List<Integer> yAxis;
-    String planeName;
+    String planeNames;
     String title1;
     String xAxisLabel;
     String yAxisLabel;
@@ -72,7 +69,7 @@ public class ThrustGraph {
         }
         long b = System.nanoTime();
         System.out.println("Time: " + (b - d));
-        this.planeName = planeName;
+        this.planeNames = planeName;
         this.title1 = title;
         this.xAxisLabel = xAxisLabel;
         this.yAxisLabel = yAxisLabel;
@@ -99,7 +96,7 @@ public class ThrustGraph {
         }
         long b = System.nanoTime();
         System.out.println("Time: " + (b - d));
-        this.planeName = planeName;
+        this.planeNames = planeName;
         this.title1 = title;
         this.xAxisLabel = xAxisLabel;
         this.yAxisLabel = yAxisLabel;
@@ -113,11 +110,11 @@ public class ThrustGraph {
         XYDataset dataset = createDataset();
         JFreeChart chart = createNormalChart(dataset);
 
-        var file = new File("Data/" + folder + "/" + planeName.replace("%", "") + "_" + title1.replace("%", "") + " " + Plane.gameVer + ".png");
+        var file = new File("Data/" + folder + "/" + planeNames.replace("%", "") + "_" + title1.replace("%", "") + " " + Plane.gameVer + ".png");
         try {
             ChartUtils.saveChartAsPNG(file, chart, 2500, 900);
         } catch (IOException e) {
-            System.out.println(planeName);
+            System.out.println(planeNames);
             throw new RuntimeException(e);
         }
         return file;
@@ -126,11 +123,11 @@ public class ThrustGraph {
         XYDataset dataset = createDragDataset();
         JFreeChart chart = createDragChart(dataset);
 
-        var file = new File("Data/" + folder + "/" + planeName.replace("%", "") + "_" + title1.replace("%", "") + " " + Plane.gameVer + ".png");
+        var file = new File("Data/" + folder + "/" + planeNames.replace("%", "") + "_" + title1.replace("%", "") + " " + Plane.gameVer + ".png");
         try {
             ChartUtils.saveChartAsPNG(file, chart, 2500, 900);
         } catch (IOException e) {
-            System.out.println(planeName);
+            System.out.println(planeNames);
             throw new RuntimeException(e);
         }
         return file;
@@ -139,11 +136,11 @@ public class ThrustGraph {
         XYDataset dataset = createThrustAndDragDataset(); // Method to create a dataset that includes both thrust and drag
         JFreeChart chart = createDragThrustChart(dataset); // Method to create a chart that includes both thrust and drag
 
-        var file = new File("Data/" + folder + "/" + planeName.replace("%", "") + "_" + title1.replace("%", "") + " " + Plane.gameVer + ".png");
+        var file = new File("Data/" + folder + "/" + planeNames.replace("%", "") + "_" + title1.replace("%", "") + " " + Plane.gameVer + ".png");
         try {
             ChartUtils.saveChartAsPNG(file, chart, 2500, 900);
         } catch (IOException e) {
-            System.out.println(planeName);
+            System.out.println(planeNames);
             throw new RuntimeException(e);
         }
         return file;
@@ -151,7 +148,7 @@ public class ThrustGraph {
 
     private JFreeChart createNormalChart(XYDataset dataset) {
         JFreeChart chart = ChartFactory.createXYLineChart(
-                planeName + " " + title1 + "m",
+                planeNames + " " + title1 + "m",
                 xAxisLabel + "",
                 yAxisLabel + "",
                 dataset,
@@ -232,23 +229,24 @@ public class ThrustGraph {
         }
         chart.getLegend().setFrame(BlockBorder.NONE);
 
-        chart.setTitle(new TextTitle(planeName + " " + title1 + "m",
-                        new Font("Serif", java.awt.Font.BOLD, 18)
-                )
-        );
+        String flightStatus;
+        if (levelFlight ) {
+            flightStatus = "maintaining level flight";
+        } else {
+            flightStatus = "with " + aoa + "° aoa";
+        }
+
+        chart.setTitle(new TextTitle(new String(planeNames + " " + title1 + "m " + flightStatus),
+                new Font("Serif", java.awt.Font.BOLD, 18)
+        ));
+
 
         return chart;
     }
     private JFreeChart createDragThrustChart(XYDataset dataset) {
-        String chartTitle = planeName + " " + title1 + "m";
-        if (levelFlight) {
-            chartTitle += " level flight";
-        } else {
-            chartTitle += " with " + aoa + "° aoa";
-        }
 
         JFreeChart chart = ChartFactory.createXYLineChart(
-                chartTitle,
+                title1,
                 xAxisLabel + "",
                 yAxisLabel + "",
                 dataset,
@@ -266,12 +264,12 @@ public class ThrustGraph {
         List<Color> colors = Arrays.asList(Color.BLUE, Color.RED, new Color(0, 100, 0), Color.MAGENTA, Color.ORANGE, Color.CYAN, Color.decode("#4b0082"));
         XYDataset dragDataset = createAccelerationDataset();
 
-        NumberAxis accelaxis = new NumberAxis("Acceleration");
+        NumberAxis accelaxis = new NumberAxis("Acceleration in m/s");
        // System.out.println(accel);
         double accelMax = accel.stream().max(Double::compare).get();
         double accelMin = accel.stream().min(Double::compare).get();
-        accelaxis.setUpperBound(accelMax + 0.1);
-        accelaxis.setLowerBound(accelMin - 0.1);
+        accelaxis.setUpperBound(accelMax + 0.3);
+        accelaxis.setLowerBound(accelMin - 0.3);
         plot.setRangeAxis(1, accelaxis);
         plot.setRangeAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
 
@@ -312,7 +310,7 @@ public class ThrustGraph {
         double thrustMax = thrusts.stream().mapToDouble(thrust -> thrust.stream().max(Double::compare).get()).max().getAsDouble();
         double maxx = Double.max(thrustMax,dragMax);
         double min = Double.min(thrustMin,dragMin);
-        axis.setRange(min, maxx);
+        axis.setRange(min-100, maxx+100);
 
         plot.setRangeGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.BLACK);
@@ -325,16 +323,23 @@ public class ThrustGraph {
         }
         chart.getLegend().setFrame(BlockBorder.NONE);
 
-        chart.setTitle(new TextTitle(new String(planeName + " " + title1 + "m with "+ aoa+"° aoa"),
-                        new Font("Serif", java.awt.Font.BOLD, 18)
-                )
-        );
+        String flightStatus;
+        if (levelFlight ) {
+            flightStatus = "maintaining level flight";
+        } else {
+            flightStatus = "with " + aoa + "° aoa";
+        }
+
+        chart.setTitle(new TextTitle(new String(planeNames + " " + title1 + "m " + flightStatus),
+                new Font("Serif", java.awt.Font.BOLD, 18)
+        ));
+
 
         return chart;
     }
 
     private JFreeChart createDragChart(XYDataset dataset) {
-        String chartTitle = planeName + " " + title1 + "m";
+        String chartTitle = planeNames + " " + title1 + "m";
         if (levelFlight) {
             chartTitle += " level flight";
         } else {
@@ -382,7 +387,7 @@ public class ThrustGraph {
         }
         chart.getLegend().setFrame(BlockBorder.NONE);
 
-        chart.setTitle(new TextTitle(planeName + " " + title1 + "m",
+        chart.setTitle(new TextTitle(planeNames + " " + title1 + "m",
                         new Font("Serif", java.awt.Font.BOLD, 18)
                 )
         );
@@ -412,7 +417,7 @@ public class ThrustGraph {
             String jsonInput = jsonObject.toString();
 
             ProcessBuilder pb;
-           // System.out.println("input: "+jsonInput);
+         //   System.out.println("input: "+jsonInput);
 
             if (os.contains("linux")) {
                 pb = new ProcessBuilder("wine", path + "drag.exe", jsonInput);
@@ -430,7 +435,7 @@ public class ThrustGraph {
                 output.append(line);
             }
             p.waitFor();
-           // System.out.println(output);
+            //System.out.println(output);
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             StringBuilder errorOutput = new StringBuilder();
             while ((line = errorReader.readLine()) != null) {
