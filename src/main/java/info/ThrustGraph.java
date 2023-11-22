@@ -44,7 +44,7 @@ public class ThrustGraph {
     ArrayList<Double> accel = new ArrayList<>();
     InteractionHook hook;
     boolean levelFlight;
-    ArrayList<Float> tempDrag = new ArrayList<>();
+    ArrayList<ArrayList<Float>> tempDrag = new ArrayList<>();
     ArrayList<Float> allDrag = new ArrayList<>();
 
 
@@ -437,8 +437,7 @@ public class ThrustGraph {
                 output.append(line);
             }
             p.waitFor();
-
-           // System.out.println(output);
+            //System.out.println(output);
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             StringBuilder errorOutput = new StringBuilder();
             while ((line = errorReader.readLine()) != null) {
@@ -572,7 +571,7 @@ public class ThrustGraph {
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
                 List<Float> drags = getDragByPlane(p.actualName, p);
-                tempDrag.addAll(drags);
+                tempDrag.add(new ArrayList<>(drags));
                 allDrag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
                     double speed = minSpeed + (j * step);
@@ -595,7 +594,7 @@ public class ThrustGraph {
             String seriesKey = "Acceleration " + p.actualName;
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
-                List<Float> drags = tempDrag;
+                List<Float> drags = new ArrayList<>(tempDrag.get(i));
                // drag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
                     double speed = minSpeed + (j * step);

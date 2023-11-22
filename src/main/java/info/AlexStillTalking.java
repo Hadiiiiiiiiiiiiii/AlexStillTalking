@@ -813,7 +813,7 @@ public class AlexStillTalking extends ListenerAdapter {
 
         if (event.getName().equals("makethrustgraph") && event.getFocusedOption().getName().contains("plane")) {
 
-            event.replyChoices(planeChoicesGraph(event.getFocusedOption().getValue().toLowerCase())).queue();
+            event.replyChoices(planeChoicesThrustGraph(event.getFocusedOption().getValue().toLowerCase())).queue();
         }
         if (event.getName().equals("makedraggraph") && event.getFocusedOption().getName().contains("plane")) {
 
@@ -861,7 +861,7 @@ public class AlexStillTalking extends ListenerAdapter {
     }
 
 
-    private List<Command.Choice> planeChoicesGraph(String s) {
+    private List<Command.Choice> planeChoicesThrustGraph(String s) {
         s = s.toLowerCase();
         var finalS = s;
         LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
@@ -889,7 +889,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 .thenComparingInt(plane -> levenshteinDistance.apply(plane.name.toLowerCase(), finalS));
 
         return planesManager.planes.stream()
-                .filter(plane -> plane.cxcheck)
+           //     .filter(plane -> plane.cxcheck)
                 .filter(plane -> plane.isactualJet)
                 .sorted(comparator)
                 .map(u -> new Command.Choice(u.name, u.uid))
@@ -907,7 +907,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 .thenComparingInt(plane -> levenshteinDistance.apply(plane.name.toLowerCase(), finalS));
 
         return planesManager.planes.stream()
-                .filter(plane -> plane.cxcheck)
+               // .filter(plane -> plane.cxcheck)
                 .sorted(comparator)
                 .map(u -> new Command.Choice(u.name, u.uid))
                 .limit(25)
