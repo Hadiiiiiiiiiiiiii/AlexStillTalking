@@ -52,10 +52,6 @@ Currently, this bot can do the following:
 
 The bot is currently available on these Discord servers:
 
-### [Africa](https://discord.com/invite/YD6xUuh)
-
-[Africa](https://discord.com/invite/YD6xUuh) is a community of War Thunder players that host and play custom battles.
-
 ### [Doofania](https://discord.gg/QxBVWEE)
 
 [Doofania](https://discord.gg/QxBVWEE) is the Discord server of the War Thunder
@@ -63,6 +59,7 @@ YouTuber [DEFYN](https://www.youtube.com/@DEFYN).
 
 After you join any of these servers, get any of the default roles and use the bot in the dedicated bots channel.
 
+If you want to add this bot to your own server, feel free to contact me.
 ####
 
 ## Challenges
@@ -79,17 +76,19 @@ ways to solve these issues and make information more available to the War Thunde
 be solved, then we could be able to compare plane performance objectively with no chance of user error that we would get
 through manual testing.
 
-### If you think that you could have found a way to solve any of these issues, you could either contact me on Discord (username: hadiiiiiiiiiiiiii) or create an issue on this repo.
+### If you think that you could have found a way to solve any of these issues, you could create an issue on this repo.
 
 #
 
 Please note that this project was NOT intended to be of this scope, and thus the design is... to say the least,
 disappointing. If I had the time, I would completely rewrite most of it.
 
-## Using drag.exe
+## Using Data/drag.exe
 This executable requires the .dll that is in the same folder. It expects a JSON as an argument, with variables like desired Angle of Attack (AOA), the plane's desired weight, whether the plane should try to adjust the AOA to maintain level flight, the height, and also the path to the blkx file containing the Flight Model file. Finally, the JSON should contain a JSON array with the name 'speed' that has the speeds for the drag calculation.
 
-So far, most flight models are supported, but some that have inconclusive data aren't yet supported.
+~~So far, most flight models are supported, but some that have inconclusive data aren't yet supported.~~
+
+In case you’re using Windows, you can create a file named ‘input.json’ in the same directory. This file will be used if no system arguments are given.
 
 An example of what an acceptable JSON might look like:
 ````

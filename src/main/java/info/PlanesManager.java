@@ -53,7 +53,7 @@ public class PlanesManager {
             long uid = 0;
             File dir = new File("Data/AllFMs/");
             String INFO = Files.readString(Path.of("Data/Other/wpcost.blkx"));
-            JSONObject tntJson = new JSONObject(INFO);
+            JSONObject wpcost = new JSONObject(INFO);
             planes.clear();
             System.out.println(dir.isDirectory());
             if (dir.isDirectory()) {
@@ -67,25 +67,39 @@ public class PlanesManager {
                         name = getNamePlane(realName);
                     } catch (Exception e) {
                         name = realName;
-                        System.out.println(realName);
                     }
                     try {
                         JSONObject planejsn = null;
                         try {
-                            planejsn = tntJson.getJSONObject(realName);
+                            planejsn = wpcost.getJSONObject(realName);
                         } catch (Exception eee) {
                             try {
-                                planejsn = tntJson.getJSONObject(realName.replace("-", "_"));
+                                planejsn = wpcost.getJSONObject(realName.replace("-", "_"));
                             } catch (Exception E) {
                                 try {
-                                    planejsn = tntJson.getJSONObject(realName.replace("_", "-"));
+                                    planejsn = wpcost.getJSONObject(realName.replace("_", "-"));
                                 } catch (Exception e) {
-                                    System.out.println(e.getMessage() + " " + name);
+
+                                    try{
+                                        planejsn = wpcost.getJSONObject(realName+"_shop");
+                                    }
+                                    catch (Exception ee)
+                                    {
+                                        System.out.println(e.getMessage() + " avbcdefg " + realName);
+
+                                    }
                                 }
                             }
                         }
                         JSONObject allFMJson = new JSONObject(jsonString);
-                        String actualName = allFMJson.getString("fmFile").replace(".blk", "").replace("fm/", "");
+                        String actualName = "";
+                        try{
+                           actualName = allFMJson.getString("fmFile").replace(".blk", "").replace("fm/", "");
+                        }
+                        catch (Exception e)
+                        {
+                            actualName = realName;
+                        }
                         Plane plane;
                         var path = new File("Data/FM/" + actualName + ".blkx");
 

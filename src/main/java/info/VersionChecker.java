@@ -64,9 +64,9 @@ public class VersionChecker {
                     String[] newParts = version.split("\\.");
 
                     TextChannel channel1 = jda.getTextChannelById(SNAIL_NEWS);
-                    if (channel1 != null) {
-                        channel1.sendMessage("Game " + versionType + " version changed: " + version).queue();
-                    }
+                 //   if (channel1 != null) {
+                 //       channel1.sendMessage("Game " + versionType + " version changed: " + version).queue();
+                 //   }
 
                     if (!oldParts[0].equals(newParts[0]) || !oldParts[1].equals(newParts[1])) {
                         TextChannel channel2 = jda.getTextChannelById(WAR_THUNDER);

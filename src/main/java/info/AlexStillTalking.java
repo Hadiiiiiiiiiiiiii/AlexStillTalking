@@ -316,24 +316,25 @@ public class AlexStillTalking extends ListenerAdapter {
                 }
             }
 
-            boolean hasDuplicatePlanes = false;
-            Set<String> duplicatePlanes = new HashSet<>();
-            for (Plane p : planes) {
-                if (!duplicatePlanes.add(p.actualName)) {
-                    hasDuplicatePlanes = true;
-                }
-            }
+            List<String> planeNames = planes.stream()
+                    .map(p -> p.actualName)
+                    .collect(Collectors.toList());
 
-            if (hasDuplicatePlanes) {
-                StringBuilder messageBuilder = new StringBuilder("Duplicate planes detected: ");
-                for (String planeName : duplicatePlanes) {
-                    messageBuilder.append(planeName).append(", ");
-                }
-                String message = messageBuilder.substring(0, messageBuilder.length() - 2);
-                event.getHook().sendMessage(message + " - A plane with the same flight model cannot be included twice!")
+            List<String> duplicatePlaneNames = planeNames.stream()
+                    .filter(p -> Collections.frequency(planeNames, p) > 1)
+                    .distinct()
+                    .collect(Collectors.toList());
+
+            if (!duplicatePlaneNames.isEmpty()) {
+                String message = duplicatePlaneNames.stream()
+                        .collect(Collectors.joining(", "));
+
+                event.getHook().sendMessage("Duplicate planes detected: " + message + " - A plane with the same flight model cannot be included twice!")
                         .queue();
+                System.out.println("Duplicate planes detected: " + message + " - A plane with the same flight model cannot be included twice!");
                 return;
             }
+
             int minspeed;
             int maxspeed;
             boolean invalidMaxSpeed = false;
@@ -388,24 +389,24 @@ public class AlexStillTalking extends ListenerAdapter {
                 }
             }
 
-            boolean hasDuplicatePlanes = false;
-            Set<String> duplicatePlanes = new HashSet<>();
-            for (Plane p : planes) {
-                if (!duplicatePlanes.add(p.actualName)) {
-                    hasDuplicatePlanes = true;
-                }
-            }
+            List<String> planeNames = planes.stream()
+                    .map(p -> p.actualName)
+                    .toList();
 
-            if (hasDuplicatePlanes) {
-                StringBuilder messageBuilder = new StringBuilder("Duplicate planes detected: ");
-                for (String planeName : duplicatePlanes) {
-                    messageBuilder.append(planeName).append(", ");
-                }
-                String message = messageBuilder.substring(0, messageBuilder.length() - 2);
-                event.getHook().sendMessage(message + " - A plane with the same flight model cannot be included twice!")
+            List<String> duplicatePlaneNames = planeNames.stream()
+                    .filter(p -> Collections.frequency(planeNames, p) > 1)
+                    .distinct()
+                    .toList();
+
+            if (!duplicatePlaneNames.isEmpty()) {
+                String message = String.join(", ", duplicatePlaneNames);
+
+                event.getHook().sendMessage("Duplicate planes detected: " + message + " - A plane with the same flight model cannot be included twice!")
                         .queue();
+                System.out.println("Duplicate planes detected: " + message + " - A plane with the same flight model cannot be included twice!");
                 return;
             }
+
 
             int alt = event.getOption("alt").getAsInt();
             boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).orElse(20000) < alt);
@@ -455,21 +456,19 @@ public class AlexStillTalking extends ListenerAdapter {
                 }
             }
 
-            boolean hasDuplicatePlanes = false;
-            Set<String> duplicatePlanes = new HashSet<>();
-            for (Plane p : planes) {
-                if (!duplicatePlanes.add(p.actualName)) {
-                    hasDuplicatePlanes = true;
-                }
-            }
+            List<String> planeNames = planes.stream()
+                    .map(p -> p.actualName)
+                    .toList();
 
-            if (hasDuplicatePlanes) {
-                StringBuilder messageBuilder = new StringBuilder("Duplicate planes detected: ");
-                for (String planeName : duplicatePlanes) {
-                    messageBuilder.append(planeName).append(", ");
-                }
-                String message = messageBuilder.substring(0, messageBuilder.length() - 2);
-                event.getHook().sendMessage(message + " - A plane with the same flight model cannot be included twice!")
+            List<String> duplicatePlaneNames = planeNames.stream()
+                    .filter(p -> Collections.frequency(planeNames, p) > 1)
+                    .distinct()
+                    .toList();
+
+            if (!duplicatePlaneNames.isEmpty()) {
+                String message = String.join(", ", duplicatePlaneNames);
+
+                event.getHook().sendMessage("Duplicate planes detected: " + message + " - A plane with the same flight model cannot be included twice!")
                         .queue();
                 return;
             }
@@ -521,24 +520,23 @@ public class AlexStillTalking extends ListenerAdapter {
                 }
             }
 
-            boolean hasDuplicatePlanes = false;
-            Set<String> duplicatePlanes = new HashSet<>();
-            for (Plane p : planes) {
-                if (!duplicatePlanes.add(p.actualName)) {
-                    hasDuplicatePlanes = true;
-                }
-            }
+            List<String> planeNames = planes.stream()
+                    .map(p -> p.actualName)
+                    .toList();
 
-            if (hasDuplicatePlanes) {
-                StringBuilder messageBuilder = new StringBuilder("Duplicate planes detected: ");
-                for (String planeName : duplicatePlanes) {
-                    messageBuilder.append(planeName).append(", ");
-                }
-                String message = messageBuilder.substring(0, messageBuilder.length() - 2);
-                event.getHook().sendMessage(message + " - A plane with the same flight model cannot be included twice!")
+            List<String> duplicatePlaneNames = planeNames.stream()
+                    .filter(p -> Collections.frequency(planeNames, p) > 1)
+                    .distinct()
+                    .collect(Collectors.toList());
+
+            if (!duplicatePlaneNames.isEmpty()) {
+                String message = String.join(", ", duplicatePlaneNames);
+
+                event.getHook().sendMessage("Duplicate planes detected: " + message + " - A plane with the same flight model cannot be included twice!")
                         .queue();
                 return;
             }
+
             int minspeed = event.getOption("minspeed").getAsInt();
             int maxspeed = event.getOption("maxspeed").getAsInt();
 
