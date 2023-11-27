@@ -75,56 +75,10 @@ public class AlexStillTalking extends ListenerAdapter {
             }
         }*/
 
-        if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().toLowerCase().equals("!updatebot")) {
-            try {
-                event.getMessage().reply("okay").queue();
-                Process p = Runtime.getRuntime().exec("/bin/bash script.sh");
-                p.waitFor();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-                event.getMessage().reply("nvm not okay").queue();
-            }
 
-        }
         if (event.getMember().getIdLong() == 164821597528653824L && event.getMessage().getAttachments().size() > 0) {
             event.getMessage().reply(forzenLink).queue();
-        } else if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().toLowerCase().startsWith("!setfrozen")) {
-            try {
-                forzenLink = event.getMessage().getContentRaw().split(" ")[1];
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        } else if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().toLowerCase().startsWith("!readplanes")) {
-            try {
-                new Thread(planesManager::makePlanes).start();
-            } catch (Exception e) {
-                // System.out.println(e);
-            }
-        } else if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().equalsIgnoreCase("!readcommits")) {
-            event.getMessage().reply("starting....").queue();
-            try {
-                new Thread(Comparator::makeCommits).start();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        } else if (event.getMember().getIdLong() == 431138819698458626L && event.getMessage().getContentRaw().equalsIgnoreCase("!readguns")) {
-            try {
-                MakeGuns.main(null);
-                Thread thread = new Thread() {
-                    public void run() {
-                        try {
-                            MakeGuns.main(null);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                };
-
-                thread.start();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        } else if (event.getGuild().getIdLong() == 692014646542073875L) {
+        }  else if (event.getGuild().getIdLong() == 692014646542073875L) {
             if (event.getAuthor().getIdLong() == 511766963651870732L) {
                 if (Math.random() < 0.10 && event.getMessage().getAttachments().size() == 0) {
                     event.getMessage().delete().queue();
@@ -706,7 +660,7 @@ public class AlexStillTalking extends ListenerAdapter {
     }
 
     private void makeInteraction(SlashCommandInteractionEvent event, Interaction i) {
-        if (i.splitFile.size() > 3) {
+        if (i.splitFile.size() > 1) {
             var e = event.getHook().sendMessage("").setEmbeds(i.showFirstPage().build()).complete();
             i.msgId = e.getIdLong();
             i.msg = e;

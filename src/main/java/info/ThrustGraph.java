@@ -610,13 +610,6 @@ public class ThrustGraph {
         return dataset;
     }
 
-
-    public static Plane getPlaneByGameversion(int id, int gameId) {
-        Plane p = PlanesManager.getPlaneById(id);
-
-        return null;
-    }
-
     public static double getDensityAtAlt(int alt) {
         final double seaLevelTemp = 288.15;
         final double seaLevelPressure = 101325;
@@ -635,21 +628,6 @@ public class ThrustGraph {
         double airDensity = airDensitySL * getDensityAtAlt((int) (alt));
         return iasSpeed * Math.sqrt(airDensitySL / airDensity);
     }
-
-
-    public static double getPressureAtAlt(int alt) {
-        final double seaLevelTemp = 288.15;
-        final double seaLevelPressure = 101325;
-        final double tempLapseRate = -0.0065;
-        final double gasConstant = 8.31447;
-        final double molarMass = 0.0289644;
-        final double gravity = 9.80665;
-
-        double temperature = seaLevelTemp + tempLapseRate * alt;
-        double pressure = seaLevelPressure * Math.pow((temperature / seaLevelTemp), (gravity * molarMass) / (-gasConstant * tempLapseRate));
-        return pressure;
-    }
-
 
 //these two are dogshit and wrong
 

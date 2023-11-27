@@ -83,7 +83,7 @@ through manual testing.
 Please note that this project was NOT intended to be of this scope, and thus the design is... to say the least,
 disappointing. If I had the time, I would completely rewrite most of it.
 
-## Using Data/drag.exe
+## Using Data/Drag/drag.exe
 This executable requires the .dll that is in the same folder. It expects a JSON as an argument, with variables like desired Angle of Attack (AOA), the plane's desired weight, whether the plane should try to adjust the AOA to maintain level flight, the height, and also the path to the blkx file containing the Flight Model file. Finally, the JSON should contain a JSON array with the name 'speed' that has the speeds for the drag calculation.
 
 ~~So far, most flight models are supported, but some that have inconclusive data aren't yet supported.~~

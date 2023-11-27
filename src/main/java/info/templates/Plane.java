@@ -3,6 +3,7 @@ package info.templates;
 import info.ThrustGraph;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,7 +81,6 @@ public class Plane implements Serializable {
     public String gearRipSpeed;
     public String flapInfo;
     public String fuelWeight;
-    public ArrayList<Dragcomponent> dragcomponents = new ArrayList<>(4);
 
     public Plane(String name, long uid, String actualName, String dir, String slCost, String rpCost, String brRB, String brSB, String brAB,
                  String repCostRB, String repCostSB, String repCostAB, String crewCost, String expertCost, String aceCrewCostGE, String aceRPCost, String SLmultiAB, String SLmultiRB, String SLmultiSB, String
@@ -130,11 +130,7 @@ public class Plane implements Serializable {
         this.alts.addAll(alts);//&& name.toLowerCase().contains("mig")
         var jsonObject = getPlaneJson();
         getInfo(jsonObject);
-        try {
-            makeDragComponents(jsonObject);
-        } catch (Exception e) {
-            System.out.println("some error idk tbh" + e.getMessage());
-        }
+
         // System.out.println("COMPONENTLENGTH: "+dragcomponents);
         try {
             SetupFlaps();
@@ -146,8 +142,8 @@ public class Plane implements Serializable {
             //var jsonObject = getPlaneJson();
             try {
                 cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("CdMin").doubleValue();
-                    newFm = true;
-                    cxcheck = true;
+                newFm = true;
+                cxcheck = true;
 
             } catch (Exception e) {
                 newFm = false;
@@ -156,9 +152,7 @@ public class Plane implements Serializable {
                 cdmin += jsonObject.getJSONObject("Aerodynamics").getBigDecimal("CxAfterCoeff").doubleValue();
                 cxcheck = true;
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
 
             }
             try {
@@ -519,9 +513,6 @@ public class Plane implements Serializable {
                 }
 
             }
-
-            //   System.out.println("\n\nFLAPS: "+actualName+" "+landingRip + " " + takeOffRip + " " + combatRip+"\n\n");
-
         } catch (Exception e) {
             fuckedUp++;
             if (actualName.equals("i-225")) {
@@ -531,585 +522,6 @@ public class Plane implements Serializable {
         if (actualName.equals("i-225")) {
             System.out.println("pagman " + landingRip + " " + takeOffRip + " " + combatRip + " " + flapInfo);
         }
-    }
-
-    public int getDrag(double speed, double alt, int extraWeight, double aoa) {
-
-        JSONObject json = getPlaneJson();
-        if (json.has("Engine1")) {
-            if (json.has("EngineType1")) {
-                if (json.getJSONObject("EngineType1").has("Booster"))
-                    dualEngine = !json.getJSONObject("EngineType1").getBoolean("Booster");
-            } else
-                dualEngine = true;
-        }
-
-        drag = 0;
-
-        var owaldsNoFlaps = getNoFlapsOwalds(json);
-        var owaldsFuselage = getFuselageOswalds(json);
-        var owaldsHorzStab = getHorStabOwalds(json);
-        var owaldsVertStab = getVertStabOwalds(json);
-
-
-        var cd_NoFlaps = getNoFlapsCd(json, owaldsNoFlaps);
-        var area0 = getNoFlapsArea(json);
-        var cl0 = getNoFlapsCl(json, owaldsNoFlaps);
-
-        var cd_Fuselage = getFuselageCD(json, owaldsFuselage);
-        var area1 = getFuselageArea(json);
-        var cl1 = getFuselageCL(json, owaldsFuselage);
-
-        var cd_HorzStab = getHorStabCd(json, owaldsHorzStab);
-        var area2 = getHorStabArea(json);
-        var cl2 = getHorStabCl(json, owaldsHorzStab);
-
-        var cd_VertStab = getVertStabCd(json, owaldsVertStab);
-        var area3 = getvertStabArea(json);
-        var cl3 = getVertStabCl(json, owaldsVertStab);
-
-        var speed2 = speed * 0.277778;
-        var dens = ThrustGraph.getDensityAtAlt((int) alt);
-
-        var totalcd = cd_NoFlaps + cd_Fuselage + cd_HorzStab + cd_VertStab;
-        var totalArea = getNoFlapsArea(json) + getFuselageArea(json) + getHorStabArea(json) + getvertStabArea(json);
-        var totalWalads = getNoFlapsOwalds(json) + getHorStabOwalds(json) + getVertStabOwalds(json) + getFuselageOswalds(json);
-        var totalcl = cl0 + cl1 + cl2 + cl3;
-        /*******WAVE DRAG stuff
-         * Object component?
-         * do all calc for the speed in each component
-         * *******/
-      /*  var machSpeed = ThrustGraph.calculateMachFromTas(speed, (int) alt);
-        cd_NoFlaps += cd_NoFlaps * dragcomponents.get(0).calcCdMult(machSpeed);
-        cd_Fuselage += cd_Fuselage * dragcomponents.get(1).calcCdMult(machSpeed);
-        cd_HorzStab += cd_HorzStab * dragcomponents.get(2).calcCdMult(machSpeed);
-        cd_VertStab += cd_VertStab * dragcomponents.get(3).calcCdMult(machSpeed);
-*/
-        var ar = Math.pow(Double.parseDouble(wingSpan), 2) / area0;
-        var cd_0LiftDrag = (Math.pow(totalcl, 2)) / (Math.PI * getNoFlapsOwalds(json) * ar);
-        var cd0_i_noFlaps = cd_NoFlaps + (Math.pow(cl0, 2) / (Math.PI * ar * owaldsNoFlaps));
-        var cd1_i_Fuselage = cd_Fuselage + (Math.pow(cl1, 2) / (Math.PI * ar * owaldsFuselage));
-        var cd2_i_HorzStab = cd_HorzStab + (Math.pow(cl2, 2) / (Math.PI * ar * owaldsHorzStab));
-        var cd3_i_VertStab = cd_VertStab + (Math.pow(cl3, 2) / (Math.PI * ar * owaldsVertStab));
-
-        var zeroLiftDrag = cd_0LiftDrag * dens * ((speed2 * speed2) / 2) * area0;
-        drag += cd0_i_noFlaps * dens * ((speed2 * speed2) / 2) * area0;
-        drag += cd1_i_Fuselage * dens * ((speed2 * speed2) / 2) * area1;
-        drag += cd2_i_HorzStab * dens * ((speed2 * speed2) / 2) * area2;
-        drag += cd3_i_VertStab * dens * ((speed2 * speed2) / 2) * area3;
-        drag += zeroLiftDrag;
-
-        return (int) (drag * 0.1019716);
-    }
-
-    public void makeDragComponents(JSONObject plane) {
-        var wing = new Dragcomponent(1);
-        var fuselage = new Dragcomponent(2);
-        var horzStab = new Dragcomponent(3);
-        var vertStab = new Dragcomponent(4);
-        for (int i = 1; i < 8; i++) {
-            wing.machMax.add(getNoFlapsMachMax(plane, i));
-            wing.machCrit.add(getNoFlapsMachCrit(plane, i));
-            wing.multLimit.add(getNoFlapsMultLimit(plane, i));
-            wing.multMachMax.add(getNoFlapsMultMachMax(plane, i));
-            wing.multLineCoeff.add(getNoFlapsMultLineCoeff(plane, i));
-
-            fuselage.machMax.add(getFuselageMachMax(plane, i));
-            fuselage.machCrit.add(getFuselageMachCrit(plane, i));
-            fuselage.multLimit.add(getFuselageMultLimit(plane, i));
-            fuselage.multMachMax.add(getFuselageMultMachMax(plane, i));
-            fuselage.multLineCoeff.add(getFuselageMultLineCoeff(plane, i));
-
-            vertStab.machMax.add(getVertStabMachMax(plane, i));
-            vertStab.machCrit.add(getVertStabMachCrit(plane, i));
-            vertStab.multLimit.add(getVertStabMultLimit(plane, i));
-            vertStab.multMachMax.add(getVertStabMultMachMax(plane, i));
-            vertStab.multLineCoeff.add(getVertStabMultLineCoeff(plane, i));
-
-            horzStab.machMax.add(getHorStabMachMax(plane, i));
-            horzStab.machCrit.add(getHorStabMachCrit(plane, i));
-            horzStab.multLimit.add(getHorStabMultLimit(plane, i));
-            horzStab.multMachMax.add(getHorStabMultMachMax(plane, i));
-            horzStab.multLineCoeff.add(getHorStabMultLineCoeff(plane, i));
-        }
-        dragcomponents.add(wing);
-        dragcomponents.add(fuselage);
-        dragcomponents.add(horzStab);
-        dragcomponents.add(vertStab);
-
-    }
-
-
-    static double getFuselageCD(JSONObject jsonObject, double owalds) {
-        var cd = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").has("CdMin")) {
-                cd += jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").getBigDecimal("CdMin").doubleValue();
-
-            }
-        } catch (Exception e) {
-            //System.out.println(jsonObject);
-            //e.printStackTrace();
-        }
-        return cd;
-
-        //return cd + owalds * Math.pow(aoa, 2);
-    }
-
-    static double getFuselageOswalds(JSONObject jsonObject) {
-        var cd = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").has("OswaldsEfficiencyNumber")) {
-                cd += jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").getBigDecimal("OswaldsEfficiencyNumber").doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        return cd;
-    }
-
-    static double getFuselageArea(JSONObject jsonObject) {
-        var area = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").has("Areas")) {
-                area += jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Areas").getBigDecimal("Main").doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        return area;
-    }
-
-    static double getFuselageCL(JSONObject jsonObject, double owalds) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").has("Cl0")) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").getBigDecimal("Cl0").doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-        //return cl+ owalds * Math.pow(aoa, 2);
-    }
-
-    static double getFuselageMachCrit(JSONObject jsonObject, int index) {
-        var xyz = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").has("MachCrit" + index)) {
-                xyz += jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").getBigDecimal("MachCrit" + index).doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        return xyz;
-    }
-
-    static double getFuselageMachMax(JSONObject jsonObject, int index) {
-        var xyz = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").has("MachMax" + index)) {
-                xyz += jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").getBigDecimal("MachMax" + index).doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        return xyz;
-    }
-
-    static double getFuselageMultMachMax(JSONObject jsonObject, int index) {
-        var xyz = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").has("MultMachMax" + index)) {
-                xyz += jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").getBigDecimal("MultMachMax" + index).doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        return xyz;
-    }
-
-    static double getFuselageMultLineCoeff(JSONObject jsonObject, int index) {
-        var xyz = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").has("MultLineCoeff" + index)) {
-                xyz += jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").getBigDecimal("MultLineCoeff" + index).doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        return xyz;
-    }
-
-    static double getFuselageMultLimit(JSONObject jsonObject, int index) {
-        var xyz = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").has("MultLimit" + index)) {
-                xyz += jsonObject.getJSONObject("Aerodynamics").getJSONObject("FuselagePlane").getJSONObject("Polar").getBigDecimal("MultLimit" + index).doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        return xyz;
-    }
-
-
-    static double getNoFlapsCd(JSONObject jsonObject, double owalds) {
-        var cdmin = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").has("CdMin")) {
-                cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").getBigDecimal("CdMin").doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        //   System.out.println(aoa);
-        //   System.out.println(cdmin);
-        return cdmin;
-        //return cdmin + owalds * Math.pow(aoa, 2);
-    }
-
-    static double getNoFlapsOwalds(JSONObject jsonObject) {
-        var cdmin = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").has("OswaldsEfficiencyNumber")) {
-                cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").getBigDecimal("OswaldsEfficiencyNumber").doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        return cdmin;
-    }
-
-    static double getNoFlapsArea(JSONObject jsonObject) {
-        var cl = 0.0;
-
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").has("Areas")) {
-                var js = jsonObject.getJSONObject("Aerodynamics");
-                cl += js.getJSONObject("WingPlane").getJSONObject("Areas").getBigDecimal("LeftIn").doubleValue();
-                cl += js.getJSONObject("WingPlane").getJSONObject("Areas").getBigDecimal("LeftMid").doubleValue();
-                cl += js.getJSONObject("WingPlane").getJSONObject("Areas").getBigDecimal("LeftOut").doubleValue();
-
-                cl += js.getJSONObject("WingPlane").getJSONObject("Areas").getBigDecimal("RightIn").doubleValue();
-                cl += js.getJSONObject("WingPlane").getJSONObject("Areas").getBigDecimal("RightMid").doubleValue();
-                cl += js.getJSONObject("WingPlane").getJSONObject("Areas").getBigDecimal("RightOut").doubleValue();
-
-                cl += js.getJSONObject("WingPlane").getJSONObject("Areas").getBigDecimal("Aileron").doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-    }
-
-    static double getNoFlapsCl(JSONObject jsonObject, double owalds) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").has("Cl0")) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").getBigDecimal("Cl0").doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        // return cl + owalds * Math.pow(aoa, 2);
-        return cl;
-
-    }
-
-    static double getNoFlapsMachCrit(JSONObject jsonObject, int index) {
-        var cdmin = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").has("MachCrit" + index)) {
-                cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").getBigDecimal("MachCrit" + index).doubleValue();
-
-            }
-        } catch (Exception e) {
-        }
-        return cdmin;
-    }
-
-    static double getNoFlapsMachMax(JSONObject jsonObject, int index) {
-        var cdmin = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").has("MachMax" + index)) {
-                cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").getBigDecimal("MachMax" + index).doubleValue();
-
-            }
-        } catch (Exception e) {
-        }
-        return cdmin;
-    }
-
-    static double getNoFlapsMultMachMax(JSONObject jsonObject, int index) {
-        var cdmin = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").has("MultMachMax" + index)) {
-                cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").getBigDecimal("MachMax" + index).doubleValue();
-
-            }
-        } catch (Exception e) {
-        }
-        return cdmin;
-    }
-
-    static double getNoFlapsMultLineCoeff(JSONObject jsonObject, int index) {
-        var cdmin = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").has("MultLineCoeff" + index)) {
-                cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").getBigDecimal("MultLineCoeff" + index).doubleValue();
-
-            }
-        } catch (Exception e) {
-        }
-        return cdmin;
-    }
-
-    static double getNoFlapsMultLimit(JSONObject jsonObject, int index) {
-        var cdmin = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").has("MultLimit" + index)) {
-                cdmin += jsonObject.getJSONObject("Aerodynamics").getJSONObject("WingPlane").getJSONObject("FlapsPolar0").getBigDecimal("MultLimit" + index).doubleValue();
-
-            }
-        } catch (Exception e) {
-        }
-        return cdmin;
-    }
-
-    static double getHorStabCd(JSONObject jsonObject, double owalds) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").has("CdMin")) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("CdMin").doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        //return cl + owalds * Math.pow(aoa, 2);
-        return cl;
-    }
-
-    static double getHorStabOwalds(JSONObject jsonObject) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").has("OswaldsEfficiencyNumber")) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("OswaldsEfficiencyNumber").doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-    }
-
-    static double getHorStabArea(JSONObject jsonObject) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").has("Areas")) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Areas").getBigDecimal("Main").doubleValue();
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Areas").getBigDecimal("Elevator").doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-    }
-
-    static double getHorStabCl(JSONObject jsonObject, double owalds) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").has("Cl0")) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("Cl0").doubleValue();
-
-            }
-        } catch (Exception e) {
-
-        }
-        //return cl + owalds * Math.pow(aoa, 2);
-        return cl;
-
-    }
-
-    static double getHorStabMachMax(JSONObject jsonObject, int index) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").has("MachMax" + index)) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("MachMax" + index).doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-    }
-
-    static double getHorStabMachCrit(JSONObject jsonObject, int index) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").has("MachCrit" + index)) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("MachCrit" + index).doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-    }
-
-    static double getHorStabMultMachMax(JSONObject jsonObject, int index) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").has("MachMax" + index)) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("MachMax" + index).doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-    }
-
-    static double getHorStabMultLineCoeff(JSONObject jsonObject, int index) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").has("MultMachMax" + index)) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("MultMachMax" + index).doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-    }
-
-    static double getHorStabMultLimit(JSONObject jsonObject, int index) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").has("MultMachMax" + index)) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("HorStabPlane").getJSONObject("Polar").getBigDecimal("MultMachMax" + index).doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-    }
-
-    static double getVertStabCd(JSONObject jsonObject, double owalds) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").has("CdMin")) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").getBigDecimal("CdMin").doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        //return cl + owalds * Math.pow(aoa, 2);
-        return cl;
-    }
-
-    static double getVertStabOwalds(JSONObject jsonObject) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").has("OswaldsEfficiencyNumber")) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").getBigDecimal("OswaldsEfficiencyNumber").doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-    }
-
-    static double getvertStabArea(JSONObject jsonObject) {
-        var area = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").has("Areas")) {
-                area += jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Areas").getBigDecimal("Main").doubleValue();
-                area += jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Areas").getBigDecimal("Rudder").doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return area;
-    }
-
-    static double getVertStabCl(JSONObject jsonObject, double owalds) {
-        var cl = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").has("Cl0")) {
-                cl += jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").getBigDecimal("Cl0").doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return cl;
-        //return cl + owalds * Math.pow(aoa, 2);
-    }
-
-    static double getVertStabMachCrit(JSONObject jsonObject, int index) {
-        var xyz = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").has("MachCrit" + index)) {
-                xyz += jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").getBigDecimal("MachCrit" + index).doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return xyz;
-    }
-
-    static double getVertStabMachMax(JSONObject jsonObject, int index) {
-        var xyz = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").has("MachMax" + index)) {
-                xyz += jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").getBigDecimal("MachMax" + index).doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return xyz;
-    }
-
-    static double getVertStabMultMachMax(JSONObject jsonObject, int index) {
-        var xyz = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").has("MultMachMax" + index)) {
-                xyz += jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").getBigDecimal("MultMachMax" + index).doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return xyz;
-    }
-
-    static double getVertStabMultLineCoeff(JSONObject jsonObject, int index) {
-        var xyz = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").has("MultLineCoeff" + index)) {
-                xyz += jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").getBigDecimal("MultLineCoeff" + index).doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return xyz;
-    }
-
-    static double getVertStabMultLimit(JSONObject jsonObject, int index) {
-        var xyz = 0.0;
-        try {
-            if (jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").has("MultLimit" + index)) {
-                xyz += jsonObject.getJSONObject("Aerodynamics").getJSONObject("VerStabPlane").getJSONObject("Polar").getBigDecimal("MultLimit" + index).doubleValue();
-            }
-        } catch (Exception e) {
-
-        }
-        return xyz;
     }
 
     public static String getName(String planeName) throws IOException {
@@ -1147,8 +559,6 @@ public class Plane implements Serializable {
         int bottomAlt = 0;
         int upperAlt = 0;
 
-        int bottomSpeed = 0;
-        int topSpeed = 0;
 
         double bottomThrust = 0;
         double topThrust = 0;
@@ -1160,16 +570,7 @@ public class Plane implements Serializable {
                 break;
             }
         }
-     /*   bottomSpeed = speedList.get(speedList.size() - 2);
-        topSpeed = speedList.get(speedList.size() - 1);
 
-        for (int i = 0; i < speedList.size() - 1; i++) {
-            if (speed >= speedList.get(i) && speed <= speedList.get(i + 1)) {
-                bottomSpeed = speedList.get(i);
-                topSpeed = speedList.get(i + 1);
-                break;
-            }
-        }*/
         SplineInterpolator interpolator = new SplineInterpolator();
         double[] speedsArray = new double[speedList.size()];
         double[] thrustsArray = thrusts[alts.indexOf(bottomAlt)];
@@ -1177,7 +578,6 @@ public class Plane implements Serializable {
         for (int i = 0; i < speedsArray.length; i++) {
             speedsArray[i] = speedList.get(i);
         }
-        //System.out.println("1: "+speedsArray.length+" "+thrustsArray.length+" "+speedList.size());
         PolynomialSplineFunction lowerAltFunc = interpolator.interpolate(speedsArray, thrustsArray);
         thrustsArray = thrusts[alts.indexOf(upperAlt)];
         PolynomialSplineFunction upperAltFunc = interpolator.interpolate(speedsArray, thrustsArray);
@@ -1198,14 +598,7 @@ public class Plane implements Serializable {
             return thrust;
     }
 
-    double getThrustAt(double x1, double y1, double x2, double y2, double x) {
-        var o = x - x1;
-        var d = x2 - x1;
-        var c = y2 - y1;
-        return (int) ((((o) / (d)) * (c)) + y1);
-    }
 
-    // mig_29_9_13;15.1;11.36;37.98;10725;4628;1575;2.35;700;0;90;0.2,1018,1,463;-390000,910000;2;0;0;30,-20,29,-22
     public void getInfo(JSONObject plane) {
         try {
             setFlapsInfo(plane);
@@ -1251,19 +644,51 @@ public class Plane implements Serializable {
 
 
     public void setFlapsInfo(JSONObject plane) {
-
         String ret = "";
+        boolean errorOccurred = false;
         try {
             ret += plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP0").getBigDecimal(0) + ",";
             ret += plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP0").getBigDecimal(1);
-            ret += "," + plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP1").getBigDecimal(0) + ",";
-            ret += plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP1").getBigDecimal(1);
-            ret += "," + plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP2").getBigDecimal(0) + ",";
-            ret += plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP2").getBigDecimal(1);
         } catch (Exception e) {
+            errorOccurred = true;
+        }
+        if (!errorOccurred) {
+            ret += ",";
+        }
+        try {
+            ret += plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP1").getBigDecimal(0) + ",";
+            ret += plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP1").getBigDecimal(1);
+            errorOccurred = false;
+        } catch (Exception ee) {
+            errorOccurred = true;
+        }
+        if (!errorOccurred) {
+            ret += ",";
+        }
+        try {
+            ret += plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP2").getBigDecimal(0) + ",";
+            ret += plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP2").getBigDecimal(1);
+        } catch (Exception eee) {
+        }
+        if (ret.isEmpty()) {
+            try {
+                JSONArray array = plane.getJSONObject("Mass").getJSONArray("FlapsDestructionIndSpeedP");
+                for (int i = 0; i < array.length(); i++) {
+                    ret += array.getBigDecimal(i);
+                    if (i < array.length() - 1) {
+                        ret += ",";
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+        if (actualName.contains("p-39n")) {
+            System.out.println("46dd: " + ret);
         }
         this.flapInfo = ret;
     }
+
+
 
     private JSONObject getPlaneJson() {
         File info1 = new File("Data/FM/" + actualName + ".blkx");//TODO

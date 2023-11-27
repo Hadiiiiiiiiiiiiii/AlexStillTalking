@@ -492,13 +492,11 @@ public class PlanesManager {
             }
         }
         String multipliers = new TableBuilder()
-                .setValues(table).addRowNames(namees) // setting row names
-                .setName("") // the name (displayed in the top left corner)
-                .frame(true) // activating framing
+                .setValues(table).addRowNames(namees)
+                .setName("")
+                .frame(true)
                 .setBorders(TableBuilder.Borders.newFrameBorders('-', '|', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '))
                 .build();
-        //  System.out.println(multipliers);
-        //p.data = p.data.replace("null", "N/A");
         return "Weapon Presets for " + p.name + "\n" + multipliers;
     }
 
@@ -650,18 +648,6 @@ public class PlanesManager {
         hasTwoEngines = false;
         hasTwoEngineTypes = false;
 
-
-    //  var info = new File("Data/FM/" + planeName + ".blkx");
-    //  String data = null;
-    //  try {
-    //      data = Files.readString(info.toPath());
-    //  } catch (IOException e) {
-    //      System.out.println("no FM ong: " + planeName + " " + e + "   ");
-    //      // e.printStackTrace();
-    //      return;
-    //  }
-
-    //  var json = new JSONObject(Files.readString(info.toPath()));
         JSONObject json1 = null;
 
         try {
@@ -822,132 +808,25 @@ public class PlanesManager {
         var json = json1.getJSONObject("ThrustMax");
         altList.clear();
         speedList.clear();
-        if (json.has("Altitude_0")) {
-            altList.add(json.getBigDecimal("Altitude_0").intValue());
-            altEndings.add("_0");
-        }
-        if (json.has("Altitude_1")) {
-            altList.add(json.getBigDecimal("Altitude_1").intValue());
-            altEndings.add("_1");
-        }
-        if (json.has("Altitude_2")) {
-            altList.add(json.getBigDecimal("Altitude_2").intValue());
-            altEndings.add("_2");
-        }
-        if (json.has("Altitude_3")) {
-            altList.add(json.getBigDecimal("Altitude_3").intValue());
-            altEndings.add("_3");
-        }
-        if (json.has("Altitude_4")) {
-            altList.add(json.getBigDecimal("Altitude_4").intValue());
-            altEndings.add("_4");
-        }
-        if (json.has("Altitude_5")) {
-            altList.add(json.getBigDecimal("Altitude_5").intValue());
-            altEndings.add("_5");
-        }
-        if (json.has("Altitude_6")) {
-            altList.add(json.getBigDecimal("Altitude_6").intValue());
-            altEndings.add("_6");
-        }
-
-        if (json.has("Altitude_7")) {
-            altList.add(json.getBigDecimal("Altitude_7").intValue());
-            altEndings.add("_7");
-        }
-        if (json.has("Altitude_8")) {
-            altList.add(json.getBigDecimal("Altitude_8").intValue());
-            altEndings.add("_8");
-        }
-        if (json.has("Altitude_9")) {
-            altList.add(json.getBigDecimal("Altitude_9").intValue());
-            altEndings.add("_9");
-        }
-        if (json.has("Altitude_10")) {
-            altList.add(json.getBigDecimal("Altitude_10").intValue());
-            altEndings.add("_9");
-        }
-        if (json.has("Altitude_11")) {
-            altList.add(json.getBigDecimal("Altitude_11").intValue());
-            altEndings.add("_9");
-        }
-        if (json.has("Altitude_12")) {
-            altList.add(json.getBigDecimal("Altitude_12").intValue());
-            altEndings.add("_9");
-        }
-
-
-        if (json.has("Velocity_0")) {
-            speedEndings.add("_0");
-            speedList.add(json.getBigDecimal("Velocity_0").intValue());
-        }
-        if (json.has("Velocity_1")) {
-            speedEndings.add("_1");
-            speedList.add(json.getBigDecimal("Velocity_1").intValue());
-        }
-        if (json.has("Velocity_2")) {
-            speedEndings.add("_2");
-            speedList.add(json.getBigDecimal("Velocity_2").intValue());
-        }
-        if (json.has("Velocity_3")) {
-            speedEndings.add("_3");
-            speedList.add(json.getBigDecimal("Velocity_3").intValue());
-        }
-        if (json.has("Velocity_4")) {
-            speedEndings.add("_4");
-            speedList.add(json.getBigDecimal("Velocity_4").intValue());
-        }
-        if (json.has("Velocity_5")) {
-            speedEndings.add("_5");
-            speedList.add(json.getBigDecimal("Velocity_5").intValue());
-        }
-        if (json.has("Velocity_6")) {
-            speedEndings.add("_6");
-            speedList.add(json.getBigDecimal("Velocity_6").intValue());
-        }
-        if (json.has("Velocity_7")) {
-            speedEndings.add("_7");
-            speedList.add(json.getBigDecimal("Velocity_7").intValue());
-        }
-        if (json.has("Velocity_8")) {
-            speedEndings.add("_8");
-            speedList.add(json.getBigDecimal("Velocity_8").intValue());
-        }
-        if (json.has("Velocity_9")) {
-            speedEndings.add("_9");
-            speedList.add(json.getBigDecimal("Velocity_9").intValue());
-        }
-        if (json.has("Velocity_10")) {
-            speedEndings.add("_10");
-            speedList.add(json.getBigDecimal("Velocity_10").intValue());
-        }
-        if (json.has("Velocity_11")) {
-            speedEndings.add("_11");
-            speedList.add(json.getBigDecimal("Velocity_11").intValue());
-        }
-        if (json.has("Velocity_12")) {
-            speedEndings.add("_12");
-            speedList.add(json.getBigDecimal("Velocity_12").intValue());
-        }
-        if (json.has("Velocity_13")) {
-            speedEndings.add("_12");
-            speedList.add(json.getBigDecimal("Velocity_13").intValue());
-        }
-        if (json.has("Velocity_14")) {
-            speedEndings.add("_12");
-            speedList.add(json.getBigDecimal("Velocity_14").intValue());
-        }
-        if (json.has("Velocity_15")) {
-            speedEndings.add("_12");
-            speedList.add(json.getBigDecimal("Velocity_15").intValue());
-        }
-
-        for (int i = 0; i < altEndings.size(); i++) {
-            for (int j = 0; j < speedEndings.size(); j++) {
-                finalList.add(altEndings.get(i) + speedEndings.get(j));
+        for (int i = 0; i <= 12; i++) {
+            String altKey = "Altitude_" + i;
+            if (json.has(altKey)) {
+                altList.add(json.getBigDecimal(altKey).intValue());
+                altEndings.add("_" + i);
             }
         }
-
+        for (int i = 0; i <= 15; i++) {
+            String speedKey = "Velocity_" + i;
+            if (json.has(speedKey)) {
+                speedEndings.add("_" + i);
+                speedList.add(json.getBigDecimal(speedKey).intValue());
+            }
+        }
+        for (String altEnding : altEndings) {
+            for (String speedEnding : speedEndings) {
+                finalList.add(altEnding + speedEnding);
+            }
+        }
         return finalList;
     }
 
