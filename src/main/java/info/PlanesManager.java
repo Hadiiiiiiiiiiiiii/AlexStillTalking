@@ -643,12 +643,11 @@ public class PlanesManager {
 
     public static void makeThrustTables(JSONObject json, String name) {
         var usesOld = false;
-        var added = false;
-   //     var actualactual = planeName;
         hasTwoEngines = false;
         hasTwoEngineTypes = false;
 
         JSONObject json1 = null;
+        var afterBurnerControl = hasControlableAfterburner(json, name);
 
         try {
             if (!name.equals("yak_141")) {
@@ -664,7 +663,6 @@ public class PlanesManager {
                 usesOld = true;
 
             } catch (Exception ee) {
-                //return;
             }
         }
         if (json1.has("Type"))
@@ -696,7 +694,6 @@ public class PlanesManager {
                 if (json1.has("Mode9")) {
                     thrustMult = json1.getJSONObject("Mode9").getBigDecimal("ThrustMult").doubleValue();
                 }
-                List<String> endings = getEndings(json1);
                 thrust = new double[altList.size()][speedList.size()];
                 json1 = json1.getJSONObject("ThrustMax");
                 double Thrust;
@@ -712,7 +709,12 @@ public class PlanesManager {
                                     ThrAftMaxCoeff = json1.getBigDecimal("ThrAftMaxCoeff" + "_" + j + "_" + i).doubleValue();
                                 } catch (Exception ignored) {
                                 }
-                                Thrust = ThrustMaxCoeff * ThrAftMaxCoeff * thustMax0 * thrustMult * AfterburnerBoost;
+                                if (!afterBurnerControl){
+                                    thrustMult = 1;
+                                    Thrust = ThrustMaxCoeff  * thustMax0 * thrustMult * AfterburnerBoost;
+                                }
+                                else
+                                    Thrust = ThrustMaxCoeff * ThrAftMaxCoeff * thustMax0 * thrustMult * AfterburnerBoost;
                                 //     System.out.println("Thrust "+ThrustList);
                                 ThrustList.add(Thrust);
                             } catch (Exception e) {
@@ -766,7 +768,6 @@ public class PlanesManager {
                             if (json1.has("Mode9")) {
                                 thrustMult = json1.getJSONObject("Mode9").getBigDecimal("ThrustMult").doubleValue();
                             }
-                            endings = getEndings(json1);
                             thrust2 = new double[altList.size()][speedList.size()];
                             json1 = json1.getJSONObject("ThrustMax");
                             ThrustList = new ArrayList<>();
@@ -781,6 +782,11 @@ public class PlanesManager {
                                                 ThrAftMaxCoeff = json1.getBigDecimal("ThrAftMaxCoeff" + "_" + j + "_" + i).doubleValue();
                                             } catch (Exception ignored) {
                                             }
+                                            if (!afterBurnerControl){
+                                                thrustMult = 1;
+                                                Thrust = ThrustMaxCoeff  * thustMax0 * thrustMult * AfterburnerBoost;
+                                            }
+                                            else
                                             Thrust = ThrustMaxCoeff * ThrAftMaxCoeff * thustMax0 * thrustMult * AfterburnerBoost;
                                             ThrustList.add(Thrust);
                                         } catch (Exception eee) {
@@ -800,7 +806,22 @@ public class PlanesManager {
             }
     }
 
+    static boolean hasControlableAfterburner(JSONObject plane, String name) {
+        var ret = true;
+        try {
+           ret = plane.getJSONObject("EngineType0").getJSONObject("Afterburner").getBoolean("IsControllable");
+        }
+        catch (Exception e) {
+            try {
+                ret = plane.getJSONObject("Engine0").getJSONObject("Afterburner").getBoolean("IsControllable");
+            }
+            catch (Exception ee){
+                System.out.println("Afterburner control not found "+name);
 
+            }
+        }
+        return ret;
+    }
     static List<String> getEndings(JSONObject json1) {
         var altEndings = new ArrayList<String>();
         var speedEndings = new ArrayList<String>();
