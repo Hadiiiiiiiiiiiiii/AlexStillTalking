@@ -643,11 +643,13 @@ public class PlanesManager {
 
     public static void makeThrustTables(JSONObject json, String name) {
         var usesOld = false;
+        var added = false;
         hasTwoEngines = false;
         hasTwoEngineTypes = false;
 
-        JSONObject json1 = null;
         var afterBurnerControl = hasControlableAfterburner(json, name);
+
+        JSONObject json1 = null;
 
         try {
             if (!name.equals("yak_141")) {
@@ -663,6 +665,7 @@ public class PlanesManager {
                 usesOld = true;
 
             } catch (Exception ee) {
+                //return;
             }
         }
         if (json1.has("Type"))
@@ -694,6 +697,7 @@ public class PlanesManager {
                 if (json1.has("Mode9")) {
                     thrustMult = json1.getJSONObject("Mode9").getBigDecimal("ThrustMult").doubleValue();
                 }
+                List<String> endings = getEndings(json1);
                 thrust = new double[altList.size()][speedList.size()];
                 json1 = json1.getJSONObject("ThrustMax");
                 double Thrust;
@@ -715,6 +719,7 @@ public class PlanesManager {
                                 }
                                 else
                                     Thrust = ThrustMaxCoeff * ThrAftMaxCoeff * thustMax0 * thrustMult * AfterburnerBoost;
+                                Thrust = ThrustMaxCoeff * ThrAftMaxCoeff * thustMax0 * thrustMult * AfterburnerBoost;
                                 //     System.out.println("Thrust "+ThrustList);
                                 ThrustList.add(Thrust);
                             } catch (Exception e) {
@@ -768,6 +773,7 @@ public class PlanesManager {
                             if (json1.has("Mode9")) {
                                 thrustMult = json1.getJSONObject("Mode9").getBigDecimal("ThrustMult").doubleValue();
                             }
+                            endings = getEndings(json1);
                             thrust2 = new double[altList.size()][speedList.size()];
                             json1 = json1.getJSONObject("ThrustMax");
                             ThrustList = new ArrayList<>();
@@ -806,6 +812,7 @@ public class PlanesManager {
             }
     }
 
+
     static boolean hasControlableAfterburner(JSONObject plane, String name) {
         var ret = true;
         try {
@@ -829,25 +836,23 @@ public class PlanesManager {
         var json = json1.getJSONObject("ThrustMax");
         altList.clear();
         speedList.clear();
-        for (int i = 0; i <= 12; i++) {
-            String altKey = "Altitude_" + i;
-            if (json.has(altKey)) {
-                altList.add(json.getBigDecimal(altKey).intValue());
-                altEndings.add("_" + i);
+        for (int i = 0; i < 20; i++) {
+            if (json.has("Altitude_"+i)) {
+                altList.add(json.getBigDecimal("Altitude_"+i).intValue());
+                altEndings.add("_"+i);
+            }
+            if (json.has("Velocity_"+i)) {
+                speedEndings.add("_"+i);
+                speedList.add(json.getBigDecimal("Velocity_"+i).intValue());
             }
         }
-        for (int i = 0; i <= 15; i++) {
-            String speedKey = "Velocity_" + i;
-            if (json.has(speedKey)) {
-                speedEndings.add("_" + i);
-                speedList.add(json.getBigDecimal(speedKey).intValue());
+
+        for (int i = 0; i < altEndings.size(); i++) {
+            for (int j = 0; j < speedEndings.size(); j++) {
+                finalList.add(altEndings.get(i) + speedEndings.get(j));
             }
         }
-        for (String altEnding : altEndings) {
-            for (String speedEnding : speedEndings) {
-                finalList.add(altEnding + speedEnding);
-            }
-        }
+
         return finalList;
     }
 
