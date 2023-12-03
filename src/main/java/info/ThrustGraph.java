@@ -88,6 +88,8 @@ public class ThrustGraph {
             if (buffer < buff)
                 buffer = buff;
         }
+        ttwMax = ttws.stream().mapToDouble(ttw -> ttw.stream().max(Double::compare).get()).max().getAsDouble();
+        ttwMin = ttws.stream().mapToDouble(ttw -> ttw.stream().min(Double::compare).get()).min().getAsDouble();
     }
 
 
@@ -184,19 +186,7 @@ public class ThrustGraph {
 
         plot.setRenderer(2, ttwSplineRenderer);
 
-        XYDataset ripSpeedDataset = createRipSpeedDataset();
-        plot.setDataset(3, ripSpeedDataset);
-        plot.mapDatasetToDomainAxis(3, 0);
-        plot.mapDatasetToRangeAxis(3, 0);
 
-        var ripSpeedRenderer = new XYSplineRenderer();
-
-        for (int i = 0; i < planes.size(); i++) {
-            Color color = colors.get(i % colors.size());
-            ripSpeedRenderer.setSeriesPaint(i, color);
-        }
-
-        plot.setRenderer(3, ripSpeedRenderer);
 
         plot.setBackgroundPaint(Color.white);
 
