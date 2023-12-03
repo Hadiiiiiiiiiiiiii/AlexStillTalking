@@ -600,7 +600,7 @@ public class PlanesManager {
         try {
             Files.write(Path.of(saveLoc), data);
         } catch (IOException e) {
-            System.out.println("FUCK");
+            System.out.println("err");
             e.printStackTrace();
         }
     }

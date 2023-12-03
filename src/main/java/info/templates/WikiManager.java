@@ -21,7 +21,7 @@ public class WikiManager {
             try {
                 doc = Jsoup.connect("https://wiki.warthunder.com/Awards").get();
             } catch (IOException e) {
-                System.out.println("FUCK you");
+                System.out.println("award error");
                 e.printStackTrace();
             }
             Elements info = doc.getElementsByClass("mw-parser-output").get(0).select("tr");

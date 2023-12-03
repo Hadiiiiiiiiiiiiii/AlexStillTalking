@@ -112,7 +112,7 @@ public class Comparator implements Serializable {
         try {
             Files.write(Path.of(commitsSaveLoc), data);
         } catch (IOException e) {
-            System.out.println("FUCK");
+            System.out.println("err");
             e.printStackTrace();
         }
     }

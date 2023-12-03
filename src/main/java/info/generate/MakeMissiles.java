@@ -56,7 +56,7 @@ public class MakeMissiles {
         try {
             Files.write(Path.of(missilesSaveLoc), data);
         } catch (IOException e) {
-            System.out.println("fucked in savemsls");
+            System.out.println("something went wrong in savemsls");
             e.printStackTrace();
         }
     }

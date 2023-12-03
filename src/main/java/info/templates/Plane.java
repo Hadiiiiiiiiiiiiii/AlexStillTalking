@@ -59,7 +59,6 @@ public class Plane implements Serializable {
     public List<Integer> alts = new ArrayList<>();
     public boolean dualEngine = false;
     public boolean newFm = true;
-    static public int fuckedUp = 0;
     public List<Integer> speedList = new ArrayList<>();
     public boolean isactualJet;
     public boolean isProp;
@@ -514,7 +513,6 @@ public class Plane implements Serializable {
 
             }
         } catch (Exception e) {
-            fuckedUp++;
             if (actualName.equals("i-225")) {
                 System.out.println("pagman " + Arrays.stream(e.getStackTrace()).toList());
             }

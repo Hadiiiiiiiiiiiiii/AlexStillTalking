@@ -78,7 +78,7 @@ public class AlexStillTalking extends ListenerAdapter {
 
         if (event.getMember().getIdLong() == 164821597528653824L && event.getMessage().getAttachments().size() > 0) {
             event.getMessage().reply(forzenLink).queue();
-        }  else if (event.getGuild().getIdLong() == 692014646542073875L) {
+        } else if (event.getGuild().getIdLong() == 692014646542073875L) {
             if (event.getAuthor().getIdLong() == 511766963651870732L) {
                 if (Math.random() < 0.10 && event.getMessage().getAttachments().size() == 0) {
                     event.getMessage().delete().queue();
@@ -296,7 +296,7 @@ public class AlexStillTalking extends ListenerAdapter {
 
                 minspeed = event.getOption("minspeed").getAsInt();
                 maxspeed = event.getOption("maxspeed").getAsInt();
-                invalidMaxSpeed = planes.stream().anyMatch(p -> maxspeed < 0 || p.speedList.stream().max(Integer::compare).orElse(2000) < maxspeed || maxspeed < minspeed);
+                invalidMaxSpeed = planes.stream().anyMatch(p -> maxspeed < 0 || p.speedList.stream().max(Integer::compare).orElse(2000) < maxspeed || maxspeed < minspeed || maxspeed == minspeed);
             } else {
                 minspeed = 0;
                 maxspeed = 0;
@@ -304,9 +304,19 @@ public class AlexStillTalking extends ListenerAdapter {
             int alt = event.getOption("alt").getAsInt();
             boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).orElse(20000) < alt);
 
-            boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100);
-            if (invalidAlt || invalidFuel || invalidMaxSpeed) {
-                event.getHook().sendMessage("invalid options ong").setEphemeral(true).queue();
+            boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100 || fuel < 0);
+            if (invalidAlt || invalidMaxSpeed) {
+                StringBuilder errorMessage = new StringBuilder("Invalid options: ");
+                if (invalidAlt) {
+                    errorMessage.append("Altitude is either less than 0, greater than 25000, or greater than the maximum altitude in the list. ");
+                }
+                if (invalidMaxSpeed) {
+                    errorMessage.append("Max speed is either less than 0, greater than the maximum speed in the list, or less than the minimum speed.");
+                }
+                if (invalidFuel) {
+                    errorMessage.append("Fuel % cant be less than 0 or more than 100");
+                }
+                event.getHook().sendMessage(errorMessage.toString()).setEphemeral(true).queue();
                 return;
             }
 
@@ -387,69 +397,6 @@ public class AlexStillTalking extends ListenerAdapter {
             ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook(), levelFlight);
             File file = graph.init2();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
-        } else if (event.getName().equals("makethrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
-            event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
-
-            List<Plane> planes = new ArrayList<>();
-            List<Float> fuels = new ArrayList<>();
-
-            for (int i = 1; i <= 7; i++) {
-                if (event.getOption("plane" + i) != null) {
-                    if (!isLong(Objects.requireNonNull(event.getOption("plane" + i)).getAsString()))
-                        return;
-                    Plane p = planesManager.getPlane(event.getOption("plane" + i).getAsLong());
-                    if (!p.isactualJet) {
-                        event.getHook().sendMessage("this plane does not have the standard jet thrust table. " + p.name).setEphemeral(true).queue();
-                        return;
-                    }
-                    planes.add(p);
-                    int fuel = 30;
-                    if (event.getOption("fuel_" + i) != null)
-                        fuel = event.getOption("fuel_" + i).getAsInt();
-                    fuels.add((float) (fuel * 0.1));
-                }
-            }
-
-            List<String> planeNames = planes.stream()
-                    .map(p -> p.actualName)
-                    .toList();
-
-            List<String> duplicatePlaneNames = planeNames.stream()
-                    .filter(p -> Collections.frequency(planeNames, p) > 1)
-                    .distinct()
-                    .toList();
-
-            if (!duplicatePlaneNames.isEmpty()) {
-                String message = String.join(", ", duplicatePlaneNames);
-
-                event.getHook().sendMessage("Duplicate planes detected: " + message + " - A plane with the same flight model cannot be included twice!")
-                        .queue();
-                return;
-            }
-
-            int alt = event.getOption("alt").getAsInt();
-            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt >= p.alts.get(p.alts.size() - 1));
-            boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100);
-            if (invalidAlt || invalidFuel) {
-                event.getHook().sendMessage("invalid options ong").setEphemeral(true).queue();
-                return;
-            }
-
-            Plane p1 = planes.get(0);
-            String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
-            for (int i = 1; i < planes.size(); i++) {
-                Plane p = planes.get(i);
-                title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
-            }
-            int minspeed = 0;
-            int maxspeed = 0;
-            if (event.getOption("minspeed") != null && event.getOption("maxspeed") != null) {
-                minspeed = event.getOption("minspeed").getAsInt();
-                maxspeed = event.getOption("maxspeed").getAsInt();
-            }
-            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Thrust(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed);
-            File file = graph.init();
-            event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
         } else if (event.getName().equals("makedragthrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
             event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
 
@@ -496,14 +443,19 @@ public class AlexStillTalking extends ListenerAdapter {
 
             int alt = event.getOption("alt").getAsInt();
             boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).get() < alt);
-            boolean invalidMaxSpeed = planes.stream().anyMatch(p -> maxspeed < 0 || p.speedList.stream().max(Integer::compare).get() < maxspeed || maxspeed < minspeed);
-            if (invalidAlt || invalidMaxSpeed) {
+            boolean invalidMaxSpeed = planes.stream().anyMatch(p -> maxspeed < 0 || p.speedList.stream().max(Integer::compare).orElse(2000) < maxspeed || maxspeed < minspeed || maxspeed == minspeed);
+            boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100 || fuel < 0);
+
+            if (invalidAlt || invalidMaxSpeed || invalidFuel) {
                 StringBuilder errorMessage = new StringBuilder("Invalid options: ");
                 if (invalidAlt) {
                     errorMessage.append("Altitude is either less than 0, greater than 25000, or greater than the maximum altitude in the list. ");
                 }
                 if (invalidMaxSpeed) {
                     errorMessage.append("Max speed is either less than 0, greater than the maximum speed in the list, or less than the minimum speed.");
+                }
+                if (invalidFuel) {
+                    errorMessage.append("Fuel % cant be less than 0 or more than 100");
                 }
                 event.getHook().sendMessage(errorMessage.toString()).setEphemeral(true).queue();
                 return;
@@ -527,25 +479,7 @@ public class AlexStillTalking extends ListenerAdapter {
             ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook(), levelFlight);
             File file = graph.init3();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
-        }/*else if (event.getName().equals("getdrag") && event.getOption("plane") != null && event.getOption("alt") != null && event.getOption("speed") != null) {
-            if (event.getOption("alt").getAsInt() < 0 || event.getOption("speed").getAsInt() < 0) {
-                event.reply("invalid options ong").setEphemeral(true).queue();
-                return;
-            }
-            try {
-                Plane p = planesManager.getPlane(event.getOption("plane").getAsLong());
-                if (event.getOption("aoa") == null)
-                    event.reply("```" + p.name + "'s drag going " + event.getOption("speed").getAsInt() + "kph at " + event.getOption("alt").getAsInt() + "m is: " + p.getDrag(event.getOption("speed").getAsInt(), event.getOption("alt").getAsInt(), 0, 0) + "kgf```").queue();
-                else
-                    event.reply("```" + p.name + "'s drag going " + event.getOption("speed").getAsInt() + "kph at " + event.getOption("alt").getAsInt() + "m with +" + event.getOption("aoa").getAsDouble() + "aoa is: " + p.getDrag(event.getOption("speed").getAsInt(), event.getOption("alt").getAsInt(), 0, event.getOption("aoa").getAsDouble()) + "kgf```").queue();
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                event.reply("something got fucked tell hadi fr").setEphemeral(true).queue();
-
-            }
-        } */ else if (event.getName().equals("comparefms") && event.getOption("plane") != null && event.getOption("plane2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
+        } else if (event.getName().equals("comparefms") && event.getOption("plane") != null && event.getOption("plane2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
             try {
                 Integer.parseInt(event.getOption("plane").getAsString());
                 Integer.parseInt(event.getOption("plane2").getAsString());
@@ -577,7 +511,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 }).start();
             } catch (Exception e) {
                 System.out.println(e);
-                event.reply("something got fucked tell hadi fr").setEphemeral(true).queue();
+                event.reply("some error, tell hadi fr").setEphemeral(true).queue();
 
             }
         } else if (event.getName().equals("compareguns") && event.getOption("gun") != null && event.getOption("gun2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
@@ -610,7 +544,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 }).start();
             } catch (Exception e) {
                 System.out.println(e);
-                event.reply("something got fucked tell hadi fr").setEphemeral(true).queue();
+                event.reply("some error, tell hadi fr").setEphemeral(true).queue();
 
             }
         } else if (event.getName().equals("comparemissiles") && event.getOption("missile1") != null && event.getOption("missile2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
@@ -643,7 +577,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 }).start();
             } catch (Exception e) {
                 System.out.println(e);
-                event.reply("something got fucked tell hadi fr").setEphemeral(true).queue();
+                event.reply("some error, tell hadi fr").setEphemeral(true).queue();
 
             }
         } else
@@ -841,7 +775,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 .thenComparingInt(plane -> levenshteinDistance.apply(plane.name.toLowerCase(), finalS));
 
         return planesManager.planes.stream()
-           //     .filter(plane -> plane.cxcheck)
+                //     .filter(plane -> plane.cxcheck)
                 .filter(plane -> plane.isactualJet)
                 .sorted(comparator)
                 .map(u -> new Command.Choice(u.name, u.uid))
@@ -859,7 +793,7 @@ public class AlexStillTalking extends ListenerAdapter {
                 .thenComparingInt(plane -> levenshteinDistance.apply(plane.name.toLowerCase(), finalS));
 
         return planesManager.planes.stream()
-               // .filter(plane -> plane.cxcheck)
+                // .filter(plane -> plane.cxcheck)
                 .sorted(comparator)
                 .map(u -> new Command.Choice(u.name, u.uid))
                 .limit(25)
@@ -964,9 +898,6 @@ public class AlexStillTalking extends ListenerAdapter {
 
     }
 
-    public void setShitterRole(Role shitterRole) {
-        this.shitterRole = shitterRole;
-    }
 
     public static final String help =
             "1. `/lookup`: Search for information about guns, planes, awards, and weapon presets.\n" +
@@ -986,14 +917,14 @@ public class AlexStillTalking extends ListenerAdapter {
                     "    - `alt` (**required**): Specify the altitude for the graph.\n" +
                     "    - `minspeed` (**required**): Enter the minimum speed for the thrust graph.\n" +
                     "    - `maxspeed` (**required**): Enter the maximum speed for the thrust graph.\n" +
-                    "    - `aoa` (optional): Specify the aoa for the graph.\n" +
+                    "    - `aoa` (optional): Specify the aoa for the graph, if not set, the bot would dynamically change the AOA to maintain level flight.\n" +
                     "    - `plane2`-`plane7` (optional): Select additional planes to compare.\n\n" +
                     "4. `/makedragthrustgraph`: Create a thrust, drag and Acceleration graph for a specific altitude.\n" +
                     "    - `plane1` (**required**): Select the first plane to graph.\n" +
                     "    - `alt` (**required**): Specify the altitude for the graph.\n" +
                     "    - `minspeed` (**required**): Enter the minimum speed for the thrust graph.\n" +
                     "    - `maxspeed` (**required**): Enter the maximum speed for the thrust graph.\n" +
-                    "    - `aoa` (optional): Specify the aoa for the graph.\n" +
+                    "    - `aoa` (optional): Specify the aoa for the graph, if not set, the bot would dynamically change the AOA to maintain level flight.\n" +
                     "    - `plane2`-`plane7` (optional): Select additional planes to compare.\n" +
                     "    - `fuel_1`-`fuel_7` (optional): Select the fuel percentage for each plane.\n\n" +
                     "5. `/comparefms`: Compare the flight models of two planes.\n" +

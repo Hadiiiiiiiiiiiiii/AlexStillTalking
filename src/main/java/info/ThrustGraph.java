@@ -46,68 +46,53 @@ public class ThrustGraph {
     boolean levelFlight;
     ArrayList<ArrayList<Float>> tempDrag = new ArrayList<>();
     ArrayList<Float> allDrag = new ArrayList<>();
+    double ttwMax;
+    double ttwMin;
+    double thrustMin;
+    double thrustMax;
+    double buffer;
 
-
-    public ThrustGraph(List<Integer> yAxis, String planeName,
-                       String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed) throws HeadlessException {
-
-        if ((maxSpeed - minSpeed) > 150 && minSpeed >= 0) {
-            this.minSpeed = minSpeed;
-            this.maxSpeed = maxSpeed;
-        }
-        this.fuels = fuels;
-        this.alt = alt;
-        this.planes = planes;
-        this.yAxis = yAxis;
-
-        thrusts = new ArrayList<>();
-        ttws = new ArrayList<>();
-        long d = System.nanoTime();
-        for (int i = 0; i < planes.size(); i++) {
-            Plane p = planes.get(i);
-            thrusts.add(getThrust(p));
-            ttws.add(getTtw(p, thrusts.get(i), fuels.get(i)));
-        }
-        long b = System.nanoTime();
-        System.out.println("Time: " + (b - d));
-        this.planeNames = planeName;
-        this.title1 = title;
-        this.xAxisLabel = xAxisLabel;
-        this.yAxisLabel = yAxisLabel;
-        this.folder = folder;
+    public ThrustGraph(List<Integer> yAxis, String planeName, String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed) throws HeadlessException {
+        this(yAxis, planeName, title, xAxisLabel, yAxisLabel, folder, planes, alt, fuels, minSpeed, maxSpeed, 0.0, null, false);
     }
-    public ThrustGraph(List<Integer> yAxis, String planeName,
-                       String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed,double aoa, InteractionHook hook, boolean levelFlight) throws HeadlessException {
 
-        this.hook = hook;
+    public ThrustGraph(List<Integer> yAxis, String planeName, String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed, double aoa, InteractionHook hook, boolean levelFlight) throws HeadlessException {
         this.minSpeed = minSpeed;
         this.maxSpeed = maxSpeed;
         this.fuels = fuels;
         this.alt = alt;
         this.planes = planes;
         this.yAxis = yAxis;
+        this.hook = hook;
         this.levelFlight = levelFlight;
+
         thrusts = new ArrayList<>();
         ttws = new ArrayList<>();
-        long d = System.nanoTime();
         for (int i = 0; i < planes.size(); i++) {
             Plane p = planes.get(i);
             thrusts.add(getThrust(p));
             ttws.add(getTtw(p, thrusts.get(i), fuels.get(i)));
         }
-        long b = System.nanoTime();
-        System.out.println("Time: " + (b - d));
         this.planeNames = planeName;
         this.title1 = title;
         this.xAxisLabel = xAxisLabel;
         this.yAxisLabel = yAxisLabel;
         this.folder = folder;
-        this.aoa = aoa;
-       // getDragByPlane("f_16a_block_10");
-
+        thrustMin = thrusts.stream().mapToDouble(thrust -> thrust.stream().min(Double::compare).get()).min().getAsDouble();
+        thrustMax = thrusts.stream().mapToDouble(thrust -> thrust.stream().max(Double::compare).get()).max().getAsDouble();
+        buffer = 0;
+        for (int i = 0; i < planes.size(); i++) {
+            double rip = Double.parseDouble(planes.get(i).ripSpeedKph);
+            double thrust = planes.get(i).getThrust(alt, rip, planes.get(i).thrusts);
+            double buff = 0.02 * thrust;
+            if (buffer < buff)
+                buffer = buff;
+        }
     }
 
+
     public File init() {
+
         XYDataset dataset = createDataset();
         JFreeChart chart = createNormalChart(dataset);
 
@@ -118,8 +103,10 @@ public class ThrustGraph {
             System.out.println(planeNames);
             throw new RuntimeException(e);
         }
+        long b = System.nanoTime();
         return file;
     }
+
     public File init2() {
         XYDataset dataset = createDragDataset();
         JFreeChart chart = createDragChart(dataset);
@@ -133,6 +120,7 @@ public class ThrustGraph {
         }
         return file;
     }
+
     public File init3() {
         XYDataset dataset = createThrustAndDragDataset(); // Method to create a dataset that includes both thrust and drag
         JFreeChart chart = createDragThrustChart(dataset); // Method to create a chart that includes both thrust and drag
@@ -148,6 +136,7 @@ public class ThrustGraph {
     }
 
     private JFreeChart createNormalChart(XYDataset dataset) {
+
         JFreeChart chart = ChartFactory.createXYLineChart(
                 planeNames + " " + title1 + "m",
                 xAxisLabel + "",
@@ -175,14 +164,12 @@ public class ThrustGraph {
 
 
         NumberAxis yAxis1Temp = new NumberAxis("Thrust to weight");
-        double ttwMax = ttws.stream().mapToDouble(ttw -> ttw.stream().max(Double::compare).get()).max().getAsDouble();
-        double ttwMin = ttws.stream().mapToDouble(ttw -> ttw.stream().min(Double::compare).get()).min().getAsDouble();
         yAxis1Temp.setUpperBound(ttwMax + 0.1);
         yAxis1Temp.setLowerBound(ttwMin - 0.1);
         plot.setRangeAxis(1, yAxis1Temp);
         plot.setRangeAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
 
-        XYDataset datasetTemperature = makeTTWChart();
+        XYDataset datasetTemperature = createTTWDataSet();
         plot.setDataset(2, datasetTemperature);
         plot.mapDatasetToDomainAxis(2, 0);
         plot.mapDatasetToRangeAxis(2, 1);
@@ -197,7 +184,19 @@ public class ThrustGraph {
 
         plot.setRenderer(2, ttwSplineRenderer);
 
+        XYDataset ripSpeedDataset = createRipSpeedDataset();
+        plot.setDataset(3, ripSpeedDataset);
+        plot.mapDatasetToDomainAxis(3, 0);
+        plot.mapDatasetToRangeAxis(3, 0);
 
+        var ripSpeedRenderer = new XYSplineRenderer();
+
+        for (int i = 0; i < planes.size(); i++) {
+            Color color = colors.get(i % colors.size());
+            ripSpeedRenderer.setSeriesPaint(i, color);
+        }
+
+        plot.setRenderer(3, ripSpeedRenderer);
 
         plot.setBackgroundPaint(Color.white);
 
@@ -231,13 +230,14 @@ public class ThrustGraph {
         chart.getLegend().setFrame(BlockBorder.NONE);
 
 
-        chart.setTitle(new TextTitle(new String(planeNames + " " + title1 + "m " ),
+        chart.setTitle(new TextTitle(new String(planeNames + " " + title1 + "m "),
                 new Font("Serif", java.awt.Font.BOLD, 18)
         ));
 
 
         return chart;
     }
+
     private JFreeChart createDragThrustChart(XYDataset dataset) {
 
         JFreeChart chart = ChartFactory.createXYLineChart(
@@ -260,7 +260,7 @@ public class ThrustGraph {
         XYDataset dragDataset = createAccelerationDataset();
 
         NumberAxis accelaxis = new NumberAxis("Acceleration in m/s");
-       // System.out.println(accel);
+        // System.out.println(accel);
         double accelMax = accel.stream().max(Double::compare).get();
         double accelMin = accel.stream().min(Double::compare).get();
         accelaxis.setUpperBound(accelMax + 0.3);
@@ -296,6 +296,20 @@ public class ThrustGraph {
         }
         plot.setRenderer(1, dragRenderer);
 
+        XYDataset ripSpeedDataset = createRipSpeedDataset();
+        plot.setDataset(3, ripSpeedDataset);
+        plot.mapDatasetToDomainAxis(3, 0);
+        plot.mapDatasetToRangeAxis(3, 0);
+
+        var ripSpeedRenderer = new XYSplineRenderer();
+
+        for (int i = 0; i < planes.size(); i++) {
+            Color color = colors.get(i % colors.size());
+            ripSpeedRenderer.setSeriesPaint(i, color);
+        }
+
+        plot.setRenderer(3, ripSpeedRenderer);
+
         plot.setBackgroundPaint(Color.white);
 
         var axis = plot.getRangeAxis();
@@ -304,10 +318,10 @@ public class ThrustGraph {
         double dragMax = allDrag.stream().max(Double::compare).get();
         double thrustMin = thrusts.stream().mapToDouble(thrust -> thrust.stream().min(Double::compare).get()).min().getAsDouble();
         double thrustMax = thrusts.stream().mapToDouble(thrust -> thrust.stream().max(Double::compare).get()).max().getAsDouble();
-        double maxx = Double.max(thrustMax,dragMax);
-        double min = Double.min(thrustMin,dragMin);
+        double maxx = Double.max(thrustMax, dragMax);
+        double min = Double.min(thrustMin, dragMin);
 
-        axis.setRange(min-100, maxx+100);
+        axis.setRange(min - 100, maxx + 100);
 
         plot.setRangeGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.BLACK);
@@ -321,7 +335,7 @@ public class ThrustGraph {
         chart.getLegend().setFrame(BlockBorder.NONE);
 
         String flightStatus;
-        if (levelFlight ) {
+        if (levelFlight) {
             flightStatus = "maintaining level flight";
         } else {
             flightStatus = "with " + aoa + "° aoa";
@@ -371,7 +385,7 @@ public class ThrustGraph {
         var axis = plot.getRangeAxis();
         double dragMin = allDrag.stream().min(Double::compare).get();
         double dragMax = allDrag.stream().max(Double::compare).get();
-        axis.setRange(dragMin, dragMax+150);
+        axis.setRange(dragMin, dragMax + 150);
 
         plot.setRangeGridlinesVisible(true);
         plot.setRangeGridlinePaint(Color.BLACK);
@@ -384,12 +398,12 @@ public class ThrustGraph {
         }
         chart.getLegend().setFrame(BlockBorder.NONE);
         String flightStatus;
-        if (levelFlight ) {
+        if (levelFlight) {
             flightStatus = "maintaining level flight";
         } else {
             flightStatus = "with " + aoa + "° aoa";
         }
-        chart.setTitle(new TextTitle(planeNames + " " + title1 + "m "+ flightStatus,
+        chart.setTitle(new TextTitle(planeNames + " " + title1 + "m " + flightStatus,
                         new Font("Serif", java.awt.Font.BOLD, 18)
                 )
         );
@@ -407,11 +421,11 @@ public class ThrustGraph {
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("speeds", speeds);
-        jsonObject.put("fmpath", System.getProperty("user.dir").replace("\\","/")+"/Data/FM/"+fmName+".blkx");
+        jsonObject.put("fmpath", System.getProperty("user.dir").replace("\\", "/") + "/Data/FM/" + fmName + ".blkx");
         jsonObject.put("height", alt);
         jsonObject.put("aoa", aoa);
         jsonObject.put("levelFlight", levelFlight);
-        jsonObject.put("weight",  (Double.parseDouble(plane.emptyWeight) + (Double.parseDouble(plane.fuelWeight) * ((fuels.get(planes.indexOf(plane))* 0.1)))));
+        jsonObject.put("weight", (Double.parseDouble(plane.emptyWeight) + (Double.parseDouble(plane.fuelWeight) * ((fuels.get(planes.indexOf(plane)) * 0.1)))));
         try {
             String os = System.getProperty("os.name").toLowerCase();
             String path = "Data/Drag/";
@@ -424,7 +438,7 @@ public class ThrustGraph {
             if (os.contains("linux")) {
                 pb = new ProcessBuilder("wine", path + "drag.exe", jsonInput);
             } else {
-                 jsonInput = jsonObject.toString().replace("\"","\\\"");
+                jsonInput = jsonObject.toString().replace("\"", "\\\"");
                 pb = new ProcessBuilder(path + "drag.exe", jsonInput);
             }
 
@@ -451,7 +465,7 @@ public class ThrustGraph {
             JSONObject jsonObjectOut = null;
             if (startIndex != -1) {
                 String jsonString = output.toString().substring(startIndex);
-                 jsonObjectOut = new JSONObject(jsonString);
+                jsonObjectOut = new JSONObject(jsonString);
             }
             JSONArray dragJson = jsonObjectOut.getJSONArray("drag");
             for (Object o : dragJson) {
@@ -464,20 +478,6 @@ public class ThrustGraph {
 
         return drag;
     }
-    public XYDataset makeTTWChart() {
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        for (int i = 0; i < planes.size(); i++) {
-            Plane p = planes.get(i);
-            XYSeries series = new XYSeries("Thrust to weight " + p.actualName);
-            int numDataPoints = Math.min(p.speedList.size(), ttws.get(i).size()); // Get number of data points based on size of both lists
-            for (int j = 0; j < numDataPoints; j++) {
-                series.add(p.speedList.get(j), ttws.get(i).get(j));
-            }
-            dataset.addSeries(series);
-        }
-        return dataset;
-    }
-
 
     List<Double> getThrust(Plane p) {
         List<Double> thrust = new ArrayList<>();
@@ -496,7 +496,7 @@ public class ThrustGraph {
     List<Double> getTtw(Plane p, List<Double> thrust1, Float fuel) {
         List<Double> ttw = new ArrayList<>();
         for (int i = 0; i < p.speedList.size(); i++) {
-            ttw.add(thrust1.get(i) / (Double.parseDouble(p.emptyWeight) + (Double.parseDouble(p.fuelWeight) * ((fuel* 0.1)))));
+            ttw.add(thrust1.get(i) / (Double.parseDouble(p.emptyWeight) + (Double.parseDouble(p.fuelWeight) * ((fuel * 0.1)))));
         }
         return ttw;
     }
@@ -509,10 +509,12 @@ public class ThrustGraph {
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
                 int numDataPoints = Math.min(thrusts.get(i).size(), p.speedList.size());
+
                 if (p.velType.equals("TAS"))
                     for (int j = 0; j < numDataPoints; j++) {
                         series.add(p.speedList.get(j), thrusts.get(i).get(j));
                     }
+
                 else
                     for (int j = 0; j < numDataPoints; j++) {
                         series.add(getTASSpeed(p.speedList.get(j)), thrusts.get(i).get(j));
@@ -523,26 +525,57 @@ public class ThrustGraph {
         }
         return dataset;
     }
+
+    private XYDataset createRipSpeedDataset() {
+        var dataset = new XYSeriesCollection();
+        for (int i = 0; i < planes.size(); i++) {
+            Plane p = planes.get(i);
+            var ripSpeedIas = new XYSeries("rip speed "+p.actualName);
+            double rip = Double.parseDouble(p.ripSpeedKph);
+            double tasSpeed = Math.min(calculateTasFromMach(Double.parseDouble(p.ripSpeedMach),alt),getTASSpeed((int) rip));
+            double thrust = p.getThrust(alt, tasSpeed, p.thrusts);
+            ripSpeedIas.add(tasSpeed, thrust - buffer);
+            ripSpeedIas.add(tasSpeed, thrust + buffer);
+            dataset.addSeries(ripSpeedIas);
+        }
+        return dataset;
+    }
+
+    public XYDataset createTTWDataSet() {
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        for (int i = 0; i < planes.size(); i++) {
+            Plane p = planes.get(i);
+            XYSeries series = new XYSeries("Thrust to weight " + p.actualName);
+            int numDataPoints = Math.min(p.speedList.size(), ttws.get(i).size());
+            for (int j = 0; j < numDataPoints; j++) {
+                series.add(p.speedList.get(j), ttws.get(i).get(j));
+            }
+            dataset.addSeries(series);
+        }
+        return dataset;
+    }
+
     private XYDataset createDragDataset() {
         var dataset = new XYSeriesCollection();
         double step = (maxSpeed - minSpeed) / 100.0;
         for (int i = 0; i < planes.size(); i++) {
             Plane p = planes.get(i);
             String seriesKey = "Drag " + p.actualName;
-           // System.out.println(seriesKey);
+            // System.out.println(seriesKey);
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
                 List<Float> drags = getDragByPlane(p.actualName, p);
                 allDrag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
                     double speed = minSpeed + (j * step);
-                        series.add(speed, drags.get(j));
+                    series.add(speed, drags.get(j));
                 }
                 dataset.addSeries(series);
             }
         }
         return dataset;
     }
+
     private XYDataset createThrustAndDragDataset() {
         var dataset = new XYSeriesCollection();
 
@@ -564,7 +597,7 @@ public class ThrustGraph {
                 dataset.addSeries(series);
             }
         }
-        double step =  (maxSpeed - minSpeed) / 100.0;
+        double step = (maxSpeed - minSpeed) / 100.0;
         for (int i = 0; i < planes.size(); i++) {
             Plane p = planes.get(i);
             String seriesKey = "Drag " + p.actualName;
@@ -595,10 +628,10 @@ public class ThrustGraph {
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
                 List<Float> drags = new ArrayList<>(tempDrag.get(i));
-               // drag.addAll(drags);
+                // drag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
                     double speed = minSpeed + (j * step);
-                    double accel1 = ((p.getThrust(alt,speed,p.thrusts) - drags.get(j))* 9.807) / mass;
+                    double accel1 = ((p.getThrust(alt, speed, p.thrusts) - drags.get(j)) * 9.807) / mass;
 
                     accel.add(accel1);
                     series.add(speed, accel1);
@@ -610,45 +643,43 @@ public class ThrustGraph {
         return dataset;
     }
 
-    public static double getDensityAtAlt(int alt) {
-        final double seaLevelTemp = 288.15;
-        final double seaLevelPressure = 101325;
-        final double tempLapseRate = -0.0065;
-        final double gasConstant = 8.31447;
-        final double molarMass = 0.0289644;
-        final double gravity = 9.80665;
-
-        double temperature = seaLevelTemp + tempLapseRate * alt;
-        double pressure = seaLevelPressure * Math.pow((temperature / seaLevelTemp), (gravity * molarMass) / (-gasConstant * tempLapseRate));
-        return (pressure * molarMass) / (gasConstant * temperature);
+    static final float stdRo0 = 1.225f;
+    static final float _ro0 = 1.225f;
+    static final float _T0 = 288.16f;
+    static final float _hMax = 18300.0f;
+    static final float[] Temperature = {1.f, -2.27712e-05f, 2.18069e-10f, -5.71104e-14f, 3.97306e-18f};
+    static final float[] Density = {1.f, -9.59387e-05f, 3.53118e-09f, -5.83556e-14f, 2.28719e-19f};
+    double getTASSpeed(int IAS) {
+        return IAS * calc_tas_coeff((float) alt);
     }
 
-    public double getTASSpeed(double iasSpeed) {
-        final double airDensitySL = 1.225;
-        double airDensity = airDensitySL * getDensityAtAlt((int) (alt));
-        return iasSpeed * Math.sqrt(airDensitySL / airDensity);
+    static float poly(float[] tab, float v) {
+        return (((tab[4] * v + tab[3]) * v + tab[2]) * v + tab[1]) * v + tab[0];
     }
 
-//these two are dogshit and wrong
+    static float density(float h) {
+        return _ro0 * poly(Density, Math.min(h, _hMax)) * (_hMax / Math.max(_hMax, h));
+    }
+
+    static float calc_tas_coeff(float alt) {
+        return (float) Math.sqrt(stdRo0 / density(alt));
+    }
+
+
+    static float temperature(float h) {
+        return _T0 * poly(Temperature, Math.min(h, _hMax));
+    }
+
+    static float sonicSpeed(float h) {
+        return 20.1f * (float) Math.sqrt(temperature(h));
+    }
 
     public static double calculateMachFromTas(double tas_kph, double altitude_m) {
-        // Constants for standard atmosphere
-        double sea_level_temperature_K = 288.15;
-        double lapse_rate_K_per_m = -0.0065;
-        double gas_constant_J_per_kg_K = 287.058;
-        double specific_heat_ratio = 1.4;
-
-        double temperature_at_altitude_K = sea_level_temperature_K + lapse_rate_K_per_m * altitude_m;
-
-        double speed_of_sound_m_per_s = Math.sqrt(specific_heat_ratio * gas_constant_J_per_kg_K * temperature_at_altitude_K);
-
-        double tas_m_per_s = tas_kph * 1000 / 3600;
-
-        double mach_number = tas_m_per_s / speed_of_sound_m_per_s;
-
-        return mach_number;
+        return ((tas_kph * 1000) / 3600) / sonicSpeed((float) altitude_m);
     }
-    public void setInteraction(InteractionHook hook){
-        this.hook = hook;
+
+    public static double calculateTasFromMach(double mach, double altitude_m) {
+        return mach * sonicSpeed((float) altitude_m) * 3600 / 1000;
     }
+
 }
