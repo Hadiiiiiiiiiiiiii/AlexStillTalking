@@ -168,11 +168,11 @@ public class AlexStillTalking extends ListenerAdapter {
                             .addFiles(FileUpload.fromData(p.imgFile, "plane.png")).setEmbeds(embed.build()).queue();
                 } catch (Exception e) {
                     try {
-                        embed.setAuthor("sus").setColor(Color.BLACK).setThumbnail("attachment://plane.png").setFooter("game ver: " + Plane.gameVer + " WIP ong for issues Message hadiiiiiiiiiiiiii")
+                        embed.setAuthor("sus").setColor(Color.BLACK).setThumbnail("attachment://plane.png").setFooter("game ver: " + Plane.gameVer + " for issues Message hadiiiiiiiiiiiiii")
                                 .setDescription("```" + planesManager.getData(event.getOption("plane").getAsLong()) + "```").setTitle(p.name).build();
                         event.reply("").addFiles(FileUpload.fromData(p.imgFile, "plane.png")).setEmbeds(embed.build()).queue();
                     } catch (Exception eeee) {
-                        embed.setAuthor("sus").setColor(Color.BLACK).setFooter("game ver: " + Plane.gameVer + " WIP ong for issues Message Hadi#5942")
+                        embed.setAuthor("sus").setColor(Color.BLACK).setFooter("game ver: " + Plane.gameVer + " for issues Message hadiiiiiiiiiiiiii")
                                 .setDescription("```" + planesManager.getData(event.getOption("plane").getAsLong()) + "```").setTitle(p.name).build();
                         event.reply("").setEmbeds(embed.build()).queue();
                     }

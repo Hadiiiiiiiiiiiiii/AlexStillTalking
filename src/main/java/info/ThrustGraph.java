@@ -78,9 +78,11 @@ public class ThrustGraph {
         this.xAxisLabel = xAxisLabel;
         this.yAxisLabel = yAxisLabel;
         this.folder = folder;
-        thrustMin = thrusts.stream().mapToDouble(thrust -> thrust.stream().min(Double::compare).get()).min().getAsDouble();
-        thrustMax = thrusts.stream().mapToDouble(thrust -> thrust.stream().max(Double::compare).get()).max().getAsDouble();
         buffer = 0;
+        if(thrusts.size() > 1) {
+            thrustMin = thrusts.stream().mapToDouble(thrust -> thrust.stream().min(Double::compare).get()).min().getAsDouble();
+            thrustMax = thrusts.stream().mapToDouble(thrust -> thrust.stream().max(Double::compare).get()).max().getAsDouble();
+
         for (int i = 0; i < planes.size(); i++) {
             double rip = Double.parseDouble(planes.get(i).ripSpeedKph);
             double thrust = planes.get(i).getThrust(alt, rip, planes.get(i).thrusts);
@@ -90,6 +92,7 @@ public class ThrustGraph {
         }
         ttwMax = ttws.stream().mapToDouble(ttw -> ttw.stream().max(Double::compare).get()).max().getAsDouble();
         ttwMin = ttws.stream().mapToDouble(ttw -> ttw.stream().min(Double::compare).get()).min().getAsDouble();
+        }
     }
 
 
