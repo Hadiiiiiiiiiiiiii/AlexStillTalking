@@ -54,6 +54,7 @@ public class ThrustGraph {
 
     public ThrustGraph(List<Integer> yAxis, String planeName, String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed) throws HeadlessException {
         this(yAxis, planeName, title, xAxisLabel, yAxisLabel, folder, planes, alt, fuels, minSpeed, maxSpeed, 0.0, null, false);
+
     }
 
     public ThrustGraph(List<Integer> yAxis, String planeName, String title, String xAxisLabel, String yAxisLabel, String folder, List<Plane> planes, double alt, List<Float> fuels, int minSpeed, int maxSpeed, double aoa, InteractionHook hook, boolean levelFlight) throws HeadlessException {
@@ -79,25 +80,11 @@ public class ThrustGraph {
         this.yAxisLabel = yAxisLabel;
         this.folder = folder;
         buffer = 0;
-        if(thrusts.size() > 1) {
-            thrustMin = thrusts.stream().mapToDouble(thrust -> thrust.stream().min(Double::compare).get()).min().getAsDouble();
-            thrustMax = thrusts.stream().mapToDouble(thrust -> thrust.stream().max(Double::compare).get()).max().getAsDouble();
-
-        for (int i = 0; i < planes.size(); i++) {
-            double rip = Double.parseDouble(planes.get(i).ripSpeedKph);
-            double thrust = planes.get(i).getThrust(alt, rip, planes.get(i).thrusts);
-            double buff = 0.02 * thrust;
-            if (buffer < buff)
-                buffer = buff;
-        }
-        ttwMax = ttws.stream().mapToDouble(ttw -> ttw.stream().max(Double::compare).get()).max().getAsDouble();
-        ttwMin = ttws.stream().mapToDouble(ttw -> ttw.stream().min(Double::compare).get()).min().getAsDouble();
-        }
     }
 
 
     public File init() {
-
+        setupThrust();
         XYDataset dataset = createDataset();
         JFreeChart chart = createNormalChart(dataset);
 
@@ -113,6 +100,7 @@ public class ThrustGraph {
     }
 
     public File init2() {
+
         XYDataset dataset = createDragDataset();
         JFreeChart chart = createDragChart(dataset);
 
@@ -127,8 +115,9 @@ public class ThrustGraph {
     }
 
     public File init3() {
-        XYDataset dataset = createThrustAndDragDataset(); // Method to create a dataset that includes both thrust and drag
-        JFreeChart chart = createDragThrustChart(dataset); // Method to create a chart that includes both thrust and drag
+        setupThrust();
+        XYDataset dataset = createThrustAndDragDataset();
+        JFreeChart chart = createDragThrustChart(dataset);
 
         var file = new File("Data/" + folder + "/" + planeNames.replace("%", "") + "_" + title1.replace("%", "") + " " + Plane.gameVer + ".png");
         try {
@@ -229,6 +218,20 @@ public class ThrustGraph {
 
 
         return chart;
+    }
+    void setupThrust() {
+        thrustMin = thrusts.stream().mapToDouble(thrust -> thrust.stream().min(Double::compare).get()).min().getAsDouble();
+        thrustMax = thrusts.stream().mapToDouble(thrust -> thrust.stream().max(Double::compare).get()).max().getAsDouble();
+
+        for (int i = 0; i < planes.size(); i++) {
+            double rip = Double.parseDouble(planes.get(i).ripSpeedKph);
+            double thrust = planes.get(i).getThrust(alt, rip, planes.get(i).thrusts);
+            double buff = 0.02 * thrust;
+            if (buffer < buff)
+                buffer = buff;
+        }
+        ttwMax = ttws.stream().mapToDouble(ttw -> ttw.stream().max(Double::compare).get()).max().getAsDouble();
+        ttwMin = ttws.stream().mapToDouble(ttw -> ttw.stream().min(Double::compare).get()).min().getAsDouble();
     }
 
     private JFreeChart createDragThrustChart(XYDataset dataset) {
