@@ -86,7 +86,7 @@ public class ThrustGraph {
     public File init() {
         setupThrust();
         XYDataset dataset = createDataset();
-        JFreeChart chart = createNormalChart(dataset);
+        JFreeChart chart = createThrustChart(dataset);
 
         var file = new File("Data/" + folder + "/" + planeNames.replace("%", "") + "_" + title1.replace("%", "") + " " + Plane.gameVer + ".png");
         try {
@@ -129,7 +129,7 @@ public class ThrustGraph {
         return file;
     }
 
-    private JFreeChart createNormalChart(XYDataset dataset) {
+    private JFreeChart createThrustChart(XYDataset dataset) {
 
         JFreeChart chart = ChartFactory.createXYLineChart(
                 planeNames + " " + title1 + "m",
@@ -164,6 +164,19 @@ public class ThrustGraph {
         plot.setRangeAxisLocation(1, AxisLocation.BOTTOM_OR_RIGHT);
 
         XYDataset datasetTemperature = createTTWDataSet();
+
+        XYDataset ripSpeedDataset = null;
+        var maxrip = getRipSpeeds(planes).stream().max(Double::compare).get();
+        if(maxrip < maxSpeed) {
+            ripSpeedDataset = createRipSpeedDataset();
+        } else if(maxSpeed == 0) {
+            if (maxrip < planes.stream().flatMap(plane -> plane.speedList.stream()).max(Double::compare).get()) {
+                ripSpeedDataset = createRipSpeedDataset();
+            }
+        }
+        if (ripSpeedDataset != null) {
+            plot.setDataset(3, ripSpeedDataset);
+        }
         plot.setDataset(2, datasetTemperature);
         plot.mapDatasetToDomainAxis(2, 0);
         plot.mapDatasetToRangeAxis(2, 1);
@@ -291,9 +304,18 @@ public class ThrustGraph {
             dragRenderer.setSeriesStroke(i, new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[]{6.0f, 6.0f}, 0.0f));
         }
         plot.setRenderer(1, dragRenderer);
-
-        XYDataset ripSpeedDataset = createRipSpeedDataset();
-        plot.setDataset(3, ripSpeedDataset);
+        XYDataset ripSpeedDataset = null;
+        var maxrip = getRipSpeeds(planes).stream().max(Double::compare).get();
+        if(maxrip < maxSpeed) {
+             ripSpeedDataset = createRipSpeedDataset();
+        } else if(maxSpeed == 0) {
+            if (maxrip < planes.stream().flatMap(plane -> plane.speedList.stream()).max(Double::compare).get()) {
+                ripSpeedDataset = createRipSpeedDataset();
+            }
+        }
+        if (ripSpeedDataset != null) {
+            plot.setDataset(3, ripSpeedDataset);
+        }
         plot.mapDatasetToDomainAxis(3, 0);
         plot.mapDatasetToRangeAxis(3, 0);
 
@@ -344,7 +366,15 @@ public class ThrustGraph {
 
         return chart;
     }
-
+    private ArrayList<Double> getRipSpeeds(List<Plane> planes) {
+        ArrayList<Double> ripSpeeds = new ArrayList<>();
+        for (Plane p : planes) {
+            double rip = Double.parseDouble(p.ripSpeedKph);
+            double tasSpeed = Math.min(calculateTasFromMach(Double.parseDouble(p.ripSpeedMach), alt), getTASSpeed((int) rip));
+            ripSpeeds.add(tasSpeed);
+        }
+        return ripSpeeds;
+    }
     private JFreeChart createDragChart(XYDataset dataset) {
         String chartTitle = planeNames + " " + title1 + "m";
         if (levelFlight) {
