@@ -602,8 +602,8 @@ public class Plane implements Serializable {
             setFlapsInfo(plane);
             JSONObject mass = plane.getJSONObject("Mass");
             emptyWeight = mass.getBigDecimal("EmptyMass").toString();
+            fuelWeight = String.valueOf(getFuelMass(plane));
             fullWeight = mass.getBigDecimal("MaxFuelMass0").add(mass.getBigDecimal("OilMass").add(mass.getBigDecimal("EmptyMass"))).toPlainString();
-            fuelWeight = mass.getBigDecimal("MaxFuelMass0").toPlainString();
             gearRipSpeed = mass.getBigDecimal("GearDestructionIndSpeed").toString();
             length = plane.getBigDecimal("Length").toString();
             try {
@@ -640,7 +640,19 @@ public class Plane implements Serializable {
         }
     }
 
-
+    public static double getFuelMass(JSONObject plane) {
+        double fuelMass = 0.0;
+        try {
+            JSONObject parts = plane.getJSONObject("Mass").getJSONObject("Parts");
+            for(String key : parts.keySet()) {
+                if (key.contains("capacity") && !parts.getBoolean(key.substring(0, key.indexOf("_capacity")) + "_external")) {
+                    fuelMass += parts.getDouble(key);
+                }
+            }
+        } catch (JSONException e) {
+        }
+        return fuelMass;
+    }
     public void setFlapsInfo(JSONObject plane) {
         String ret = "";
         boolean errorOccurred = false;
