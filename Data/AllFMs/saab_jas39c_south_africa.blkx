@@ -1770,6 +1770,7 @@
   },
   "Sound": {
     "Engine": "engine05_aero_rm12_WEP",
+    "passBySfx": "gripen_passby",
     "gun": "gun_default"
   },
   "cockpit": {
@@ -2157,8 +2158,8 @@
   "nightVision": {
     "sightTPodThermal": {
       "resolution": [
-        500,
-        300
+        800,
+        600
       ],
       "noiseFactor": 0.05,
       "index": 1
@@ -2316,7 +2317,7 @@
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
-              "bullets": 512,
+              "bullets": 120,
               "light": false,
               "spread": 1.2,
               "traceOffset": 1
@@ -3841,8 +3842,8 @@
           },
           "sightTPodThermal": {
             "resolution": [
-              500,
-              300
+              800,
+              600
             ],
             "noiseFactor": 0.05,
             "index": 1
