@@ -19,3 +19,6 @@ script.sh
 /META-INF/MANIFEST.MF
 Data/Other/gameversion_dev
 Data/Other/gameversion_live
+/Data/Drag/*
+!/Data/Drag/*.dll
+!/Data/Drag/drag.exe

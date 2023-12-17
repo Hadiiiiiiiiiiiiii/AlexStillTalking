@@ -84,7 +84,7 @@ Please note that this project was NOT intended to be of this scope, and thus the
 disappointing. If I had the time, I would completely rewrite most of it.
 
 ## Using Data/Drag/drag.exe
-This executable requires the .dll that is in the same folder. It expects a JSON as an argument, with variables like desired Angle of Attack (AOA), the plane's desired weight, whether the plane should try to adjust the AOA to maintain level flight, the height, and also the path to the blkx file containing the Flight Model file. Finally, the JSON should contain a JSON array with the name 'speed' that has the speeds for the drag calculation.
+This executable requires the .dll that is in the same folder. It expects a JSON as an argument, which should contain an array of plane objects and a 'speeds' array. Each plane object should have the following properties: desired Angle of Attack (AOA), the plane's name, desired weight, a boolean indicating if the plane is a propeller plane, a boolean indicating whether the plane should try to adjust the AOA to maintain level flight, the height, and the path to the blkx file containing the Flight Model file.
 
 ~~So far, most flight models are supported, but some that have inconclusive data aren't yet supported.~~
 
@@ -92,7 +92,7 @@ In case you’re using Windows, you can create a file named ‘input.json’ in 
 
 An example of what an acceptable JSON might look like:
 ````
-{"aoa":0,"weight":8807.8,"levelFlight":true,"speeds":[0,18,36,54,72,90,108,126,144,162,180,198,216,234,252,270,288,306,324,342,360,378,396,414,432,450,468,486,504,522,540,558,576,594,612,630,648,666,684,702,720,738,756,774,792,810,828,846,864,882,900,918,936,954,972,990,1008,1026,1044,1062,1080,1098,1116,1134,1152,1170,1188,1206,1224,1242,1260,1278,1296,1314,1332,1350,1368,1386,1404,1422,1440,1458,1476,1494,1512,1530,1548,1566,1584,1602,1620,1638,1656,1674,1692,1710,1728,1746,1764,1782,1800],"fmpath":"path/to/your/f_16aj.blkx","height":0}
+{"planes":[{"aoa":0,"name":"f_15a","weight":13944.5,"isProp":false,"levelFlight":true,"fmpath":"path/to/your/f_15a.blkx","height":0},{"aoa":0,"name":"su_27","weight":19120,"isProp":false,"levelFlight":true,"fmpath":"path/to/your/su_27.blkx","height":0},{"aoa":0,"name":"mirage_4000","weight":15540,"isProp":false,"levelFlight":true,"fmpath":"path/to/your/mirage_4000.blkx","height":0}],"speeds":[0,16.6,33.2,1211,1228.4,1245,1261,1278.2,1294,1311.4,1328,1344,1361.2,1377,1394.4,1411,1427,1444.2,1460,1477.4,1543,1560.4,1577,1593,1610.2,1626,1643.4,1660]}
 ````
 
 You are free to use this executable as you would like. The source code for it is for now still not open source.

@@ -21,8 +21,6 @@ import org.json.JSONObject;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -437,73 +435,82 @@ public class ThrustGraph {
         return chart;
     }
 
-    public List<Float> getDragByPlane(String fmName, Plane plane) {
-        ArrayList<Float> drag = new ArrayList<>();
-        JSONArray speeds = new JSONArray();
-        double step = (maxSpeed - minSpeed) / 100.0;
-        for (int i = 0; i <= 100; i++) {
-            double point = minSpeed + (i * step);
-            speeds.put(point);
-        }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("speeds", speeds);
-        jsonObject.put("fmpath", System.getProperty("user.dir").replace("\\", "/") + "/Data/FM/" + fmName + ".blkx");
-        jsonObject.put("height", alt);
-        jsonObject.put("aoa", aoa);
-        jsonObject.put("levelFlight", levelFlight);
-        jsonObject.put("weight", (Double.parseDouble(plane.emptyWeight) + (Double.parseDouble(plane.fuelWeight) * ((fuels.get(planes.indexOf(plane)) * 0.1)))));
-        try {
-            String os = System.getProperty("os.name").toLowerCase();
-            String path = "Data/Drag/";
-
-            String jsonInput = jsonObject.toString();
-
-            ProcessBuilder pb;
-            //System.out.println("input: "+jsonInput);
-
-            if (os.contains("linux")) {
-                pb = new ProcessBuilder("wine", path + "drag.exe", jsonInput);
-            } else {
-                jsonInput = jsonObject.toString().replace("\"", "\\\"");
-                pb = new ProcessBuilder(path + "drag.exe", jsonInput);
-            }
-
-            Process p = pb.start();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-            StringBuilder output = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                output.append(line);
-            }
-            p.waitFor();
-            //System.out.println(output);
-            BufferedReader errorReader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            StringBuilder errorOutput = new StringBuilder();
-            while ((line = errorReader.readLine()) != null) {
-                errorOutput.append(line);
-            }
-            if (errorOutput.length() > 0) {
-                System.out.println("Errors: " + errorOutput);
-                hook.sendMessage("An error acoured when claculating the drag! try a different plane than: " + fmName).queue();
-            }
-            int startIndex = output.toString().indexOf("{");
-            JSONObject jsonObjectOut = null;
-            if (startIndex != -1) {
-                String jsonString = output.toString().substring(startIndex);
-                jsonObjectOut = new JSONObject(jsonString);
-            }
-            JSONArray dragJson = jsonObjectOut.getJSONArray("drag");
-            for (Object o : dragJson) {
-                drag.add(((Number) o).floatValue());
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return drag;
+public List<List<Float>> getDragByPlanes( List<Plane> planesList) {
+    List<List<Float>> drags = new ArrayList<>();
+    JSONArray speeds = new JSONArray();
+    double step = (maxSpeed - minSpeed) / 100.0;
+    for (int i = 0; i <= 100; i++) {
+        double point = minSpeed + (i * step);
+        speeds.put(point);
     }
+    JSONArray planesJson = new JSONArray();
+    for (Plane plane : planesList) {
+        JSONObject planeJson = new JSONObject();
+        planeJson.put("fmpath", System.getProperty("user.dir").replace("\\", "/") + "/Data/FM/" + plane.actualName + ".blkx");
+        planeJson.put("height", alt);
+        planeJson.put("aoa", aoa);
+        planeJson.put("isProp", plane.isProp);
+        planeJson.put("levelFlight", levelFlight);
+        planeJson.put("weight", (Double.parseDouble(plane.emptyWeight) + (Double.parseDouble(plane.fuelWeight) * ((fuels.get(planes.indexOf(plane)) * 0.1)))));
+        planeJson.put("name", plane.actualName); // Add the "name" attribute
+        planesJson.put(planeJson);
+    }
+    JSONObject jsonObject = new JSONObject();
+    jsonObject.put("speeds", speeds);
+    jsonObject.put("planes", planesJson);
+    try {
+        String os = System.getProperty("os.name").toLowerCase();
+        String path = "Data/Drag/";
+
+        String jsonInput = jsonObject.toString();
+        ProcessBuilder pb;
+        if (os.contains("linux")) {
+            pb = new ProcessBuilder("wine", path + "drag.exe", jsonInput);
+        } else {
+            jsonInput = jsonObject.toString().replace("\"", "\\\"");
+            pb = new ProcessBuilder(path + "drag.exe", jsonInput);
+        }
+
+        Process p = pb.start();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        StringBuilder output = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            output.append(line);
+        }
+        p.waitFor();
+        BufferedReader errorReader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+        StringBuilder errorOutput = new StringBuilder();
+        while ((line = errorReader.readLine()) != null) {
+            errorOutput.append(line);
+        }
+        if (errorOutput.length() > 0) {
+            System.out.println("Errors: " + errorOutput);
+            hook.sendMessage("An error occurred when calculating the drag! mention hadi fr").queue();
+        }
+        int startIndex = output.toString().indexOf("{");
+        if (startIndex != -1) {
+            String jsonString = output.toString().substring(startIndex);
+            JSONObject jsonObjectOut = new JSONObject(jsonString);
+            for (String key : jsonObjectOut.keySet()) {
+                JSONObject planeObject = jsonObjectOut.getJSONObject(key);
+                JSONArray dragJson = planeObject.getJSONArray("drag");
+                List<Float> drag = new ArrayList<>();
+                for (Object o : dragJson) {
+                    drag.add(((Number) o).floatValue());
+                }
+                drags.add(drag);
+            }
+        }
+        else
+            hook.sendMessage("An error occurred when calculating the drag! mention hadi fr").queue();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return drags;
+}
 
     List<Double> getThrust(Plane p) {
         List<Double> thrust = new ArrayList<>();
@@ -584,13 +591,13 @@ public class ThrustGraph {
     private XYDataset createDragDataset() {
         var dataset = new XYSeriesCollection();
         double step = (maxSpeed - minSpeed) / 100.0;
+        List<List<Float>> dragsList = getDragByPlanes(planes);
         for (int i = 0; i < planes.size(); i++) {
             Plane p = planes.get(i);
             String seriesKey = "Drag " + p.actualName;
-            // System.out.println(seriesKey);
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
-                List<Float> drags = getDragByPlane(p.actualName, p);
+                List<Float> drags = dragsList.get(i);
                 allDrag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
                     double speed = minSpeed + (j * step);
@@ -601,10 +608,11 @@ public class ThrustGraph {
         }
         return dataset;
     }
+    
 
     private XYDataset createThrustAndDragDataset() {
         var dataset = new XYSeriesCollection();
-
+    
         for (int i = 0; i < planes.size(); i++) {
             Plane p = planes.get(i);
             String seriesKey = "Thrust " + p.actualName;
@@ -619,17 +627,18 @@ public class ThrustGraph {
                     for (int j = 0; j < numDataPoints; j++) {
                         series.add(getTASSpeed(p.speedList.get(j)), thrusts.get(i).get(j));
                     }
-
+    
                 dataset.addSeries(series);
             }
         }
         double step = (maxSpeed - minSpeed) / 100.0;
+        List<List<Float>> dragsList = getDragByPlanes(planes);
         for (int i = 0; i < planes.size(); i++) {
             Plane p = planes.get(i);
             String seriesKey = "Drag " + p.actualName;
             if (dataset.getSeriesIndex(seriesKey) == -1) {
                 var series = new XYSeries(seriesKey);
-                List<Float> drags = getDragByPlane(p.actualName, p);
+                List<Float> drags = dragsList.get(i);
                 tempDrag.add(new ArrayList<>(drags));
                 allDrag.addAll(drags);
                 for (int j = 0; j <= 100; j++) {
@@ -639,9 +648,9 @@ public class ThrustGraph {
                 dataset.addSeries(series);
             }
         }
-
+    
         return dataset;
-    }
+    }    
 
     private XYSeriesCollection createAccelerationDataset() {
         var dataset = new XYSeriesCollection();
