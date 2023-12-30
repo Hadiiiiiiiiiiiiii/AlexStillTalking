@@ -49,7 +49,7 @@ public class Main {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(api.getInviteUrl(Permission.MESSAGE_HISTORY, Permission.VIEW_CHANNEL, Permission.USE_APPLICATION_COMMANDS, Permission.MODERATE_MEMBERS));
+        System.out.println(api.getInviteUrl(Permission.MESSAGE_HISTORY, Permission.VIEW_CHANNEL, Permission.USE_APPLICATION_COMMANDS));
         List<Guild> gulids = api.getGuilds();
         int j = 0;
         for (int i = 0; i < gulids.size(); i++) {
@@ -128,13 +128,6 @@ public class Main {
             ).queue();
 
 
-            gulids.get(i).upsertCommand(Commands.slash("getdrag", "Get the drag of a plane at a specific speed (does not include wave drag).")
-                    .addOptions(
-                            new OptionData(OptionType.INTEGER, "plane", "Enter the name of the plane to get the drag for.").setAutoComplete(true).setRequired(true),
-                            new OptionData(OptionType.INTEGER, "alt", "Enter the altitude at which you want to get the drag.").setRequired(true),
-                            new OptionData(OptionType.INTEGER, "speed", "Enter the speed at which you want to get the drag.").setAutoComplete(false).setRequired(true)
-                    ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
-            ).queue();
 
             gulids.get(i).upsertCommand(Commands.slash("comparefms", "Compare the flight models of two planes.")
                     .addOptions(

@@ -709,11 +709,6 @@ public class AlexStillTalking extends ListenerAdapter {
 
             event.replyChoices(planeChoicesDragThrust(event.getFocusedOption().getValue().toLowerCase())).queue();
         }
-        if (event.getName().equals("getdrag") && event.getFocusedOption().getName().equals("plane")) {
-
-            if (event.getOption("plane") != null)
-                event.replyChoices(planeChoicesDrag(event.getFocusedOption().getValue().toLowerCase())).queue();
-        }
         if (event.getName().equals("comparefms") && event.getFocusedOption().getName().equals("plane") || event.getName().equals("comparefms") && event.getFocusedOption().getName().equals("plane2")) {
             event.replyChoices(planeChoicesLookup(event.getFocusedOption().getValue().toLowerCase())).queue();
         }
