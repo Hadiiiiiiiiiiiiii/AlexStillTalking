@@ -570,6 +570,7 @@ public class ThrustGraph {
             var ripSpeedIas = new XYSeries("rip speed " + p.actualName);
             double rip = Double.parseDouble(p.ripSpeedKph);
             double tasSpeed = Math.min(calculateTasFromMach(Double.parseDouble(p.ripSpeedMach), alt), getTASSpeed((int) rip));
+            tasSpeed = Math.min(tasSpeed, p.speedList.stream().max(Double::compare).get());
             double thrust = p.getThrust(alt, tasSpeed, p.thrusts);
             ripSpeedIas.add(tasSpeed, thrust - buffer);
             ripSpeedIas.add(tasSpeed, thrust + buffer);
