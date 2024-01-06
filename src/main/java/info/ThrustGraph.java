@@ -439,6 +439,7 @@ public class ThrustGraph {
 
     public List<List<Float>> getDragByPlanes(List<Plane> planesList) {
         List<List<Float>> drags = new ArrayList<>();
+        Map<String, List<Float>> dragsMap = new HashMap<>();
         JSONArray speeds = new JSONArray();
         double step = (maxSpeed - minSpeed) / 100.0;
         for (int i = 0; i <= 100; i++) {
@@ -502,11 +503,18 @@ public class ThrustGraph {
                     for (Object o : dragJson) {
                         drag.add(((Number) o).floatValue());
                     }
-                    drags.add(drag);
+                    dragsMap.put(key, drag); // Store the drag values in the map with the plane's actual name as the key
                 }
             } else {
                 hook.sendMessage("An error occurred when calculating the drag! tell hadi fr").queue();
                 return null;
+            }
+
+            // Iterate over the planesList and add the drag values to drags in the same order
+            for (Plane plane : planesList) {
+                if (dragsMap.containsKey(plane.actualName)) {
+                    drags.add(dragsMap.get(plane.actualName));
+                }
             }
 
         } catch (Exception e) {
@@ -518,11 +526,11 @@ public class ThrustGraph {
 
     List<Double> getThrust(Plane p) {
         List<Double> thrust = new ArrayList<>();
-
         for (int i = 0; i < p.speedList.size(); i++) {
             thrust.add(p.getThrust(alt, p.speedList.get(i), p.thrusts));
         }
-        if (p.hasTwoDiffEngineTypes && p.dualEngine && p.thrusts2 != null) {
+        if (p.hasTwoDiffEngineTypes && p.dualEngine && p.thrusts2 != null && !p.actualName.contains("yak_141")) {
+
             for (int i = 0; i < p.speedList.size(); i++) {
                 thrust.set(i, thrust.get(i) + p.getThrust(alt, p.speedList.get(i), p.thrusts2));
             }
