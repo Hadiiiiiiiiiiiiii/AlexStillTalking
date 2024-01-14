@@ -248,7 +248,7 @@ public class ThrustGraph {
     private JFreeChart createDragThrustChart(XYDataset dataset) {
 
         JFreeChart chart = ChartFactory.createXYLineChart(
-                title1,
+                planeNames + " " + title1 + "m",
                 xAxisLabel + "",
                 yAxisLabel + "",
                 dataset,
@@ -267,7 +267,6 @@ public class ThrustGraph {
         XYDataset dragDataset = createAccelerationDataset();
 
         NumberAxis accelaxis = new NumberAxis("Acceleration in m/s");
-        // System.out.println(accel);
         double accelMax = accel.stream().max(Double::compare).get();
         double accelMin = accel.stream().min(Double::compare).get();
         accelaxis.setUpperBound(accelMax + 0.3);

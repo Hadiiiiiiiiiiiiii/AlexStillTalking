@@ -2,6 +2,8 @@ package info.templates;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class Shell implements Serializable {
       String type;
@@ -13,7 +15,8 @@ public class Shell implements Serializable {
       String caliber;
       String tntEquenvlant;
       String explosiveType;
-      DecimalFormat df = new DecimalFormat("0.00");
+      DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+      DecimalFormat df = new DecimalFormat("0.00", symbols);
     public Shell(String type, String speed, String maxDist, String explosiveMass, String mass, String drag, String caliber, String tntEquivalent,String explosiveType) {
         this(type, speed, maxDist, mass, drag,caliber);
         this.explosiveType = explosiveType.toUpperCase().replace("_","-");

@@ -1,6 +1,5 @@
 package info;
 
-import info.templates.Commit;
 import info.generate.Comparator;
 import info.generate.MakeGuns;
 import info.generate.MakeMissiles;
@@ -302,24 +301,26 @@ public class AlexStillTalking extends ListenerAdapter {
                 maxspeed = 0;
             }
             int alt = event.getOption("alt").getAsInt();
-            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).orElse(20000) < alt);
+            StringBuilder errorMessage = new StringBuilder("Invalid options: ");
+
+            if (alt < 0 || alt > 25000) {
+                errorMessage.append("Altitude must be between 0 and 25000. ");
+            }
+
+            int maxAlt = planes.stream().mapToInt(p -> p.alts.stream().max(Integer::compare).orElse(20000)).max().orElse(20000);
+            if (alt > maxAlt) {
+                errorMessage.append("Altitude cannot be greater than the maximum altitude in the list (" + maxAlt + "). ");
+            }
 
             boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100 || fuel < 0);
-            if (invalidAlt || invalidMaxSpeed) {
-                StringBuilder errorMessage = new StringBuilder("Invalid options: ");
-                if (invalidAlt) {
-                    errorMessage.append("Altitude is either less than 0, greater than 25000, or greater than the maximum altitude in the list. ");
-                }
-                if (invalidMaxSpeed) {
-                    errorMessage.append("Max speed is either less than 0, greater than the maximum speed in the list, or less than the minimum speed.");
-                }
-                if (invalidFuel) {
-                    errorMessage.append("Fuel % cant be less than 0 or more than 100");
-                }
+            if (invalidFuel) {
+                errorMessage.append("Fuel % must be between 0 and 100. ");
+            }
+
+            if (errorMessage.length() > "Invalid options: ".length()) {
                 event.getHook().sendMessage(errorMessage.toString()).setEphemeral(true).queue();
                 return;
             }
-
             Plane p1 = planes.get(0);
             String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
             for (int i = 1; i < planes.size(); i++) {
@@ -354,64 +355,76 @@ public class AlexStillTalking extends ListenerAdapter {
             }
 
             List<String> planeNames = planes.stream()
-                    .map(p -> p.actualName)
-                    .toList();
+            .map(p -> p.actualName)
+            .toList();
 
-            List<String> duplicatePlaneNames = planeNames.stream()
-                    .filter(p -> Collections.frequency(planeNames, p) > 1)
-                    .distinct()
-                    .toList();
+        List<String> duplicatePlaneNames = planeNames.stream()
+            .filter(p -> Collections.frequency(planeNames, p) > 1)
+            .distinct()
+            .toList();
 
-            if (!duplicatePlaneNames.isEmpty()) {
-                String message = String.join(", ", duplicatePlaneNames);
+        if (!duplicatePlaneNames.isEmpty()) {
+            String message = String.join(", ", duplicatePlaneNames);
+            event.getHook().sendMessage("Duplicate planes detected: " + message + ". A plane with the same flight model cannot be included twice!").queue();
+            System.out.println("Duplicate planes detected: " + message + ". A plane with the same flight model cannot be included twice!");
+            return;
+        }
 
-                event.getHook().sendMessage("Duplicate planes detected: " + message + " - A plane with the same flight model cannot be included twice!")
-                        .queue();
-                System.out.println("Duplicate planes detected: " + message + " - A plane with the same flight model cannot be included twice!");
-                return;
-            }
+        int alt = event.getOption("alt").getAsInt();
 
+        int maxAlt = planes.stream().mapToInt(p -> p.alts.stream().max(Integer::compare).orElse(0)).max().orElse(0);
+        if (alt > maxAlt) {
+            event.getHook().sendMessage("Invalid altitude! Altitude cannot be greater than the maximum altitude of the planes (" + maxAlt + "). Your input was: " + alt).queue();
+            return;
+        }
 
-            int alt = event.getOption("alt").getAsInt();
-            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).orElse(20000) < alt);
-            if (invalidAlt) {
-                event.getHook().sendMessage("Invalid Alt! " + alt).queue();
-                return;
-            }
+        Plane p1 = planes.get(0);
+        String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
+        for (int i = 1; i < planes.size(); i++) {
+            Plane p = planes.get(i);
+            title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
+        }
 
-            Plane p1 = planes.get(0);
-            String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
-            for (int i = 1; i < planes.size(); i++) {
-                Plane p = planes.get(i);
-                title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
-            }
-            int minspeed = event.getOption("minspeed").getAsInt();
-            int maxspeed = event.getOption("maxspeed").getAsInt();
-            double aoa = 0;
-            boolean levelFlight = false;
-            if (event.getOption("aoa") != null) {
-                aoa = event.getOption("aoa").getAsDouble();
-            } else {
-                levelFlight = true;
-            }
-            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook(), levelFlight);
+        int minspeed = event.getOption("minspeed").getAsInt();
+        int maxspeed = event.getOption("maxspeed").getAsInt();
+    
+        int minSpeedInPlanes = planes.stream().mapToInt(p -> p.speedList.stream().min(Integer::compare).orElse(0)).min().orElse(0);
+        int maxSpeedInPlanes = planes.stream()
+            .mapToInt(p -> p.speedList.stream().max(Integer::compare).orElse(0))
+            .min().orElse(0);
+    
+        if (minspeed < minSpeedInPlanes || minspeed > maxSpeedInPlanes) {
+            event.getHook().sendMessage("Invalid minimum speed! Minimum speed must be within the range of speeds in the planes. Your input was: " + minspeed + " but shouldn't be lower than " + minSpeedInPlanes).queue();
+            return;
+        }
+    
+        if (maxspeed < minSpeedInPlanes || maxspeed > maxSpeedInPlanes) {
+            event.getHook().sendMessage("Invalid maximum speed! Maximum speed must be within the range of speeds in the planes. Your input was: " + maxspeed + " but shouldn't be higher than " + maxSpeedInPlanes).queue();
+            return;
+        }
+    
+
+        double aoa = 0;
+        boolean levelFlight = false;
+        if (event.getOption("aoa") != null) {
+            aoa = event.getOption("aoa").getAsDouble();
+        } else {
+            levelFlight = true;
+        }
+            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Power (Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook(), levelFlight);
             File file = graph.init2();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
         } else if (event.getName().equals("makedragthrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
             event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
-
+        
             List<Plane> planes = new ArrayList<>();
             List<Float> fuels = new ArrayList<>();
-
+        
             for (int i = 1; i <= 7; i++) {
                 if (event.getOption("plane" + i) != null) {
                     if (!isLong(Objects.requireNonNull(event.getOption("plane" + i)).getAsString()))
                         return;
                     Plane p = planesManager.getPlane(event.getOption("plane" + i).getAsLong());
-                    // if (!p.newFm) {
-                    //     event.getHook().sendMessage("This plane does have the standard wave drag tables! " + p.name).setEphemeral(true).queue();
-                    //     return;
-                    // }
                     planes.add(p);
                     int fuel = 30;
                     if (event.getOption("fuel_" + i) != null)
@@ -420,55 +433,60 @@ public class AlexStillTalking extends ListenerAdapter {
                     fuels.add((float) (fuel * 0.1));
                 }
             }
-
+        
             List<String> planeNames = planes.stream()
                     .map(p -> p.actualName)
                     .toList();
-
+        
             List<String> duplicatePlaneNames = planeNames.stream()
                     .filter(p -> Collections.frequency(planeNames, p) > 1)
                     .distinct()
                     .collect(Collectors.toList());
-
+        
             if (!duplicatePlaneNames.isEmpty()) {
                 String message = String.join(", ", duplicatePlaneNames);
-
-                event.getHook().sendMessage("Duplicate planes detected: " + message + " - A plane with the same flight model cannot be included twice!")
-                        .queue();
+                event.getHook().sendMessage("Duplicate planes detected: " + message + ". A plane with the same flight model cannot be included twice!").queue();
                 return;
             }
-
+        
             int minspeed = event.getOption("minspeed").getAsInt();
             int maxspeed = event.getOption("maxspeed").getAsInt();
-
-            int alt = event.getOption("alt").getAsInt();
-            boolean invalidAlt = planes.stream().anyMatch(p -> alt < 0 || alt > 25000 || p.alts.stream().max(Integer::compare).get() < alt);
-            boolean invalidMaxSpeed = planes.stream().anyMatch(p -> maxspeed < 0 || p.speedList.stream().max(Integer::compare).orElse(2000) < maxspeed || maxspeed < minspeed || maxspeed == minspeed);
-            boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100 || fuel < 0);
-
-            if (invalidAlt || invalidMaxSpeed || invalidFuel) {
-                StringBuilder errorMessage = new StringBuilder("Invalid options: ");
-                if (invalidAlt) {
-                    errorMessage.append("Altitude is either less than 0, greater than 25000, or greater than the maximum altitude in the list. ");
-                }
-                if (invalidMaxSpeed) {
-                    errorMessage.append("Max speed is either less than 0, greater than the maximum speed in the list, or less than the minimum speed.");
-                }
-                if (invalidFuel) {
-                    errorMessage.append("Fuel % cant be less than 0 or more than 100");
-                }
-                event.getHook().sendMessage(errorMessage.toString()).setEphemeral(true).queue();
+            
+            int minSpeedInPlanes = planes.stream().mapToInt(p -> p.speedList.stream().min(Integer::compare).orElse(0)).min().orElse(0);
+            int maxSpeedInPlanes = planes.stream()
+            .mapToInt(p -> p.speedList.stream().max(Integer::compare).orElse(0))
+            .min().orElse(0);
+            
+            if (minspeed < minSpeedInPlanes || minspeed > maxSpeedInPlanes) {
+                event.getHook().sendMessage("Invalid minimum speed! Minimum speed must be within the range of speeds in the planes. Your input was: " + minspeed + " but shouldnt be lower than " + minSpeedInPlanes).queue();
                 return;
             }
-
+            
+            if (maxspeed < minSpeedInPlanes || maxspeed > maxSpeedInPlanes) {
+                event.getHook().sendMessage("Invalid maximum speed! Maximum speed must be within the range of speeds in the planes. Your input was: " + maxspeed + " but shouldnt be higher than than " + maxSpeedInPlanes).queue();
+                return;
+            }
+        
+            int alt = event.getOption("alt").getAsInt();        
+            int maxAlt = planes.stream().mapToInt(p -> p.alts.stream().max(Integer::compare).orElse(0)).max().orElse(0);
+            if (alt > maxAlt) {
+                event.getHook().sendMessage("Invalid altitude! Altitude cannot be greater than the maximum altitude of the planes (" + maxAlt + "). Your input was: " + alt).queue();
+                return;
+            }
+        
+            boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100 || fuel < 0);
+            if (invalidFuel) {
+                event.getHook().sendMessage("Invalid fuel! Fuel percentage must be between 0 and 100.").queue();
+                return;
+            }
+        
             Plane p1 = planes.get(0);
             String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
             for (int i = 1; i < planes.size(); i++) {
                 Plane p = planes.get(i);
                 title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
             }
-
-
+        
             double aoa = 0;
             boolean levelFlight = false;
             if (event.getOption("aoa") != null) {
@@ -476,10 +494,10 @@ public class AlexStillTalking extends ListenerAdapter {
             } else {
                 levelFlight = true;
             }
-            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Drag(Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook(), levelFlight);
+            ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Power (Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook(), levelFlight);
             File file = graph.init3();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
-        } else if (event.getName().equals("comparefms") && event.getOption("plane") != null && event.getOption("plane2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
+        }    else if (event.getName().equals("comparefms") && event.getOption("plane") != null && event.getOption("plane2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
             try {
                 Integer.parseInt(event.getOption("plane").getAsString());
                 Integer.parseInt(event.getOption("plane2").getAsString());
