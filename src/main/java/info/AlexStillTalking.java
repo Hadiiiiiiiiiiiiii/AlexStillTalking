@@ -373,8 +373,9 @@ public class AlexStillTalking extends ListenerAdapter {
         int alt = event.getOption("alt").getAsInt();
 
         int maxAlt = planes.stream().mapToInt(p -> p.alts.stream().max(Integer::compare).orElse(0)).max().orElse(0);
-        if (alt > maxAlt) {
-            event.getHook().sendMessage("Invalid altitude! Altitude cannot be greater than the maximum altitude of the planes (" + maxAlt + "). Your input was: " + alt).queue();
+        System.out.println(maxAlt);
+        if (alt < 0 ) {
+            event.getHook().sendMessage("Invalid altitude! Altitude cannot Lower than 0").queue();
             return;
         }
 
@@ -387,22 +388,20 @@ public class AlexStillTalking extends ListenerAdapter {
 
         int minspeed = event.getOption("minspeed").getAsInt();
         int maxspeed = event.getOption("maxspeed").getAsInt();
-    
-        int minSpeedInPlanes = planes.stream().mapToInt(p -> p.speedList.stream().min(Integer::compare).orElse(0)).min().orElse(0);
-        int maxSpeedInPlanes = planes.stream()
-            .mapToInt(p -> p.speedList.stream().max(Integer::compare).orElse(0))
-            .min().orElse(0);
-    
-        if (minspeed < minSpeedInPlanes || minspeed > maxSpeedInPlanes) {
-            event.getHook().sendMessage("Invalid minimum speed! Minimum speed must be within the range of speeds in the planes. Your input was: " + minspeed + " but shouldn't be lower than " + minSpeedInPlanes).queue();
-            return;
-        }
-    
-        if (maxspeed < minSpeedInPlanes || maxspeed > maxSpeedInPlanes) {
-            event.getHook().sendMessage("Invalid maximum speed! Maximum speed must be within the range of speeds in the planes. Your input was: " + maxspeed + " but shouldn't be higher than " + maxSpeedInPlanes).queue();
-            return;
-        }
-    
+            if (minspeed < 0) {
+                event.getHook().sendMessage("Invalid minimum speed! Minimum speed cannot be less than 0. Your input was: " + minspeed).queue();
+                return;
+            }
+
+            if (maxspeed < minspeed) {
+                event.getHook().sendMessage("Invalid maximum speed! Maximum speed cannot be less than minimum speed. Your input was: " + maxspeed + " but it should be more than " + minspeed).queue();
+                return;
+            }
+
+            if (maxspeed - minspeed < 3) {
+                event.getHook().sendMessage("Invalid speed range! The difference between maximum and minimum speed must be at least 3. Your inputs were: minspeed = " + minspeed + ", maxspeed = " + maxspeed).queue();
+                return;
+            }
 
         double aoa = 0;
         boolean levelFlight = false;

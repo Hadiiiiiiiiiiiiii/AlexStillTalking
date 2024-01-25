@@ -236,7 +236,8 @@ public class ThrustGraph {
 
         for (int i = 0; i < planes.size(); i++) {
             double rip = Double.parseDouble(planes.get(i).ripSpeedKph);
-            double thrust = planes.get(i).getThrust(alt, rip, planes.get(i).thrusts);
+            var maxSpeed = planes.get(i).speedList.stream().max(Double::compare).get();
+            double thrust = planes.get(i).getThrust(alt, maxSpeed, planes.get(i).thrusts);
             double buff = 0.02 * thrust;
             if (buffer < buff)
                 buffer = buff;
