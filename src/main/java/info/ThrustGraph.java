@@ -78,6 +78,7 @@ public class ThrustGraph {
         this.yAxisLabel = yAxisLabel;
         this.folder = folder;
         buffer = 0;
+        this.aoa = aoa;
     }
 
 
