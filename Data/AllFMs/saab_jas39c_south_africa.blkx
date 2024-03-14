@@ -98,11 +98,11 @@
       },
       "elevon_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 16.1
+        "hp": 17.4
       },
       "elevon_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 17.8
+        "hp": 17.4
       },
       "fin_dm": {
         "hp": 30.5
@@ -214,7 +214,7 @@
     },
     "steel_cooling_sys": {
       "oil1_dm": {
-        "hp": 15.5
+        "hp": 13.4
       }
     },
     "steel_pilot": {
@@ -224,23 +224,37 @@
       }
     },
     "steel_tank_armor": {
-      "tank1_dm": {
+      "tank10_dm": {
         "hp": 120.5
+      },
+      "tank1_dm": {
+        "hp": 85.5
       },
       "tank2_dm": {
         "hp": 120.5
       },
       "tank3_dm": {
+        "hp": 85.5
+      },
+      "tank7_dm": {
         "hp": 120.5
       },
+      "tank8_dm": {
+        "hp": 111.3
+      },
+      "tank9_dm": {
+        "hp": 98.3
+      }
+    },
+    "steel_tank_s": {
       "tank4_dm": {
-        "hp": 120.5
+        "hp": 80.5
       },
       "tank5_dm": {
-        "hp": 120.5
+        "hp": 80.5
       },
       "tank6_dm": {
-        "hp": 120.5
+        "hp": 80.5
       }
     }
   },
@@ -931,6 +945,47 @@
         "name": "tailcontrol_dm"
       },
       {
+        "name": "tank10_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
         "name": "tank1_dm",
         "onHit": [
           {
@@ -1057,45 +1112,130 @@
         "name": "tank4_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.05,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
+            "fire": 25.0,
+            "leak": 35.0
           },
           {
             "damage": 80.0,
             "fire": 50.0,
-            "leak": 10.0
+            "leak": 30.0
           }
         ]
       },
       {
         "name": "tank5_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank7_dm",
         "onHit": [
           {
             "fire": 0.0001,
@@ -1136,7 +1276,48 @@
         ]
       },
       {
-        "name": "tank6_dm",
+        "name": "tank8_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank9_dm",
         "onHit": [
           {
             "fire": 0.0001,
@@ -2052,11 +2233,6 @@
             0.5,
             0.5
           ],
-          "monoDisplayColor": [
-            0.37,
-            0.45,
-            0.4
-          ],
           "cameraFromShell": true,
           "page": [
             {
@@ -2069,7 +2245,7 @@
             },
             {
               "type": "radar",
-              "scale": 0.75,
+              "scale": 0.7,
               "hideRadarBackground": true
             },
             {
@@ -2088,10 +2264,6 @@
           "cameraFromTargetingPod": true,
           "page": [
             {
-              "type": "rwr",
-              "scale": 1.0
-            },
-            {
               "type": "thermal",
               "turretIdx": 0
             },
@@ -2100,8 +2272,12 @@
               "turretIdx": 0
             },
             {
+              "type": "rwr",
+              "scale": 1.0
+            },
+            {
               "type": "radar",
-              "scale": 0.75,
+              "scale": 0.7,
               "hideRadarBackground": true
             }
           ]
@@ -2113,9 +2289,20 @@
             0.5,
             1.0
           ],
-          "page": {
-            "type": "map"
-          }
+          "page": [
+            {
+              "type": "map"
+            },
+            {
+              "type": "radar",
+              "scale": 0.7,
+              "hideRadarBackground": true
+            },
+            {
+              "type": "rwr",
+              "scale": 1.0
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2269,6 +2456,10 @@
       },
       {
         "blk": "gameData/sensors/ir_tracker_tgp.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic2_gun"
       }
     ]
   },
@@ -2362,10 +2553,12 @@
         "lavett_75_003",
         "lavett_74_003",
         "pylon_1",
+        "nato_pylon_1",
         "lavett_71_001",
         "u95_container",
         "lavett_74_002_bol_451",
         "pylon_2",
+        "nato_pylon_2",
         "lavett_71_002",
         "lavett_75_001",
         "lavett_74_001",
@@ -2376,12 +2569,14 @@
         "lavett_74_004_bol_451",
         "lavett_71_002",
         "pylon_3",
+        "nato_pylon_3",
         "lavett_71_004",
         "lavett_75_004",
         "lavett_74_004",
         "lavett_74_005",
         "lavett_74_005_bol_451",
         "pylon_4",
+        "nato_pylon_4",
         "pylon_5",
         "pylon_6",
         "pylon_lantirn",
@@ -2670,7 +2865,8 @@
               "emitter": "rb_75_003",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -2927,7 +3123,8 @@
               "emitter": "rb_75_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3081,6 +3278,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "ptb_3"
             }
           }
         ]
@@ -3302,7 +3503,8 @@
               "emitter": "rb_75_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3456,6 +3658,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_1"
             }
           }
         ]
@@ -3620,7 +3826,8 @@
               "emitter": "rb_75_004",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {

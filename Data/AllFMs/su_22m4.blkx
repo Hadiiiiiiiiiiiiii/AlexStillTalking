@@ -2540,6 +2540,9 @@
       },
       {
         "blk": "gameData/sensors/su_spo-15.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
       }
     ]
   },
@@ -4638,7 +4641,8 @@
         38.0
       ],
       "opticType": "tv",
-      "turretNo": 0
+      "turretNo": 0,
+      "name": "KH-29T"
     }
   },
   "turbulence": {

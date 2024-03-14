@@ -91,7 +91,7 @@
       "damageType": "pressure"
     },
     "shatterDamage": {
-      "breachConeAngle": 60.0
+      "breachConeAngle": 30.0
     },
     "damage": {
       "kinetic": {
@@ -111,7 +111,7 @@
               30.0
             ],
             "countPortion": 0.15,
-            "onHitChanceMultFire": 15.0
+            "onHitChanceMultFire": 50.0
           },
           {
             "radiusScale": 1.0,
@@ -121,8 +121,7 @@
               30.0,
               90.0
             ],
-            "countPortion": 0.75,
-            "onHitChanceMultFire": 50.0
+            "countPortion": 0.75
           },
           {
             "radiusScale": 1.0,

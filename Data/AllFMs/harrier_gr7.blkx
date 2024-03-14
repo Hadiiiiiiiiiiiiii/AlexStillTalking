@@ -2266,7 +2266,7 @@
           "page": [
             {
               "type": "rwr",
-              "scale": 1.15
+              "scale": 1.0
             },
             {
               "type": "map"
@@ -2453,6 +2453,10 @@
       {
         "name": "harrier_gr7_agm_65d",
         "blk": "gameData/FlightModels/weaponPresets/harrier_gr7_agm_65d.blk"
+      },
+      {
+        "name": "harrier_gr7_agm_65g",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_gr7_agm_65g.blk"
       },
       {
         "name": "harrier_gr7_tiald",
@@ -2728,7 +2732,25 @@
               "emitter": "agm_65b_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": "lau_117_1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
+              "emitter": "agm_65b_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -2945,7 +2967,25 @@
               "emitter": "agm_65b_003",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": "lau_117_3"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
+              "emitter": "agm_65b_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3202,7 +3242,25 @@
               "emitter": "agm_65b_004",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": "lau_117_4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
+              "emitter": "agm_65b_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3437,7 +3495,25 @@
               "emitter": "agm_65b_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": "lau_117_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
+              "emitter": "agm_65b_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3881,6 +3957,11 @@
     "us_agm_65d": {
       "prevModification": "uk_mk_10_1000lb",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_agm_65g": {
+      "reqModification": "us_agm_65d",
+      "tier": 4,
       "modClass": "weapon"
     },
     "uk_tiald_pod": {

@@ -5,7 +5,7 @@
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
-  "mesh": "us_aim_120b_missile",
+  "mesh": "fr_mbda_mica_em_missile",
   "tags": {},
   "rocket": {
     "bulletName": "fr_mica_em",
@@ -133,7 +133,7 @@
         "transmitter": {
           "power": 100.0,
           "antenna": {
-            "angleHalfSens": 7.5,
+            "angleHalfSens": 15.0,
             "sideLobesSensitivity": -30.0
           }
         },
@@ -143,7 +143,7 @@
           "rangeMax": 25000.0,
           "timeGainControl": false,
           "antenna": {
-            "angleHalfSens": 7.5,
+            "angleHalfSens": 15.0,
             "sideLobesSensitivity": -30.0
           }
         },
