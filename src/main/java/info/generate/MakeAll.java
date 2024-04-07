@@ -10,16 +10,24 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 
 public class MakeAll {
+    static String newGameVersion;
+
     public static void main(String[] args) throws IOException {
         pull();
         moveFiles();
+
+        CountDownLatch latch = new CountDownLatch(4);
+
         new Thread(() -> {
             try {
                 MakeGuns.main(null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } finally {
+                latch.countDown();
             }
         }).start();
 
@@ -28,6 +36,8 @@ public class MakeAll {
                 Comparator.main(null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } finally {
+                latch.countDown();
             }
         }).start();
 
@@ -36,12 +46,26 @@ public class MakeAll {
                 MakeMissiles.main(null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } finally {
+                latch.countDown();
             }
         }).start();
 
-        new Thread(() -> PlanesManager.main(null)).start();
+        new Thread(() -> {
+            try {
+                PlanesManager.main(null);
+            } finally {
+                latch.countDown();
+            }
+        }).start();
 
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+        System.out.println("New game Version: "+newGameVersion);
     }
     public static void pull() {
         try {
@@ -78,6 +102,7 @@ public class MakeAll {
         String version2 = new String(Files.readAllBytes(Paths.get("Data/Git/aces.vromfs.bin_u/version")));
         System.out.println("Local Game version: "+version1);
         System.out.println("Git Game version: "+version2);
+        newGameVersion = version2;
         int[] v1 = Arrays.stream(version1.split("\\.")).mapToInt(Integer::parseInt).toArray();
         int[] v2 = Arrays.stream(version2.split("\\.")).mapToInt(Integer::parseInt).toArray();
 
