@@ -48,18 +48,34 @@ Currently, this bot can do the following:
 
 ####
 
-## Availability
+~~## Availability~~
 
-The bot is currently available on these Discord servers:
+~~The bot is currently available on these Discord servers:~~
 
-### [Doofania](https://discord.gg/QxBVWEE)
 
-[Doofania](https://discord.gg/QxBVWEE) is the Discord server of the War Thunder
-YouTuber [DEFYN](https://www.youtube.com/@DEFYN).
+~~[Doofania](https://discord.gg/QxBVWEE) is the Discord server of the War Thunder
+YouTuber [DEFYN](https://www.youtube.com/@DEFYN).~~
 
-After you join any of these servers, get any of the default roles and use the bot in the dedicated bots channel.
+~~After you join any of these servers, get any of the default roles and use the bot in the dedicated bots channel.~~
 
-If you want to add this bot to your own server, feel free to contact me.
+~~If you want to add this bot to your own server, feel free to contact me.~~
+# Self Hosting
+This bot is no longer hosted by the creator and maintainer ``Hadiiiiiiiiiiiiii``.
+
+To self-host this bot, create a file called ``tokens.env`` in the same directory as the jar file ``AlexStillTalking.jar``, with its content in the following format:
+````
+<discord bot token> <github oauth token>
+````
+The GitHub OAuth token is there to pull the necessary files from the War Thunder datamining repo mentioned above.
+
+To update everything, first make sure you cloned [this](https://github.com/gszabi99/War-Thunder-Datamine) repo into the ``Data`` folder, then rename the folder to ``Git``, then run the following in the main directory: 
+```bash 
+java -jar AlexStillTalking.jar update
+```
+Now all the data that the bot outputs must be up to date.
+
+to run the bot simply remove the ``update`` from the command above.
+
 ####
 
 ## Challenges

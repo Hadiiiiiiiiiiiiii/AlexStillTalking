@@ -18,8 +18,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class VersionChecker {
     private static final String URL_DEV = "https://yupmaster.gaijinent.com/yuitem/get_version.php?proj=warthunder&tag=dev";
     private static final String URL_LIVE = "https://yupmaster.gaijinent.com/yuitem/get_version.php?proj=warthunder";
-    private static final String SNAIL_NEWS = "768492504638816257";
-    private static final String WAR_THUNDER = "712702905529925713";
+    private static final String SNAIL_NEWS = "768492504638816257";//change to your news channel
+    private static final String WAR_THUNDER = "712702905529925713";//change to your news channel
     private static final Path VERSION_FILE_DEV = Paths.get("Data/Other/gameVersion_dev");
     private static final Path VERSION_FILE_LIVE = Paths.get("Data/Other/gameVersion_live");
     private final JDA jda;
@@ -40,13 +40,14 @@ public class VersionChecker {
             if (Files.exists(VERSION_FILE_LIVE)) {
                 currentVersionLive.set(Files.readString(VERSION_FILE_LIVE).trim());
             }
+
+
+            ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+            executorService.scheduleAtFixedRate(() -> checkVersion(URL_DEV, VERSION_FILE_DEV, "dev", currentVersionDev), 0, 10, TimeUnit.SECONDS);
+            executorService.scheduleAtFixedRate(() -> checkVersion(URL_LIVE, VERSION_FILE_LIVE, "live", currentVersionLive), 0, 10, TimeUnit.SECONDS);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(() -> checkVersion(URL_DEV, VERSION_FILE_DEV, "dev", currentVersionDev), 0, 10, TimeUnit.SECONDS);
-        executorService.scheduleAtFixedRate(() -> checkVersion(URL_LIVE, VERSION_FILE_LIVE, "live", currentVersionLive), 0, 10, TimeUnit.SECONDS);
     }
 
 
@@ -64,9 +65,9 @@ public class VersionChecker {
                     String[] newParts = version.split("\\.");
 
                     TextChannel channel1 = jda.getTextChannelById(SNAIL_NEWS);
-                 //   if (channel1 != null) {
-                 //       channel1.sendMessage("Game " + versionType + " version changed: " + version).queue();
-                 //   }
+                    //   if (channel1 != null) {
+                    //       channel1.sendMessage("Game " + versionType + " version changed: " + version).queue();
+                    //   }
 
                     if (!oldParts[0].equals(newParts[0]) || !oldParts[1].equals(newParts[1])) {
                         TextChannel channel2 = jda.getTextChannelById(WAR_THUNDER);
@@ -86,6 +87,7 @@ public class VersionChecker {
                 }
             }
         } catch (IOException e) {
+            System.out.println("Check if the channel ID is correct!");
             e.printStackTrace();
         }
     }

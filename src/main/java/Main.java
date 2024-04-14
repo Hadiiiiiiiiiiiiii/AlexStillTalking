@@ -1,6 +1,7 @@
 import info.AlexStillTalking;
 import info.VersionChecker;
 import info.generate.Comparator;
+import info.generate.MakeAll;
 import info.templates.Gun;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -28,6 +29,9 @@ public class Main {
     static String gunSaveLoc = "Data/Ser/guns.ser";
 
     public static void main(String[] args) throws LoginException, IOException {
+        if (args.length != 0)
+            if (args[0].equals("update"))
+                MakeAll.main(null);
         deleteTmp();
         System.setProperty("java.awt.headless", "true");
         System.out.println("MAIN VERSION 0.0.1");
@@ -126,7 +130,6 @@ public class Main {
 
                     ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
             ).queue();
-
 
 
             gulids.get(i).upsertCommand(Commands.slash("comparefms", "Compare the flight models of two planes.")

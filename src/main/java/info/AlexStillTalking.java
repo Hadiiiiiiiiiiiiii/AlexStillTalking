@@ -6,10 +6,12 @@ import info.generate.MakeMissiles;
 import info.templates.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -17,6 +19,10 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.utils.FileUpload;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
@@ -65,15 +71,6 @@ public class AlexStillTalking extends ListenerAdapter {
 
             }
         }
-       /* if (event.getMessage().getContentRaw().equalsIgnoreCase("?shitter")) {
-            if (event.getGuild().getIdLong() == 698291014749782146L) {
-                event.getGuild().getMemberById(1093188732624052295L).timeoutFor(100, TimeUnit.SECONDS).queue();
-                for (int i = 0; i < shitters.size(); i++) {
-                    shitters.forEach(s -> s.timeoutFor(10, TimeUnit.SECONDS).queue());
-                }
-            }
-        }*/
-
 
         if (event.getMember().getIdLong() == 164821597528653824L && event.getMessage().getAttachments().size() > 0) {
             event.getMessage().reply(forzenLink).queue();
@@ -355,39 +352,39 @@ public class AlexStillTalking extends ListenerAdapter {
             }
 
             List<String> planeNames = planes.stream()
-            .map(p -> p.actualName)
-            .toList();
+                    .map(p -> p.actualName)
+                    .toList();
 
-        List<String> duplicatePlaneNames = planeNames.stream()
-            .filter(p -> Collections.frequency(planeNames, p) > 1)
-            .distinct()
-            .toList();
+            List<String> duplicatePlaneNames = planeNames.stream()
+                    .filter(p -> Collections.frequency(planeNames, p) > 1)
+                    .distinct()
+                    .toList();
 
-        if (!duplicatePlaneNames.isEmpty()) {
-            String message = String.join(", ", duplicatePlaneNames);
-            event.getHook().sendMessage("Duplicate planes detected: " + message + ". A plane with the same flight model cannot be included twice!").queue();
-            System.out.println("Duplicate planes detected: " + message + ". A plane with the same flight model cannot be included twice!");
-            return;
-        }
+            if (!duplicatePlaneNames.isEmpty()) {
+                String message = String.join(", ", duplicatePlaneNames);
+                event.getHook().sendMessage("Duplicate planes detected: " + message + ". A plane with the same flight model cannot be included twice!").queue();
+                System.out.println("Duplicate planes detected: " + message + ". A plane with the same flight model cannot be included twice!");
+                return;
+            }
 
-        int alt = event.getOption("alt").getAsInt();
+            int alt = event.getOption("alt").getAsInt();
 
-        int maxAlt = planes.stream().mapToInt(p -> p.alts.stream().max(Integer::compare).orElse(0)).max().orElse(0);
-        System.out.println(maxAlt);
-        if (alt < 0 ) {
-            event.getHook().sendMessage("Invalid altitude! Altitude cannot Lower than 0").queue();
-            return;
-        }
+            int maxAlt = planes.stream().mapToInt(p -> p.alts.stream().max(Integer::compare).orElse(0)).max().orElse(0);
+            System.out.println(maxAlt);
+            if (alt < 0) {
+                event.getHook().sendMessage("Invalid altitude! Altitude cannot Lower than 0").queue();
+                return;
+            }
 
-        Plane p1 = planes.get(0);
-        String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
-        for (int i = 1; i < planes.size(); i++) {
-            Plane p = planes.get(i);
-            title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
-        }
+            Plane p1 = planes.get(0);
+            String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
+            for (int i = 1; i < planes.size(); i++) {
+                Plane p = planes.get(i);
+                title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
+            }
 
-        int minspeed = event.getOption("minspeed").getAsInt();
-        int maxspeed = event.getOption("maxspeed").getAsInt();
+            int minspeed = event.getOption("minspeed").getAsInt();
+            int maxspeed = event.getOption("maxspeed").getAsInt();
             if (minspeed < 0) {
                 event.getHook().sendMessage("Invalid minimum speed! Minimum speed cannot be less than 0. Your input was: " + minspeed).queue();
                 return;
@@ -403,22 +400,22 @@ public class AlexStillTalking extends ListenerAdapter {
                 return;
             }
 
-        double aoa = 0;
-        boolean levelFlight = false;
-        if (event.getOption("aoa") != null) {
-            aoa = event.getOption("aoa").getAsDouble();
-        } else {
-            levelFlight = true;
-        }
+            double aoa = 0;
+            boolean levelFlight = false;
+            if (event.getOption("aoa") != null) {
+                aoa = event.getOption("aoa").getAsDouble();
+            } else {
+                levelFlight = true;
+            }
             ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Power (Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook(), levelFlight);
             File file = graph.init2();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
         } else if (event.getName().equals("makedragthrustgraph") && event.getOption("plane1") != null && event.getOption("alt") != null) {
             event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
-        
+
             List<Plane> planes = new ArrayList<>();
             List<Float> fuels = new ArrayList<>();
-        
+
             for (int i = 1; i <= 7; i++) {
                 if (event.getOption("plane" + i) != null) {
                     if (!isLong(Objects.requireNonNull(event.getOption("plane" + i)).getAsString()))
@@ -432,60 +429,60 @@ public class AlexStillTalking extends ListenerAdapter {
                     fuels.add((float) (fuel * 0.1));
                 }
             }
-        
+
             List<String> planeNames = planes.stream()
                     .map(p -> p.actualName)
                     .toList();
-        
+
             List<String> duplicatePlaneNames = planeNames.stream()
                     .filter(p -> Collections.frequency(planeNames, p) > 1)
                     .distinct()
                     .collect(Collectors.toList());
-        
+
             if (!duplicatePlaneNames.isEmpty()) {
                 String message = String.join(", ", duplicatePlaneNames);
                 event.getHook().sendMessage("Duplicate planes detected: " + message + ". A plane with the same flight model cannot be included twice!").queue();
                 return;
             }
-        
+
             int minspeed = event.getOption("minspeed").getAsInt();
             int maxspeed = event.getOption("maxspeed").getAsInt();
-            
+
             int minSpeedInPlanes = planes.stream().mapToInt(p -> p.speedList.stream().min(Integer::compare).orElse(0)).min().orElse(0);
             int maxSpeedInPlanes = planes.stream()
-            .mapToInt(p -> p.speedList.stream().max(Integer::compare).orElse(0))
-            .min().orElse(0);
-            
+                    .mapToInt(p -> p.speedList.stream().max(Integer::compare).orElse(0))
+                    .min().orElse(0);
+
             if (minspeed < minSpeedInPlanes || minspeed > maxSpeedInPlanes) {
                 event.getHook().sendMessage("Invalid minimum speed! Minimum speed must be within the range of speeds in the planes. Your input was: " + minspeed + " but shouldnt be lower than " + minSpeedInPlanes).queue();
                 return;
             }
-            
+
             if (maxspeed < minSpeedInPlanes || maxspeed > maxSpeedInPlanes) {
                 event.getHook().sendMessage("Invalid maximum speed! Maximum speed must be within the range of speeds in the planes. Your input was: " + maxspeed + " but shouldnt be higher than than " + maxSpeedInPlanes).queue();
                 return;
             }
-        
-            int alt = event.getOption("alt").getAsInt();        
+
+            int alt = event.getOption("alt").getAsInt();
             int maxAlt = planes.stream().mapToInt(p -> p.alts.stream().max(Integer::compare).orElse(0)).max().orElse(0);
             if (alt > maxAlt) {
                 event.getHook().sendMessage("Invalid altitude! Altitude cannot be greater than the maximum altitude of the planes (" + maxAlt + "). Your input was: " + alt).queue();
                 return;
             }
-        
+
             boolean invalidFuel = fuels.stream().anyMatch(fuel -> fuel > 100 || fuel < 0);
             if (invalidFuel) {
                 event.getHook().sendMessage("Invalid fuel! Fuel percentage must be between 0 and 100.").queue();
                 return;
             }
-        
+
             Plane p1 = planes.get(0);
             String title = p1.actualName + "(" + fuels.get(0) * 10 + "% fuel)";
             for (int i = 1; i < planes.size(); i++) {
                 Plane p = planes.get(i);
                 title += " " + p.actualName + "(" + fuels.get(i) * 10 + "% fuel)";
             }
-        
+
             double aoa = 0;
             boolean levelFlight = false;
             if (event.getOption("aoa") != null) {
@@ -496,7 +493,7 @@ public class AlexStillTalking extends ListenerAdapter {
             ThrustGraph graph = new ThrustGraph(p1.speedList, title, "At " + alt, "Speed(TAS)", "Power (Kgf)", "OtherGraphs", planes, alt, fuels, minspeed, maxspeed, aoa, event.getHook(), levelFlight);
             File file = graph.init3();
             event.getHook().sendMessage("").setEphemeral(false).setFiles(FileUpload.fromData(file)).queue();
-        }    else if (event.getName().equals("comparefms") && event.getOption("plane") != null && event.getOption("plane2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
+        } else if (event.getName().equals("comparefms") && event.getOption("plane") != null && event.getOption("plane2") != null && event.getOption("gameversion1") != null && event.getOption("gameversion2") != null) {
             try {
                 Integer.parseInt(event.getOption("plane").getAsString());
                 Integer.parseInt(event.getOption("plane2").getAsString());
@@ -910,6 +907,110 @@ public class AlexStillTalking extends ListenerAdapter {
 
     }
 
+    @Override
+    public void onGuildJoin(GuildJoinEvent event) {
+
+        event.getGuild().upsertCommand(Commands.slash("help", "Get help on how to use this bot.")
+                .setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+        ).queue();
+
+        event.getGuild().upsertCommand(Commands.slash("lookup", "Search for information about guns, planes, awards, and weapon presets.")
+                .addOptions(new OptionData(OptionType.INTEGER, "plane", "Enter the name of the plane you want to search for.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.STRING, "award", "Enter the name of the award you want to search for.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "weaponpresets", "Enter the name of the plane to view its weapon presets.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "gun", "Enter the name of the gun you want to search for.").setAutoComplete(true).setRequired(false)
+                ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+        ).queue();
+
+        event.getGuild().upsertCommand(Commands.slash("makethrustgraph", "Create a thrust graph for a specific altitude.")
+                .addOptions(
+                        new OptionData(OptionType.INTEGER, "plane1", "Enter the name of the plane to create a thrust graph for.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.INTEGER, "alt", "Enter the altitude at which you want to create the graph.").setRequired(true),
+                        new OptionData(OptionType.INTEGER, "minspeed", "Enter the minimum speed for the thrust graph.").setRequired(false),
+                        new OptionData(OptionType.INTEGER, "maxspeed", "Enter the maximum speed for the thrust graph.").setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane2", "Enter the name of a second plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane3", "Enter the name of a third plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane4", "Enter the name of a fourth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane5", "Enter the name of a fifth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane6", "Enter the name of a sixth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane7", "Enter the name of a seventh plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "fuel_1", "Select the fuel percentage for plane 1.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_2", "Select the fuel percentage for plane 2.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_3", "Select the fuel percentage for plane 3.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_4", "Select the fuel percentage for plane 4.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_5", "Select the fuel percentage for plane 5.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_6", "Select the fuel percentage for plane 6.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_7", "Select the fuel percentage for plane 7.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100)
+                ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+        ).queue();
+
+        event.getGuild().upsertCommand(Commands.slash("makedraggraph", "Create a thrust graph for a specific altitude.")
+                .addOptions(
+                        new OptionData(OptionType.INTEGER, "plane1", "Enter the name of the plane to create a thrust graph for.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.INTEGER, "alt", "Enter the altitude at which you want to create the graph.").setRequired(true),
+                        new OptionData(OptionType.INTEGER, "minspeed", "Enter the minimum speed for the thrust graph.").setRequired(true),
+                        new OptionData(OptionType.INTEGER, "maxspeed", "Enter the maximum speed for the thrust graph.").setRequired(true),
+                        new OptionData(OptionType.INTEGER, "aoa", "Enter the target aoa.").setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane2", "Enter the name of a second plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane3", "Enter the name of a third plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane4", "Enter the name of a fourth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane5", "Enter the name of a fifth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane6", "Enter the name of a sixth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane7", "Enter the name of a seventh plane to compare with the first plane.").setAutoComplete(true).setRequired(false)
+                ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+        ).queue();
+        event.getGuild().upsertCommand(Commands.slash("makedragthrustgraph", "Create an Acceleration graph for a specific altitude.")
+                .addOptions(
+                        new OptionData(OptionType.INTEGER, "plane1", "Enter the name of the plane to create a thrust graph for.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.INTEGER, "alt", "Enter the altitude at which you want to create the graph.").setRequired(true),
+                        new OptionData(OptionType.INTEGER, "minspeed", "Enter the minimum speed for the thrust graph.").setRequired(true),
+                        new OptionData(OptionType.INTEGER, "maxspeed", "Enter the maximum speed for the thrust graph.").setRequired(true),
+                        new OptionData(OptionType.NUMBER, "aoa", "Enter the target aoa.").setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane2", "Enter the name of a second plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane3", "Enter the name of a third plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane4", "Enter the name of a fourth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane5", "Enter the name of a fifth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane6", "Enter the name of a sixth plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "plane7", "Enter the name of a seventh plane to compare with the first plane.").setAutoComplete(true).setRequired(false),
+                        new OptionData(OptionType.INTEGER, "fuel_1", "Select the fuel percentage for plane 1.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_2", "Select the fuel percentage for plane 2.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_3", "Select the fuel percentage for plane 3.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_4", "Select the fuel percentage for plane 4.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_5", "Select the fuel percentage for plane 5.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_6", "Select the fuel percentage for plane 6.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100),
+                        new OptionData(OptionType.INTEGER, "fuel_7", "Select the fuel percentage for plane 7.").setRequired(false).addChoice("0% fuel", 0).addChoice("30% fuel(min)", 30).addChoice("50% fuel", 50).addChoice("100% fuel(full)", 100)
+
+                ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+        ).queue();
+
+
+        event.getGuild().upsertCommand(Commands.slash("comparefms", "Compare the flight models of two planes.")
+                .addOptions(
+                        new OptionData(OptionType.INTEGER, "plane", "Enter the name of the first plane to compare.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.INTEGER, "plane2", "Enter the name of the second plane to compare.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.STRING, "gameversion1", "Enter the game version for the first plane.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.STRING, "gameversion2", "Enter the game version for the second plane.").setAutoComplete(true).setRequired(true)
+                ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+        ).queue();
+
+        event.getGuild().upsertCommand(Commands.slash("compareguns", "Compare two guns.")
+                .addOptions(
+                        new OptionData(OptionType.INTEGER, "gun", "Enter the name of the first gun to compare.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.INTEGER, "gun2", "Enter the name of the second gun to compare.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.STRING, "gameversion1", "Enter the game version for the first gun.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.STRING, "gameversion2", "Enter the game version for the second gun.").setAutoComplete(true).setRequired(true)
+                ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+        ).queue();
+
+        event.getGuild().upsertCommand(Commands.slash("comparemissiles", "Compare two missiles and see the difference in an embed.")
+                .addOptions(
+                        new OptionData(OptionType.INTEGER, "missile1", "Enter the name of the first missile to compare.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.INTEGER, "missile2", "Enter the name of the second missile to compare.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.STRING, "gameversion1", "Enter the game version for the first missile.").setAutoComplete(true).setRequired(true),
+                        new OptionData(OptionType.STRING, "gameversion2", "Enter the game version for the second missile.").setAutoComplete(true).setRequired(true)
+                ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+        ).queue();
+    }
 
     public static final String help =
             "1. `/lookup`: Search for information about guns, planes, awards, and weapon presets.\n" +

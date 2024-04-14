@@ -65,8 +65,9 @@ public class MakeAll {
             e.printStackTrace();
         }
 
-        System.out.println("New game Version: "+newGameVersion);
+        System.out.println("New game Version: " + newGameVersion);
     }
+
     public static void pull() {
         try {
             String directory = "Data/Git";
@@ -97,11 +98,12 @@ public class MakeAll {
             e.printStackTrace();
         }
     }
+
     static void moveFiles() throws IOException {
         String version1 = new String(Files.readAllBytes(Paths.get("Data/Other/version")));
         String version2 = new String(Files.readAllBytes(Paths.get("Data/Git/aces.vromfs.bin_u/version")));
-        System.out.println("Local Game version: "+version1);
-        System.out.println("Git Game version: "+version2);
+        System.out.println("Local Game version: " + version1);
+        System.out.println("Git Game version: " + version2);
         newGameVersion = version2;
         int[] v1 = Arrays.stream(version1.split("\\.")).mapToInt(Integer::parseInt).toArray();
         int[] v2 = Arrays.stream(version2.split("\\.")).mapToInt(Integer::parseInt).toArray();
@@ -127,3 +129,6 @@ public class MakeAll {
 
 
 }
+
+
+
