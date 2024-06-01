@@ -34,7 +34,7 @@ public class Main {
                 MakeAll.main(null);
         deleteTmp();
         System.setProperty("java.awt.headless", "true");
-        System.out.println("MAIN VERSION 0.0.1");
+        System.out.println("MAIN VERSION 0.0.2");
         ArrayList<Gun> l = readGuns();
 
         AlexStillTalking alexstilltalking = new AlexStillTalking(l);

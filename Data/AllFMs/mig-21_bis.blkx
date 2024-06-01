@@ -2295,6 +2295,120 @@
         4500.0
       ]
     },
+    "rwr": {
+      "type": "rwr",
+      "name": "SPO-10",
+      "power": 250.0,
+      "txAngle": [
+        5.0,
+        15.0
+      ],
+      "txSidelobes": -30.0,
+      "rxAngle": [
+        100.0,
+        45.0
+      ],
+      "range": 50000.0,
+      "signalSfxName": "alarm_radar",
+      "band7": true,
+      "band8": true,
+      "band9": true,
+      "detectTracking": true,
+      "targetTracking": false,
+      "mandatoryRecognition": false,
+      "receivers": {
+        "receiver": [
+          {
+            "azimuth": -45.0,
+            "elevation": 0.0,
+            "azimuthWidth": 100.0,
+            "elevationWidth": 90.0,
+            "angleFinder": false
+          },
+          {
+            "azimuth": 45.0,
+            "elevation": 0.0,
+            "azimuthWidth": 100.0,
+            "elevationWidth": 90.0,
+            "angleFinder": false
+          },
+          {
+            "azimuth": -135.0,
+            "elevation": 0.0,
+            "azimuthWidth": 100.0,
+            "elevationWidth": 90.0,
+            "angleFinder": false
+          },
+          {
+            "azimuth": 135.0,
+            "elevation": 0.0,
+            "azimuthWidth": 100.0,
+            "elevationWidth": 90.0,
+            "angleFinder": false
+          }
+        ]
+      },
+      "groups": {
+        "group": {
+          "name": "Pulse Doppler",
+          "block": true,
+          "type": [
+            "AN/APG-66",
+            "AN/APG-66(V)1",
+            "AN/APG-66(V)3",
+            "AN/APG-66J",
+            "AN/APG-68(V)5",
+            "AN/APG-68(V)7",
+            "AN/APG-68(V)9",
+            "AN/APG-63",
+            "AN/APG-65Q",
+            "AN/APG-67",
+            "AN/APG-76 / AN/ASX-1",
+            "Thales RDY",
+            "N001",
+            "N001VEP",
+            "N019_S31",
+            "N010 Zhuk",
+            "N010M Zhuk-M",
+            "ELTA EL/M-2001B",
+            "PS-371A",
+            "PS-37A",
+            "PS-46A",
+            "PS-05A",
+            "Ferranti Blue Vixen",
+            "AN/APG-59",
+            "AN/AWG-9",
+            "AN/AWG-9 / AN/AXX-1 TCS",
+            "Thomson-CSF RDI",
+            "Thomson-CSF RDM-3",
+            "marconi_ai_mk24",
+            "marconi_ai_mk24z",
+            "AI.24 Foxhunter Stage 2G",
+            "weapon"
+          ]
+        }
+      },
+      "directionLamps": {
+        "directionLamp": [
+          {
+            "receiver": 0,
+            "lamp": 0
+          },
+          {
+            "receiver": 1,
+            "lamp": 2
+          },
+          {
+            "receiver": 2,
+            "lamp": 6
+          },
+          {
+            "receiver": 3,
+            "lamp": 4
+          }
+        ]
+      }
+    },
     "multifunctionDisplays": {
       "display": {
         "textureArea": [
@@ -2533,7 +2647,8 @@
           },
           {
             "iconType": "missile_type_c_air_to_air",
-            "name": "r13m1_default",
+            "name": "r13m1",
+            "reqModification": "mig_19_r13m",
             "ShowNodes": {
               "node": [
                 "pylon_l1",
@@ -2542,7 +2657,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_13m1_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
               "emitter": "r_3s_l1",
               "bullets": 1,
               "external": true,
@@ -2551,8 +2666,7 @@
           },
           {
             "iconType": "missile_type_b_air_to_air",
-            "name": "r60m",
-            "reqModification": "mi_24_r_60m",
+            "name": "r60m_default",
             "ShowNodes": {
               "node": [
                 "pylon_l1",
@@ -2561,7 +2675,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_60m.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_r_60m_default.blk",
               "emitter": "r_60_1",
               "bullets": 1,
               "external": true,
@@ -3088,7 +3202,8 @@
           },
           {
             "iconType": "missile_type_c_air_to_air",
-            "name": "r13m1_default",
+            "name": "r13m1",
+            "reqModification": "mig_19_r13m",
             "ShowNodes": {
               "node": [
                 "pylon_r1",
@@ -3097,7 +3212,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_13m1_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_r_13m1.blk",
               "emitter": "r_3s_r1",
               "bullets": 1,
               "external": true,
@@ -3106,8 +3221,7 @@
           },
           {
             "iconType": "missile_type_b_air_to_air",
-            "name": "r60m",
-            "reqModification": "mi_24_r_60m",
+            "name": "r60m_default",
             "ShowNodes": {
               "node": [
                 "pylon_r1",
@@ -3116,7 +3230,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_60m.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_r_60m_default.blk",
               "emitter": "r_60_2",
               "bullets": 1,
               "external": true,

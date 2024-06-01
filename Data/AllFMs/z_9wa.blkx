@@ -1494,6 +1494,10 @@
   "sensors": {
     "sensor": [
       {
+        "blk": "gameData/sensors/tv_tracker.blk",
+        "node": "optic1_gun"
+      },
+      {
         "blk": "gameData/sensors/cn_helicopter_z_rwr.blk"
       },
       {
@@ -1501,6 +1505,9 @@
       },
       {
         "blk": "gameData/sensors/cn_helicopter_z_mlws.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
       }
     ]
   },
