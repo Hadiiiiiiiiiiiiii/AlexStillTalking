@@ -2214,9 +2214,16 @@
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "hmdBlockIlsArea": [
+      0.37,
+      0.37,
+      0.63,
+      0.63
+    ],
     "sightInFov": 5.5,
     "sightOutFov": 5.5,
     "sightFov": 2.0,
+    "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
       6.39,
@@ -2536,18 +2543,19 @@
             },
             {
               "type": "radar",
+              "font": "usa_ils",
               "scale": 0.9,
               "hideBackground": true,
               "hasAviaHorizont": true,
               "hideBeam": false,
               "beamShape": "caret",
+              "targetForm": "square",
               "fontScale": 0.65,
               "lineColor": [
                 0,
                 255,
                 7
               ],
-              "targetForm": "square",
               "modeColor": [
                 0,
                 255,
@@ -2572,7 +2580,14 @@
                 0,
                 255,
                 7
-              ]
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true
             },
             {
               "type": "ils_duplicate"
@@ -2588,7 +2603,8 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.15
+            "scale": 1.15,
+            "hidePlaneSymbol": true
           }
         },
         {
@@ -2919,6 +2935,25 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120a_slot1",
+            "reqModification": "us_aim_120a",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_7_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "emitter": "aim_9_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -3055,7 +3090,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/us_610_gal_f_15_left_wing.blk",
+              "blk": "gameData/Weapons/drop_tank/us_610_gal_f_15_left_wing_dark.blk",
               "emitter": "us_610gal_drop_tank_001",
               "bullets": 1,
               "external": true,
@@ -3105,6 +3140,25 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "aim_9_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120a_slot3",
+            "reqModification": "us_aim_120a",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "lau_7_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
               "emitter": "aim_9_002",
               "bullets": 1,
               "external": true,
@@ -3556,7 +3610,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "ptb",
+            "iconType": "ptb_fuse",
             "name": "fueltank_fuse_slot6",
             "showInWeaponMenu": true,
             "ShowNodes": {
@@ -4064,7 +4118,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/us_610_gal_f_15_fuse.blk",
+              "blk": "gameData/Weapons/drop_tank/us_610_gal_f_15_fuse_dark.blk",
               "emitter": "us_610gal_drop_tank_002",
               "bullets": 1,
               "external": true,
@@ -4080,7 +4134,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "ptb",
+            "iconType": "ptb_fuse",
             "name": "fueltank_fuse_slot8",
             "showInWeaponMenu": true,
             "ShowNodes": {
@@ -4932,6 +4986,25 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120a_slot11",
+            "reqModification": "us_aim_120a",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "lau_7_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "emitter": "aim_9_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -5068,7 +5141,7 @@
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/us_610_gal_f_15_right_wing.blk",
+              "blk": "gameData/Weapons/drop_tank/us_610_gal_f_15_right_wing_dark.blk",
               "emitter": "us_610gal_drop_tank_003",
               "bullets": 1,
               "external": true,
@@ -5117,6 +5190,25 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "aim_9_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120a_slot13",
+            "reqModification": "us_aim_120a",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "lau_7_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
               "emitter": "aim_9_004",
               "bullets": 1,
               "external": true,

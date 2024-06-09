@@ -35,8 +35,8 @@
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
     "effectOffset": [
-      -1.6,
-      0.0,
+      -1.2,
+      -0.12,
       0.0
     ],
     "normalizationPreset": "heat",
@@ -118,6 +118,12 @@
         "band": 8,
         "active": true,
         "sideLobesAttenuation": -30.0,
+        "multipathEffect": [
+          0.0,
+          1.0,
+          100.0,
+          0.0
+        ],
         "lockAngleMax": 55.0,
         "angleMax": 55.0,
         "rateMax": 60.0,
@@ -145,21 +151,34 @@
           "minValue": -3000.0,
           "maxValue": 3000.0,
           "width": 20.0,
-          "refWidth": 100.0,
+          "refWidth": 80.0,
           "signalWidthMin": 5.0
         },
         "dopplerSpeedGate": {
           "filterAlpha": 0.8,
           "filterBetta": 0.05,
           "dopplerSpeedGateSearchRange": 300.0
+        },
+        "distance": {
+          "presents": true,
+          "minValue": 300.0,
+          "maxValue": 150000.0,
+          "width": 300.0,
+          "signalWidthMin": 300.0,
+          "refWidth": 1200.0
+        },
+        "distGate": {
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05,
+          "distGateSearchRange": 5000.0
         }
       },
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 25.0,
-        "loftTargetElevation": -15.0,
+        "loftElevation": 5.0,
+        "loftTargetElevation": -5.0,
         "loftAngleToAccelMult": 2.5,
-        "loftTargetOmegaMax": 0.75,
+        "loftTargetOmegaMax": 0.5,
         "timeToHitToGain0": [
           10.0,
           1.0
@@ -188,7 +207,7 @@
         "propNavMult": 4.0,
         "reqAccelMax": 50.0,
         "accelControlProp": 0.0021,
-        "accelControlIntg": 0.0376,
+        "accelControlIntg": 0.0291,
         "accelControlDiff": 0.00045,
         "accelControlIntgLim": 1.0
       },

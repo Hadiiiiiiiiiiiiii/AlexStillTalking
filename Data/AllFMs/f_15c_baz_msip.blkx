@@ -2111,7 +2111,7 @@
     ]
   },
   "ikPilot": {
-    "model": "usaf_pilot_1977_1991_char",
+    "model": "pilot_italy_late_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2201,6 +2201,10 @@
     "nozzleAngleThreshold": 0.05
   },
   "cockpit": {
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "headPos": [
       5.945,
       1.59,
@@ -2213,9 +2217,16 @@
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "hmdBlockIlsArea": [
+      0.37,
+      0.37,
+      0.63,
+      0.63
+    ],
     "sightInFov": 5.5,
     "sightOutFov": 5.5,
     "sightFov": 2.0,
+    "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
       6.39,
@@ -2535,18 +2546,19 @@
             },
             {
               "type": "radar",
+              "font": "usa_ils",
               "scale": 0.9,
               "hideBackground": true,
               "hasAviaHorizont": true,
               "hideBeam": false,
               "beamShape": "caret",
+              "targetForm": "square",
               "fontScale": 0.65,
               "lineColor": [
                 0,
                 255,
                 7
               ],
-              "targetForm": "square",
               "modeColor": [
                 0,
                 255,
@@ -2571,7 +2583,14 @@
                 0,
                 255,
                 7
-              ]
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true
             },
             {
               "type": "ils_duplicate"
@@ -2587,7 +2606,20 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.15
+            "scale": 1.15,
+            "hidePlaneSymbol": true
+          }
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": {
+            "type": "custom",
+            "pageName": "f15cWpn"
           }
         },
         {
@@ -2928,6 +2960,26 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120a_slot1",
+            "reqModification": "us_aim_120a",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_aim_9_l",
+                "lau_7_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "emitter": "aim_9_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -3178,6 +3230,26 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "aim_9_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120a_slot3",
+            "reqModification": "us_aim_120a",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_aim_9_r",
+                "lau_7_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
               "emitter": "aim_9_002",
               "bullets": 1,
               "external": true,
@@ -3500,7 +3572,7 @@
         "order": 11,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
-          "iconType": "ptb",
+          "iconType": "ptb_fuse",
           "name": "fueltank_fuse_slot6",
           "showInWeaponMenu": true,
           "ShowNodes": {
@@ -3672,7 +3744,7 @@
         "order": 12,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
-          "iconType": "ptb",
+          "iconType": "ptb_fuse",
           "name": "fueltank_fuse_slot8",
           "showInWeaponMenu": true,
           "ShowNodes": {
@@ -4109,6 +4181,26 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120a_slot11",
+            "reqModification": "us_aim_120a",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "pylon_2_aim_9_l",
+                "lau_7_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "emitter": "aim_9_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -4316,6 +4408,26 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "aim_9_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120a_slot13",
+            "reqModification": "us_aim_120a",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "pylon_2_aim_9_r",
+                "lau_7_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
               "emitter": "aim_9_004",
               "bullets": 1,
               "external": true,

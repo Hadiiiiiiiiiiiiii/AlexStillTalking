@@ -18,7 +18,7 @@
   "hasPointOfInterestMemory": true,
   "isBwOpticSight": true,
   "needTpsNightVision": true,
-  "hmdVtas": true,
+  "hmdF16c": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -2054,11 +2054,11 @@
   },
   "cockpit": {
     "targetingPodFov": [
-      12.0,
-      3.2
+      18.0,
+      1.5
     ],
-    "sightInFov": 12.299,
-    "sightOutFov": 12.299,
+    "sightInFov": 1.5,
+    "sightOutFov": 18.0,
     "sightFov": 1.0,
     "headPos": [
       4.85,
@@ -2070,6 +2070,13 @@
       0.583,
       0.0
     ],
+    "hmdBlockIlsArea": [
+      0.37,
+      0.37,
+      0.63,
+      0.63
+    ],
+    "hmdEnabledByDefault": true,
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
     "mirror": true,

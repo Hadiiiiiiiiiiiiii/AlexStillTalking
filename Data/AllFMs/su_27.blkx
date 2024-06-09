@@ -1727,7 +1727,7 @@
     ]
   },
   "ikPilot": {
-    "model": "su_pilot_late_char",
+    "model": "su_pilot_late_zsh_7ap_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1829,6 +1829,13 @@
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "hmdBlockIlsArea": [
+      0.37,
+      0.37,
+      0.63,
+      0.63
+    ],
+    "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
       8.36,
@@ -2807,9 +2814,27 @@
             {
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 42,
+              "bulletsCartridge": 3,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
-              "bullets": 96,
-              "bulletsCartridge": 12,
+              "bullets": 42,
+              "bulletsCartridge": 3,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 42,
+              "bulletsCartridge": 3,
               "external": true,
               "separate": true
             }

@@ -2298,7 +2298,14 @@
       0.0
     ],
     "collimatorSize": 0.15,
+    "hmdBlockIlsArea": [
+      0.2,
+      0.2,
+      0.63,
+      0.63
+    ],
     "staticAimPitch": 0.0,
+    "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
       5.85,
@@ -2587,7 +2594,31 @@
           ],
           "page": {
             "type": "radar",
-            "scale": 0.7
+            "font": "usa_ils",
+            "fontScale": 0.65,
+            "scale": 0.75,
+            "lineColor": [
+              0,
+              255,
+              7
+            ],
+            "hasAviaHorizont": true,
+            "hideBackground": true,
+            "hideScale": false,
+            "hideHorAngle": false,
+            "hideVerAngle": false,
+            "netRowCnt": 4,
+            "netColor": [
+              0,
+              255,
+              0
+            ],
+            "hideWeaponIndication": true,
+            "modeColor": [
+              0,
+              255,
+              0
+            ]
           }
         },
         {

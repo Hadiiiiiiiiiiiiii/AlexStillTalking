@@ -12,6 +12,7 @@
   "haveCCRPForGun": true,
   "havePointOfInterestDesignator": true,
   "ils31": true,
+  "chinaLang": true,
   "hmdShelZoom": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
@@ -1845,6 +1846,13 @@
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "hmdBlockIlsArea": [
+      0.37,
+      0.37,
+      0.63,
+      0.63
+    ],
+    "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
       8.36,
@@ -2149,8 +2157,8 @@
           "page": {
             "type": "plane_ils",
             "ilsSize": [
-              0.35,
-              0.35
+              0.3,
+              0.3
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
@@ -2500,7 +2508,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
               "emitter": "emtr_flare2",
               "bullets": 96,
               "external": true,
@@ -2621,7 +2629,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27r_slot3",
-            "reqModification": "mig_29_r_27r1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "pylon_003",
@@ -2641,7 +2649,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27er_slot3",
-            "reqModification": "mig_29_r_27er1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "pylon_003",
@@ -2661,7 +2669,7 @@
           {
             "iconType": "missile_air_to_air_ir_large_special",
             "name": "r27t_slot3",
-            "reqModification": "mig_29_r_27t1",
+            "reqModification": "su_r_27t1_r_27et1",
             "ShowNodes": {
               "node": [
                 "pylon_003",
@@ -2681,7 +2689,7 @@
           {
             "iconType": "missile_air_to_air_ir_large_special",
             "name": "r27et_slot3",
-            "reqModification": "mig_29_r_27et1",
+            "reqModification": "su_r_27t1_r_27et1",
             "ShowNodes": {
               "node": [
                 "pylon_003",
@@ -3425,7 +3433,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27r_slot4",
-            "reqModification": "mig_29_r_27r1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "pylon_004",
@@ -3451,7 +3459,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27er_slot4",
-            "reqModification": "mig_29_r_27er1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "pylon_004",
@@ -3692,7 +3700,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27r_fuse_slot5",
-            "reqModification": "mig_29_r_27r1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "pylon_005",
@@ -3718,7 +3726,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27er_fuse_slot5",
-            "reqModification": "mig_29_r_27er1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "pylon_005",
@@ -3959,7 +3967,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27r_fuse_slot6",
-            "reqModification": "mig_29_r_27r1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "aku_470_002",
@@ -3984,7 +3992,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27er_fuse_slot6",
-            "reqModification": "mig_29_r_27er1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "aku_470_002",
@@ -4210,7 +4218,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27r_slot7",
-            "reqModification": "mig_29_r_27r1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "pylon_006",
@@ -4236,7 +4244,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27er_slot7",
-            "reqModification": "mig_29_r_27er1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "pylon_006",
@@ -4494,7 +4502,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27r_slot8",
-            "reqModification": "mig_29_r_27r1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "pylon_007",
@@ -4514,7 +4522,7 @@
           {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "r27er_slot8",
-            "reqModification": "mig_29_r_27er1",
+            "reqModification": "su_r_27r1_r_27er1",
             "ShowNodes": {
               "node": [
                 "pylon_007",
@@ -4534,7 +4542,7 @@
           {
             "iconType": "missile_air_to_air_ir_large_special",
             "name": "r27t_slot8",
-            "reqModification": "mig_29_r_27t1",
+            "reqModification": "su_r_27t1_r_27et1",
             "ShowNodes": {
               "node": [
                 "pylon_007",
@@ -4554,7 +4562,7 @@
           {
             "iconType": "missile_air_to_air_ir_large_special",
             "name": "r27et_slot8",
-            "reqModification": "mig_29_r_27et1",
+            "reqModification": "su_r_27t1_r_27et1",
             "ShowNodes": {
               "node": [
                 "pylon_007",
@@ -5630,16 +5638,32 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
-    "countermeasures_belt_pack": {
+    "maw_countermeasures_launcher_chaff_only": {},
+    "maw_countermeasures_launcher_flare_only": {},
+    "maw_countermeasures_launcher_chaff_priority": {},
+    "maw_countermeasures_launcher_flare_priority": {},
+    "MAW_system_heli_false_thermal_targets": {
       "modClass": "armor",
-      "tier": 1,
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU"
+      "group": "countermeasures",
+      "tier": 1,
+      "effects": {
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/su_n_001.blk",
+              "dmPart": "radar_dm"
+            },
+            {
+              "blk": "gameData/sensors/su_spo-15lm.blk"
+            },
+            {
+              "blk": "gameData/sensors/cn_s740.blk"
+            }
+          ]
+        }
+      }
     },
     "f_4c_g_suit": {
       "tier": 2,
@@ -5651,22 +5675,23 @@
       "modClass": "armor",
       "invertEnableLogic": false
     },
-    "mig_29_r_73e": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "mig_29_r_27t1": {
-      "reqModification": "mig_29_r_73e",
+    "su_r_27t1_r_27et1": {
       "modClass": "weapon",
       "tier": 2
     },
-    "mig_29_r_27r1": {
-      "reqModification": "mig_29_r_27t1",
+    "mig_29_r_73e": {
+      "reqModification": "su_r_27t1_r_27et1",
       "modClass": "weapon",
       "tier": 3
     },
-    "mig_29_r_27et1": {
-      "reqModification": "mig_29_r_27r1",
+    "su_r_27r1_r_27er1": {
+      "reqModification": "mig_29_r_73e",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "yak_141_r_77": {
+      "prevModification": "GSh_301_belt_pack",
+      "reqModification": "su_r_27r1_r_27er1",
       "modClass": "weapon",
       "tier": 4
     },
@@ -5682,18 +5707,6 @@
       "reqModification": "GSh_301_belt_pack",
       "tier": 2,
       "modClass": "weapon"
-    },
-    "mig_29_r_27er1": {
-      "prevModification": "GSh_301_new_gun",
-      "reqModification": "mig_29_r_27r1",
-      "modClass": "weapon",
-      "tier": 3
-    },
-    "yak_141_r_77": {
-      "prevModification": "mig_29_r_27er1",
-      "reqModification": "mig_29_r_27er1",
-      "modClass": "weapon",
-      "tier": 4
     },
     "mi_24_s8_block": {
       "modClass": "weapon",

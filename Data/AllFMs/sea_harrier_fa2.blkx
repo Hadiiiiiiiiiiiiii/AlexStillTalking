@@ -11,6 +11,7 @@
   "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
+  "haveCCRPForGun": true,
   "is410SUM1Ils": true,
   "havePointOfInterestDesignator": true,
   "type": "typeFighter",
@@ -31,7 +32,7 @@
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1200kph",
-  "fightAiBehaviour": "assault",
+  "fightAiBehaviour": "fighter",
   "autopilotImpl": "Full",
   "fullAutopilotIndSpeedTransition": [
     180.0,
@@ -43,9 +44,6 @@
   ],
   "canTakeoffWithoutGear": true,
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1899,6 +1897,7 @@
       3.0,
       0.3
     ],
+    "isDoubleBulletImpactLine": true,
     "mirror": true,
     "mirrorPos": [
       3.957,
@@ -2535,6 +2534,9 @@
           ],
           "page": [
             {
+              "type": "ils_duplicate"
+            },
+            {
               "type": "map"
             },
             {
@@ -2591,51 +2593,46 @@
             0.5,
             0.4
           ],
-          "page": [
-            {
-              "type": "radar",
-              "scale": 0.92,
-              "hideBackground": true,
-              "hasAviaHorizont": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "fontScale": 0.65,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "targetForm": "square",
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ]
-            },
-            {
-              "type": "map"
-            }
-          ]
+          "page": {
+            "type": "radar",
+            "scale": 0.92,
+            "hideBackground": true,
+            "hasAviaHorizont": true,
+            "hideBeam": false,
+            "beamShape": "caret",
+            "fontScale": 0.65,
+            "lineColor": [
+              0,
+              255,
+              7
+            ],
+            "targetForm": "square",
+            "modeColor": [
+              0,
+              255,
+              7
+            ],
+            "verAngleColor": [
+              0,
+              255,
+              7
+            ],
+            "horAngleColor": [
+              0,
+              255,
+              7
+            ],
+            "scaleColor": [
+              0,
+              255,
+              7
+            ],
+            "targetColor": [
+              0,
+              255,
+              7
+            ]
+          }
         },
         {
           "textureArea": [
@@ -2675,30 +2672,6 @@
         }
       ]
     },
-    "digitalDevices": {
-      "MACH": {
-        "pos": [
-          0.5,
-          0.0
-        ],
-        "size": [
-          0.5,
-          0.25
-        ],
-        "color": [
-          0,
-          255,
-          0
-        ],
-        "fontSize": 120,
-        "value": "mach",
-        "format": "%.2f",
-        "padding": [
-          3.0,
-          15.0
-        ]
-      }
-    },
     "parts_holes_dmg": {
       "part": "fuse"
     },
@@ -2722,7 +2695,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/uk_sky_guardian_200.blk"
+        "blk": "gameData/sensors/uk_ari_18228_19.blk"
       }
     ]
   },
@@ -2792,16 +2765,20 @@
         "adu299_l",
         "lau7_l",
         "bol_304_container001",
+        "aim120_launcher_001",
+        "adapter_l",
         "pylon_i_l",
         "pylon_i_l_upor",
         "dlt_001",
         "lau_7_double_adapter_l",
         "aden_l",
         "lau_106a_001",
+        "lau_106a_1_001",
         "pylon_c",
         "pylon_c_upor",
         "aden_r",
         "lau_106a_002",
+        "lau_106a_1_002",
         "pylon_i_r",
         "pylon_i_r_upor",
         "dlt_002",
@@ -2810,7 +2787,9 @@
         "pylon_e_r_upor",
         "adu299_r",
         "lau7_r",
-        "bol_304_container002"
+        "bol_304_container002",
+        "aim120_launcher_002",
+        "adapter_r"
       ]
     },
     "HideDmParts": {
@@ -2859,7 +2838,8 @@
               "node": [
                 "pylon_e_l",
                 "adu299_l",
-                "lau7_l"
+                "lau7_l",
+                "adapter_l"
               ]
             },
             "Weapon": {
@@ -2879,7 +2859,8 @@
               "node": [
                 "pylon_e_l",
                 "adu299_l",
-                "lau7_l"
+                "lau7_l",
+                "adapter_l"
               ]
             },
             "Weapon": {
@@ -2929,7 +2910,8 @@
               "node": [
                 "pylon_e_l",
                 "adu299_l",
-                "bol_304_container001"
+                "bol_304_container001",
+                "adapter_l"
               ]
             },
             "Weapon": {
@@ -2949,7 +2931,8 @@
               "node": [
                 "pylon_e_l",
                 "adu299_l",
-                "bol_304_container001"
+                "bol_304_container001",
+                "adapter_l"
               ]
             },
             "Weapon": [
@@ -2980,7 +2963,8 @@
               "node": [
                 "pylon_e_l",
                 "adu299_l",
-                "bol_304_container001"
+                "bol_304_container001",
+                "adapter_l"
               ]
             },
             "Weapon": [
@@ -3019,7 +3003,8 @@
               "node": [
                 "pylon_e_l",
                 "adu299_l",
-                "lau7_l"
+                "aim120_launcher_001",
+                "adapter_l"
               ]
             },
             "Weapon": {
@@ -3168,6 +3153,12 @@
             "ShowNodes": {
               "node": "aden_l"
             },
+            "ShowDmParts": {
+              "node": [
+                "cannon1_dm",
+                "cover4_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonADEN_mk4.blk",
@@ -3186,7 +3177,13 @@
             "name": "aim_120b_fuse",
             "reqModification": "us_aim_120b",
             "ShowNodes": {
-              "node": "lau_106a_001"
+              "node": [
+                "lau_106a_001",
+                "lau_106a_1_001"
+              ]
+            },
+            "HideNodes": {
+              "node": "fuse2"
             },
             "Weapon": {
               "trigger": "aam",
@@ -3261,6 +3258,12 @@
             "ShowNodes": {
               "node": "aden_r"
             },
+            "ShowDmParts": {
+              "node": [
+                "cannon2_dm",
+                "cover5_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonADEN_mk4.blk",
@@ -3279,7 +3282,13 @@
             "name": "aim_120b_fuse",
             "reqModification": "us_aim_120b",
             "ShowNodes": {
-              "node": "lau_106a_002"
+              "node": [
+                "lau_106a_002",
+                "lau_106a_1_002"
+              ]
+            },
+            "HideNodes": {
+              "node": "fuse2"
             },
             "Weapon": {
               "trigger": "aam",
@@ -3368,7 +3377,8 @@
               "node": [
                 "pylon_e_r",
                 "adu299_r",
-                "lau7_r"
+                "lau7_r",
+                "adapter_r"
               ]
             },
             "Weapon": {
@@ -3388,7 +3398,8 @@
               "node": [
                 "pylon_e_r",
                 "adu299_r",
-                "lau7_r"
+                "lau7_r",
+                "adapter_r"
               ]
             },
             "Weapon": {
@@ -3438,7 +3449,8 @@
               "node": [
                 "pylon_e_r",
                 "adu299_r",
-                "bol_304_container002"
+                "bol_304_container002",
+                "adapter_r"
               ]
             },
             "Weapon": {
@@ -3458,7 +3470,8 @@
               "node": [
                 "pylon_e_r",
                 "adu299_r",
-                "bol_304_container002"
+                "bol_304_container002",
+                "adapter_r"
               ]
             },
             "Weapon": [
@@ -3489,7 +3502,8 @@
               "node": [
                 "pylon_e_r",
                 "adu299_r",
-                "bol_304_container002"
+                "bol_304_container002",
+                "adapter_r"
               ]
             },
             "Weapon": [
@@ -3528,7 +3542,9 @@
               "node": [
                 "pylon_e_r",
                 "adu299_r",
-                "lau7_r"
+                "adapter_r",
+                "aim120_launcher_002",
+                "adapter_r"
               ]
             },
             "Weapon": {
