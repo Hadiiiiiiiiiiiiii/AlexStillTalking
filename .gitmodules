@@ -1,0 +1,4 @@
+[submodule "Data/Git"]
+	path = Data/Git
+	url = https://github.com/gszabi99/War-Thunder-Datamine
+	branch = master

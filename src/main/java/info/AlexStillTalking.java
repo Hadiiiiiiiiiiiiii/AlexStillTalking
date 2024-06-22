@@ -297,6 +297,11 @@ public class AlexStillTalking extends ListenerAdapter {
                 minspeed = 0;
                 maxspeed = 0;
             }
+            if (invalidMaxSpeed) {
+                event.getHook().sendMessage("Invalid Max Speed").setEphemeral(true).queue();
+                return;
+            }
+
             int alt = event.getOption("alt").getAsInt();
             StringBuilder errorMessage = new StringBuilder("Invalid options: ");
 
