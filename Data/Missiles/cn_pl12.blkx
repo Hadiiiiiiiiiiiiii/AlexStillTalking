@@ -17,7 +17,7 @@
     "finsAoaHor": 0.360531,
     "finsAoaVer": 0.360531,
     "finsLatAccel": 38.912,
-    "distFromCmToStab": 0.15,
+    "distFromCmToStab": 0.175,
     "mass": 198.0,
     "massEnd": 160.0,
     "massEnd1": 132.0,
@@ -117,23 +117,23 @@
       "radarSeeker": {
         "band": 8,
         "active": true,
-        "sideLobesAttenuation": -20.0,
+        "sideLobesAttenuation": -30.0,
         "multipathEffect": [
           0.0,
           1.0,
-          100.0,
+          60.0,
           0.0
         ],
         "lockAngleMax": 60.0,
         "angleMax": 60.0,
-        "rateMax": 20.0,
+        "rateMax": 60.0,
         "prolongationTimeMax": 1.0,
         "designationSourceTypeMask": 2,
         "transmitter": {
           "power": 100.0,
           "antenna": {
             "angleHalfSens": 15.0,
-            "sideLobesSensitivity": -19.0
+            "sideLobesSensitivity": -30.0
           }
         },
         "receiver": {
@@ -143,7 +143,7 @@
           "timeGainControl": false,
           "antenna": {
             "angleHalfSens": 15.0,
-            "sideLobesSensitivity": -19.0
+            "sideLobesSensitivity": -30.0
           }
         },
         "dopplerSpeed": {
@@ -151,7 +151,7 @@
           "minValue": -3000.0,
           "maxValue": 3000.0,
           "width": 20.0,
-          "refWidth": 100.0,
+          "refWidth": 80.0,
           "signalWidthMin": 5.0
         },
         "dopplerSpeedGate": {
@@ -206,9 +206,9 @@
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 38.0,
-        "accelControlProp": 0.0031,
-        "accelControlIntg": 0.0471,
-        "accelControlDiff": 0.0004,
+        "accelControlProp": 0.0071,
+        "accelControlIntg": 0.047,
+        "accelControlDiff": 0.00015,
         "accelControlIntgLim": 1.0
       },
       "table0": {

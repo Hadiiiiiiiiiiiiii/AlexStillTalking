@@ -2414,6 +2414,7 @@
               "AN/APG-68(V)7",
               "AN/APG-68(V)9",
               "AN/APG-63",
+              "AN/APG-63(V)1",
               "AN/APG-65Q",
               "AN/APG-67",
               "AN/APG-76 / AN/ASX-1",
@@ -2445,6 +2446,7 @@
               "AN/APG-68(V)7",
               "AN/APG-68(V)9",
               "AN/APG-63",
+              "AN/APG-63(V)1",
               "AN/APG-65Q",
               "AN/APG-67",
               "AN/APG-76 / AN/ASX-1",
@@ -2792,9 +2794,10 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 24,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             }
@@ -3120,9 +3123,10 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 24,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             }
@@ -3330,11 +3334,8 @@
     "hp_105_jet": {},
     "g_suit": {},
     "new_compressor_jet": {},
-    "countermeasures_launcher_chaff_only_unchecked": {},
-    "countermeasures_launcher_flare_only_unchecked": {},
-    "countermeasures_launcher_chaff_priority_unchecked": {},
-    "countermeasures_launcher_flare_priority_unchecked": {},
-    "countermeasures_belt_pack_unchecked": {
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,

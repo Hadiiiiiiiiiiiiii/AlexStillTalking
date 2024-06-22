@@ -1913,7 +1913,10 @@
     ]
   },
   "ikPilot": {
-    "model": "usaf_pilot_1977_1991_char",
+    "model": [
+      "usaf_pilot_1977_1991_char",
+      "usaf_pilot_1977_1991_char"
+    ],
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1929,7 +1932,7 @@
         "flexionDir": [
           0.0,
           -1.0,
-          0.2
+          0.3
         ],
         "type": "leftHand",
         "detachedNodeYpr": [
@@ -1951,7 +1954,7 @@
         "flexionDir": [
           0.0,
           -1.0,
-          -0.5
+          -0.3
         ],
         "type": "rightHand",
         "detachedNodeYpr": [
@@ -1973,7 +1976,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          0.3
+          0.2
         ]
       },
       {
@@ -1984,7 +1987,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          -0.3
+          -0.2
         ]
       }
     ]
@@ -2007,7 +2010,7 @@
         "flexionDir": [
           0.0,
           -1.0,
-          0.1
+          0.3
         ]
       },
       {
@@ -2018,7 +2021,7 @@
         "flexionDir": [
           0.0,
           -1.0,
-          -0.1
+          -0.3
         ]
       },
       {
@@ -2029,7 +2032,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          -0.2
+          0.2
         ]
       },
       {
@@ -2040,7 +2043,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          0.2
+          -0.2
         ]
       }
     ]
@@ -2452,36 +2455,38 @@
               "beamShape": "caret",
               "fontScale": 0.65,
               "lineColor": [
-                20,
-                90,
-                200
+                0,
+                255,
+                7
               ],
               "targetForm": "square",
               "modeColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "verAngleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "horAngleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "scaleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "targetColor": [
+                0,
                 255,
-                255,
-                255
-              ]
+                7
+              ],
+              "centerRadar": true,
+              "showCueHeights": true
             },
             {
               "type": "thermal",
@@ -2525,36 +2530,38 @@
               "beamShape": "caret",
               "fontScale": 0.65,
               "lineColor": [
-                20,
-                90,
-                200
+                0,
+                255,
+                7
               ],
               "targetForm": "square",
               "modeColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "verAngleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "horAngleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "scaleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "targetColor": [
+                0,
                 255,
-                255,
-                255
-              ]
+                7
+              ],
+              "centerRadar": true,
+              "showCueHeights": true
             }
           ]
         },
@@ -2695,8 +2702,8 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_default.blk"
       },
       {
-        "name": "f_16d_block_40_barak_2_aim_9l_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_aim_9l_default.blk"
+        "name": "f_16d_block_40_barak_2_aim_9m_default",
+        "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_aim_9m_default.blk"
       },
       {
         "name": "f_16d_block_40_barak_2_aim_9l",
@@ -2887,35 +2894,57 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
-              "bullets": 70,
+              "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
-              "bullets": 70,
+              "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 30,
+              "external": true,
+              "separate": false,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 30,
+              "external": true,
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -2939,11 +2968,10 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_wingtip",
-            "reqModification": "us_aim_9m",
+            "name": "aim_9m_wingtip_default",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9e_001",
               "bullets": 1,
               "external": true,
@@ -4226,11 +4254,10 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_wingtip",
-            "reqModification": "us_aim_9m",
+            "name": "aim_9m_wingtip_default",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9e_006",
               "bullets": 1,
               "external": true,
@@ -4388,10 +4415,7 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,

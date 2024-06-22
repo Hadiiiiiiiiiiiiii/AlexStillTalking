@@ -2587,7 +2587,9 @@
                 255,
                 7
               ],
-              "hideWeaponIndication": true
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
             },
             {
               "type": "ils_duplicate"
@@ -2616,7 +2618,7 @@
           "page": {
             "type": "rwr",
             "scale": 1.15,
-            "hidePlaneSymbol": true
+            "centralMark": "cross"
           }
         },
         {
@@ -2715,8 +2717,8 @@
         "blk": "gameData/FlightModels/weaponPresets/f_15j_kai_default.blk"
       },
       {
-        "name": "f_15j_kai_aim_9l_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_15j_kai_aim_9l_default.blk"
+        "name": "f_15j_kai_aim_9m_default",
+        "blk": "gameData/FlightModels/weaponPresets/f_15j_kai_aim_9m_default.blk"
       },
       {
         "name": "f_15j_kai_aim_9l",
@@ -2761,9 +2763,9 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 7711.0,
-    "maxloadMassLeftConsoles": 3855.0,
-    "maxloadMassRightConsoles": 3855.0,
+    "maxloadMass": 11793.0,
+    "maxloadMassLeftConsoles": 5896.0,
+    "maxloadMassRightConsoles": 5896.0,
     "maxDisbalance": 1900.0,
     "HideNodes": {
       "node": [
@@ -2869,19 +2871,21 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 120,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 120,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -2931,7 +2935,6 @@
           {
             "iconType": "missile_type_f_air_to_air",
             "name": "aim_9m_slot1",
-            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -2940,7 +2943,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9_001",
               "bullets": 1,
               "external": true,
@@ -3751,7 +3754,6 @@
           {
             "iconType": "missile_type_f_air_to_air",
             "name": "aim_9m_slot11",
-            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": [
                 "pylon_2",
@@ -3760,7 +3762,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9_004",
               "bullets": 1,
               "external": true,
@@ -4044,10 +4046,7 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,
@@ -4133,8 +4132,8 @@
   },
   "default_skin_tomoe": {
     "replace_tex": {
-      "from": "f_15a_c*",
-      "to": "f_15a_c*"
+      "from": "f_15j_kai_c*",
+      "to": "f_15j_kai_c*"
     }
   },
   "parachutes": {

@@ -2185,6 +2185,7 @@
             "AN/APG-68(V)7",
             "AN/APG-68(V)9",
             "AN/APG-63",
+            "AN/APG-63(V)1",
             "AN/APG-65Q",
             "AN/APG-67",
             "AN/APG-76 / AN/ASX-1",
@@ -2487,19 +2488,21 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -2978,11 +2981,12 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_large_launcher_jet_add_pod.blk",
               "emitter": "emtr_flare1",
               "bullets": 12,
               "external": true,
-              "separate": true
+              "separate": true,
+              "bulletsCartridge": 1
             }
           }
         ]
@@ -3591,10 +3595,8 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_large_add_pod": {},
+    "countermeasures_launcher_chaff_large": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "tier": 1,
