@@ -24,5 +24,6 @@ Data/Other/gameversion_live
 !/Data/Drag/drag.exe
 /bot_output.txt
 /script_local.bat
-/Data/Scripts/tmp
+Data/Scripts/tmp/*
+Data/Scripts/txts/*
 
