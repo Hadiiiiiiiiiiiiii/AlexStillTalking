@@ -130,6 +130,14 @@ public class Main {
 
                     ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
             ).queue();
+            gulids.get(i).upsertCommand(Commands.slash("getthrust", "get the drag of a plane at specific alt speed weight")
+                    .addOptions(
+                            new OptionData(OptionType.INTEGER, "plane", "Enter the name of the plane to create a thrust graph for.").setAutoComplete(true).setRequired(true),
+                            new OptionData(OptionType.INTEGER, "alt", "Enter the altitude at which you want to create the graph.").setRequired(true),
+                            new OptionData(OptionType.INTEGER, "speed", "Enter the minimum speed for the thrust graph.").setRequired(true),
+                            new OptionData(OptionType.INTEGER, "weight", "Enter the maximum speed for the thrust graph.").setRequired(true)
+                    ).setDefaultPermissions(DefaultMemberPermissions.ENABLED)
+            ).queue();
 
 
             gulids.get(i).upsertCommand(Commands.slash("comparefms", "Compare the flight models of two planes.")

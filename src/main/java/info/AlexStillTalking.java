@@ -599,8 +599,62 @@ public class AlexStillTalking extends ListenerAdapter {
                 event.reply("some error, tell hadi fr").setEphemeral(true).queue();
 
             }
-        } else
+        }
+        else if (event.getName().equals("getthrust") && event.getOption("plane") != null && event.getOption("alt") != null && event.getOption("speed") != null && event.getOption("weight") != null) {
+            //event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
+
+            if (!isLong(Objects.requireNonNull(event.getOption("plane")).getAsString())) {
+                event.getHook().sendMessage("Invalid plane ID. Please provide a valid long value.").queue();
+                return;
+            }
+
+            Plane plane = planesManager.getPlane(event.getOption("plane").getAsLong());
+            if (plane == null) {
+                event.getHook().sendMessage("Plane not found. Please provide a valid plane ID.").queue();
+                return;
+            }
+
+            int speed = event.getOption("speed").getAsInt();
+            int minSpeed = plane.speedList.stream().min(Integer::compare).orElse(0);
+            int maxSpeed = plane.speedList.stream().max(Integer::compare).orElse(0);
+
+            if (speed < minSpeed || speed > maxSpeed) {
+                event.getHook().sendMessage("Invalid speed! Speed must be within the range of the plane's speeds. Your input was: " + speed + ", but it should be between " + minSpeed + " and " + maxSpeed).queue();
+                return;
+            }
+
+            int alt = event.getOption("alt").getAsInt();
+            int maxAlt = plane.alts.stream().max(Integer::compare).orElse(0);
+            if (alt > maxAlt) {
+                event.getHook().sendMessage("Invalid altitude! Altitude cannot be greater than the maximum altitude of the plane (" + maxAlt + "). Your input was: " + alt).queue();
+                return;
+            }
+
+            double weight = 0;
+            if (event.getOption("weight") != null) {
+                weight = event.getOption("weight").getAsDouble();
+            }
+
+            double thrust = 0;
+            if (plane.thrusts2 == null) {
+                thrust = plane.getThrust(alt, speed, plane.thrusts);
+            } else {
+                thrust = plane.getThrust(alt, speed, plane.thrusts);
+                thrust += plane.getThrust(alt, speed, plane.thrusts2);
+            }
+            double thrustToWeightRatio = weight > 0 ? thrust / weight : 0;
+
+            String response = String.format("```\nPlane: %s\nSpeed: %d km/h\nThrust: %.2f kgf\nWeight: %.2f kg\nThrust-to-Weight Ratio: %.4f```",
+                    plane.name, speed, thrust, weight, thrustToWeightRatio);
+
+            event.getHook().sendMessage(response).queue();
+        }
+        else {
+            System.out.println("event.getName() "+event.getName());
+            System.out.println("event.getNameasd "+event.getOption("alt"));
+            System.out.println("event.getOption(\"plane\") "+event.getOption("plane"));
             event.reply("invalid options :(").setEphemeral(true).queue();
+        }
     }
 
     private boolean isLong(String s) {
@@ -716,7 +770,7 @@ public class AlexStillTalking extends ListenerAdapter {
                     event.replyChoices(alts(event.getFocusedOption().getValue().toLowerCase(), planesManager.getPlane(event.getOption("plane").getAsLong()))).queue();
         }
 
-        if (event.getName().equals("makethrustgraph") && event.getFocusedOption().getName().contains("plane")) {
+        if (event.getName().equals("makethrustgraph") && event.getFocusedOption().getName().contains("plane") || event.getName().equals("getthrust") && event.getFocusedOption().getName().contains("plane") ) {
 
             event.replyChoices(planeChoicesThrustGraph(event.getFocusedOption().getValue().toLowerCase())).queue();
         }
