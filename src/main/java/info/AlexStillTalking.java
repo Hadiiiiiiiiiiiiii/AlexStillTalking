@@ -601,7 +601,7 @@ public class AlexStillTalking extends ListenerAdapter {
             }
         }
         else if (event.getName().equals("getthrust") && event.getOption("plane") != null && event.getOption("alt") != null && event.getOption("speed") != null && event.getOption("weight") != null) {
-            //event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
+            event.deferReply().timeout(1, TimeUnit.MINUTES).setEphemeral(false).queue();
 
             if (!isLong(Objects.requireNonNull(event.getOption("plane")).getAsString())) {
                 event.getHook().sendMessage("Invalid plane ID. Please provide a valid long value.").queue();
